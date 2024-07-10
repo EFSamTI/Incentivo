@@ -1,0 +1,100 @@
+<p-toast></p-toast>
+<app-loading-scream [isLoading]="isLoading"></app-loading-scream>
+<ion-content>
+  <div
+  class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-y-auto"
+>
+  <div class="flex flex-column align-items-center justify-content-center">
+    <div
+      style="
+        border-radius: 56px;
+        padding: 0.3rem;
+        background: linear-gradient(
+          180deg,
+          #062e82 10%,
+          rgba(33, 150, 243, 0) 30%
+        );
+      "
+    >
+      <div
+        class="w-full surface-card py-8 px-5 sm:px-8"
+        style="border-radius: 53px"
+      >
+        <div class="text-center mb-5">
+          <img
+            src="/assets/demo/images/logo.jpg"
+            alt="Image"
+            height="80"
+            class="mb-3"
+          />
+          <div class="text-900 text-3xl font-medium mb-3">Bienvenido!</div>
+          <span class="text-600 font-medium">Inicie sesión para continuar</span>
+        </div>
+        <form [formGroup]="loginForm">
+          <div>
+            <label class="block text-900 text-xl font-medium mb-2" for="email"
+              >Nombre de usuario</label
+            >
+            <input
+              type="text"
+              pInputText
+              formControlName="email"
+              class="w-full md:w-30rem "
+              name="email"
+              placeholder="Ingrese su nombre de usuario"
+            />
+            <small
+              *ngIf="email.invalid && (email.dirty || email.touched)"
+              class="block p-error"
+            >
+              <div *ngIf="email.errors?.['required']">Usuario es requerido</div>
+            </small>
+
+            <label
+              class="block text-900 text-xl font-medium mt-5"
+              for="password"
+              >Contraseña</label
+            >
+            <input
+              type="password"
+              pInputText
+              formControlName="password"
+              class="w-full md:w-30rem"
+              name="password"
+              placeholder="Ingrese su contraseña"
+            />
+            <small
+              *ngIf="password.invalid && (password.dirty || password.touched)"
+              class="block p-error"
+            >
+              <div *ngIf="password.errors?.['required']">
+                Contraseña es requerida
+              </div>
+            </small>
+
+            <div
+              class="flex align-items-center justify-content-between mb-5 mt-5 gap-5"
+            >
+              <a
+                class="font-medium no-underline ml-2 text-right cursor-pointer"
+                style="color: var(--primary-color)"
+                >Olvido la contraseña?</a
+              >
+            </div>
+            <button
+              pButton
+              pRipple
+              label="Sign In"
+              class="w-full p-3 text-xl"
+              [disabled]="loginForm.invalid"
+              (click)="loginUser()"
+            ></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+</ion-content> 
+

@@ -1,0 +1,80 @@
+
+<div class="grid">
+  <div class="col-12">
+      <div class="card">
+          <p-toolbar styleClass="mb-4">
+              <ng-template pTemplate="left">
+                  <div class="my-2">
+                    <app-form-rol [displayForm]="displayForm" (onClose)="displayForm = $event"
+                    [rol]="selectedRol" (onSave)="save()"></app-form-rol>
+                  </div>
+              </ng-template>
+          </p-toolbar>
+          <p-table [value]="listRoles" [rows]="10" [loading]="isLoading" [rowHover]="true"
+              styleClass="p-datatable-sm" [paginator]="true" [rowsPerPageOptions]="[10,25,50]"
+              responsiveLayout="scroll">
+              <ng-template pTemplate="caption">
+                  <div class="flex justify-content-between flex-column sm:flex-row">
+                      <h5 class="m-0">Administración de Roles</h5>
+                      <span class="p-input-icon-left mb-2">
+                          <i class="pi pi-search"></i>
+                          <input #filter pInputText type="text" (input)="onInput($event)"
+                              placeholder="Buscar rol..." class="w-full" />
+                      </span>
+                  </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                  <tr>
+                      <th style="min-width: 8rem">Rol</th>
+                      <th style="min-width: 8rem">Descripción</th>
+                      <th style="min-width: 8rem">Creado En</th>
+                      <th style="min-width: 8rem">Actualizado En</th>
+                      <th style="min-width: 10rem">Opciones</th>
+                      <th style="width: 5rem"></th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rol>
+                  <tr>
+                      <td>{{ rol.roleName }}</td>
+                      <td>{{ rol.description }}</td>
+                      <td>{{ rol.createdAt | date:'yyyy-MM-dd h:mm a' }}</td>
+                      <td>{{ rol.updatedAt ? (rol.updatedAt | date:'yyyy-MM-dd h:mm a') : 'N/A' }}</td>
+                      <td>
+                          <ul>
+                              <li *ngFor="let option of rol.roleOptions">{{ option.option.optionName }}</li>
+                          </ul>
+                      </td>
+                      <td>
+                        <div class="my-button-group">
+                            <div class="flex">
+                                <button pButton pRipple [raised]="true" severity="help"
+                                    class="p-button-rounded  mr-2" icon="pi pi-pencil" pTooltip="Editar usuario"
+                                    tooltipPosition="left" (click)="formRol(rol)"></button>
+                                <button pButton pRipple [raised]="true" severity="danger"
+                                    class="p-button-rounded  mr-2" icon="pi pi-trash" pTooltip="Eliminar usuario"
+                                    tooltipPosition="left" (click)="deleteRole(rol.roleId)"></button>
+                            </div>
+                        </div>
+                    </td>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                  <tr>
+                      <td colspan="7">No se encontraron datos.</td>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="loadingbody">
+                  <tr>
+                      <td colspan="7">Cargando datos. Por favor, espere.</td>
+                  </tr>
+              </ng-template>
+          </p-table>
+      </div>
+  </div>
+</div>
+<!-- this.optionForm = this.fb.group({
+    name: ['', Validators.required],
+    description: ['', Validators.required],
+    path: ['', Validators.required],
+  }); -->
+

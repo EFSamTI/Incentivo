@@ -1,0 +1,7 @@
+{
+  "name": "app-eurofish-legacy",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

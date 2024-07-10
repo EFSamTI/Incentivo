@@ -1,0 +1,229 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <div class="mb-3 font-bold text-2xl">
+        <span class="text-900">Últimos Movimientos Realizados, </span>
+    </div>
+    <div class="text-700 text-sm mb-3">
+        Revise los últimos movimientos de personal y realice ajustes si es necesario.
+    </div>
+      <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+          <div class="my-2">
+          <p-dropdown
+          [options]="lineas"
+          [(ngModel)]="selectLinea"
+          optionLabel="name"
+          [showClear]="true"
+          placeholder="Seleccione la linea"
+          class="mr-2"
+          [loading]="isLoading"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div
+              class="country-item country-item-value"
+              *ngIf="selectLinea"
+            >
+              <div>{{ selectLinea.nombrelinea }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-liena pTemplate="item">
+            <div>
+              <div>{{ liena.nombrelinea }}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+        <p-dropdown
+          [options]="turnos"
+          [(ngModel)]="selectTurno"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="description"
+          [showClear]="true"
+          placeholder="Seleccione el turno"
+        >
+          <ng-template pTemplate="selectedItem">
+            <div
+              class="country-item country-item-value"
+              *ngIf="selectTurno"
+            >
+              <div>{{ selectTurno }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-turno pTemplate="item">
+            <div>
+              <div>{{ turno }}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </div>
+        </ng-template>
+        <ng-template pTemplate="right">
+          <button
+          pButton
+          type="button"
+          label="Bucar"
+          icon="pi pi-search"
+          class="p-button-info mr-3"
+          (click)="loadMovimientos()"
+        ></button>
+          <button
+            pButton
+            type="button"
+            label="Grabar"
+            icon="pi pi-save"
+            class="p-button-success mr-3"
+            [disabled]="
+            !selectMovimientos.length || modifAsignaciones.length === 0
+          "
+          (click)="onDataChange()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Restablecer"
+            icon="pi pi-replay"
+            class="p-button-warning"
+            [disabled]="!selectMovimientos.length"
+            (click)="restablecerCambios()"
+          ></button>
+        </ng-template>
+      </p-toolbar>
+      <p-table
+        [value]="listCambios"
+        [rows]="5"
+        [loading]="isLoading"
+        [rowHover]="true"
+        styleClass="p-datatable-sm"
+        [paginator]="true"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        responsiveLayout="scroll"
+        [(selection)]="selectMovimientos"
+        selectionMode="multiple"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th
+              colspan="2"
+              style="text-align: center; background-color: #cce8ff"
+            >
+              Estado Previo
+            </th>
+            <th
+              colspan="2"
+              style="text-align: center; background-color: #ffe5cc"
+            >
+              Estado Actualizado
+            </th>
+            <th></th>
+            <th></th>
+          </tr>
+          <tr>
+            <th style="min-width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="empleado" style="min-width: 8rem">
+              Empleado
+              <p-sortIcon field="empleado"></p-sortIcon>
+            </th>
+            <th pSortableColumn="ci" style="min-width: 8rem">
+              Cedula
+              <p-sortIcon field="ci"></p-sortIcon>
+            </th>
+            <th style="min-width: 4rem; background-color: #cce8ff">Área</th>
+            <th style="min-width: 4rem; background-color: #cce8ff">Cargo</th>
+            
+            <th style="min-width: 4rem; background-color: #ffe5cc">Área</th>
+            <th style="min-width: 4rem; background-color: #ffe5cc">Cargo</th>
+            
+            <th style="min-width: 4rem">Hora</th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-datum>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="datum"></p-tableCheckbox>
+            </td>
+            <td>{{ datum.empleado_nombre }}</td>
+            <td>{{ datum.ci }}</td>
+            <td>{{ datum.area_original }}</td>
+            
+            <td>{{ datum.cargo_original }}</td>
+           
+
+            <td>
+              <p-dropdown
+                [options]="areas"
+                [(ngModel)]="datum.area_cambio"
+                (onChange)="onAreaChange(datum)"
+                optionLabel="name"
+                [style]="{ width: '125px' }"
+                [appendTo]="'body'"
+              >
+                <ng-template pTemplate="selectedItem">
+                  <div class="country-item country-item-value">
+                    <div>{{ datum.area_cambio }}</div>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="item" let-area>
+                  <div>{{ area }}</div>
+                </ng-template>
+              </p-dropdown>
+            </td>
+            <td>
+              <p-dropdown
+                [options]="cargos"
+                [(ngModel)]="datum.cargo_cambio"
+                (onChange)="onCargoChange(datum)"
+                optionLabel="name"
+                [style]="{ width: '125px' }"
+                [appendTo]="'body'"
+              >
+                <ng-template pTemplate="selectedItem">
+                  <div class="country-item country-item-value">
+                    <div>{{ datum.cargo_cambio }}</div>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="item" let-cargo>
+                  <div>{{ cargo }}</div>
+                </ng-template>
+              </p-dropdown>
+            </td>
+            <td>{{ datum.created_at | date : "shortTime" }}</td>
+            <td>
+              <div class="my-button-group">
+                <div class="flex">
+                  <button
+                    pButton
+                    pRipple
+                    [raised]="true"
+                    severity="warning"
+                    class="p-button-rounded"
+                    icon="pi pi-replay"
+                    pTooltip="Restablecer cambio"
+                    tooltipPosition="left"
+                    (click)="restabelcerOneMovimiento(datum)"
+                  ></button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" *ngIf="listCambios.length === 0">
+          <tr>
+            <td colspan="9">No hay datos disponibles.</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="loadingbody">
+          <tr>
+            <td colspan="9">Cargando datos. Por favor, espere.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

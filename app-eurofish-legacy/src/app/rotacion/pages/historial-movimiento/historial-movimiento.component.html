@@ -1,0 +1,175 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <ul class="list-none p-0 m-0 flex align-items-center font-medium mb-4">
+        <li>
+          <a class="text-500 no-underline line-height-3 cursor-pointer" (click)="goHome()">
+              <i class="pi pi-home"></i>
+          </a>
+      </li>
+        <li class="px-2">
+            <i class="pi pi-angle-right text-500 line-height-3"></i>
+        </li>
+        <li>
+            <span class="text-900 line-height-3 cursor-pointer" (click)="showPersonalRotation()">Rotación personal</span>
+        </li>
+        <li class="px-2">
+            <i class="pi pi-angle-right text-500 line-height-3"></i>
+        </li>
+        <li>
+            <span class="text-900 line-height-3">Historial de rotación de personal</span>
+        </li>
+    </ul>
+      <div class="mb-3 font-bold text-2xl">
+        <span class="text-900">Reporte, </span>
+        <span class="text-blue-600">movimientos realizados</span>
+    </div>
+    <div class="text-700 text-sm mb-3">
+      Descargue informes de rotación de personal en Excel o PDF. Filtre por persona, área o fecha para obtener la información precisa.
+  </div>
+      <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+          <div class="my-2">
+          <p-dropdown
+            [options]="lineas"
+            [(ngModel)]="selectLinea"
+            optionLabel="name"
+            [showClear]="true"
+            placeholder="Seleccione la linea"
+            class="mr-2"
+            [loading]="isLoading"
+          >
+            <ng-template pTemplate="selectedItem">
+              <div
+                class="country-item country-item-value"
+                *ngIf="selectLinea"
+              >
+                <div>{{ selectLinea.nombrelinea }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-liena pTemplate="item">
+              <div>
+                <div>{{ liena.nombrelinea }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+          <p-dropdown
+            [options]="turnos"
+            [(ngModel)]="selectTurno"
+            optionLabel="name"
+            [filter]="true"
+            filterBy="description"
+            [showClear]="true"
+            placeholder="Seleccione el turno"
+          >
+            <ng-template pTemplate="selectedItem">
+              <div
+                class="country-item country-item-value"
+                *ngIf="selectTurno"
+              >
+                <div>{{ selectTurno }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-turno pTemplate="item">
+              <div>
+                <div>{{ turno }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </div>
+        </ng-template>
+        <ng-template pTemplate="right"> 
+          <button
+          pButton
+          type="button"
+          label="Ontener datos"
+          icon="pi pi-refresh"
+          class="p-button-info mr-3"
+          (click)="loadMovimientos()"
+        ></button>
+
+          <button
+          pButton
+          pRipple
+          (click)="downloadExcelFile()"
+          label="Excel"
+          icon="pi pi-file-excel"
+          severity="success"
+          class="mx-2"
+        ></button>
+        <button
+          pButton
+          pRipple
+          (click)="downloadPdfFile()"
+          label="PDF"
+          icon="pi pi-file-pdf"
+          severity="danger"
+          class="mx-2"
+        ></button>
+        </ng-template>
+      </p-toolbar>
+      <p-table
+        [value]="listCambios"
+        [rows]="5"
+        [loading]="isLoadinMovimientos"
+        [rowHover]="true"
+        styleClass="p-datatable-sm"
+        [paginator]="true"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        responsiveLayout="scroll"
+        [(selection)]="selectMovimientos"
+        selectionMode="multiple"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th></th>
+            <th
+              colspan="2"
+              style="text-align: center; background-color: #cce8ff"
+            >
+              Estado Previo
+            </th>
+            <th
+              colspan="2"
+              style="text-align: center; background-color: #ffe5cc"
+            >
+              Estado Actualizado
+            </th>
+            <th></th>
+          </tr>
+          <tr>
+            <th pSortableColumn="ci" style="min-width: 8rem">
+              Cedula - Nombre
+              <p-sortIcon field="ci"></p-sortIcon>
+            </th>
+            <th style="min-width: 4rem; background-color: #cce8ff">Cargo</th>
+            <th style="min-width: 4rem; background-color: #cce8ff">Área</th>
+            <th style="min-width: 4rem; background-color: #ffe5cc">Cargo</th>
+            <th style="min-width: 4rem; background-color: #ffe5cc">Área</th>
+            <th style="min-width: 4rem">Hora</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-datum>
+          <tr>
+            <td>{{ datum.ci }} - {{ datum.empleado_nombre }}</td>
+            <td>{{ datum.cargo_original }}</td>
+            <td>{{ datum.area_original }}</td>
+            <td>{{ datum.cargo_cambio }}</td>
+            <td>{{ datum.area_cambio }}</td>
+            <td>{{ datum.created_at | date : "shortTime" }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" *ngIf="listCambios.length === 0">
+          <tr>
+            <td colspan="9">No hay datos disponibles.</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="loadingbody">
+          <tr>
+            <td colspan="9">Cargando datos. Por favor, espere.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

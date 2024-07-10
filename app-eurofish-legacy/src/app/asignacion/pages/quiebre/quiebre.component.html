@@ -1,0 +1,203 @@
+<!-- export interface IResTali {
+  ctrlRoc: number;
+  producto: string;
+  kgNtCrudo: number;
+  kgNtRociado: number;
+  kgMpCalculada: number;
+  coches: number;
+  kgLomos: number;
+  percLomo: number;
+  kgFlake: number;
+  percFlake: number;
+  kgBlanco: number;
+  kgRechLo: number;
+  relacionLF: number;
+  piezas: number;
+  pesoProm: number;
+  rendCurva: number;
+  percCurva: number;
+  percMerma: number;
+  tipoLimpieza: string;
+  linea?: number;
+  turno?: number;
+} -->
+
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <ul class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
+        <li>
+          <a class="text-500 no-underline line-height-3 cursor-pointer" (click)="goHome()">
+              <i class="pi pi-home"></i>
+          </a>
+      </li>
+        <li class="px-2">
+            <i class="pi pi-angle-right text-500 line-height-3"></i>
+        </li>
+        <li>
+            <span class="text-900 line-height-3 cursor-pointer">Quiebres</span>
+        </li>
+    </ul>
+      <h5>Quiebres</h5>
+      <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+
+          <div class="my-2 ">
+            <div class="field">
+              <label for="date">Fecha</label>
+              <input type="date" pInputText [(ngModel)]="fecha" class="w-full" name="dateFiltre" id="dateFiltre"
+                placeholder="Fecha" onkeydown="return false;" />
+            </div>
+           
+            <p-dropdown [options]="turnos" [(ngModel)]="selectTurno" optionLabel="name" [filter]="true"
+              filterBy="description" [showClear]="true" placeholder="Seleccione el turno">
+              <ng-template pTemplate="selectedItem">
+                <div class="country-item country-item-value" *ngIf="selectTurno">
+                  <div>{{ selectTurno }}</div>
+                </div>
+              </ng-template>
+              <ng-template let-turno pTemplate="item">
+                <div>
+                  <div>{{ turno }}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+          <button pButton pRipple label="Obtener datos" icon="pi pi-search" class="p-button"
+            (click)="loadDataTali()"></button>
+        </ng-template>
+      </p-toolbar>
+      <p-table [value]="listQuiebres" [rows]="5" [loading]="isLoading" [rowHover]="true"
+        styleClass="p-datatable-sm" [paginator]="true" [rowsPerPageOptions]="[10, 25, 50]"
+        responsiveLayout="scroll" [(selection)]="selectQuiebres" selectionMode="multiple">
+        <ng-template pTemplate="header">
+          <tr>   
+            <th style="min-width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+
+            <th pSortableColumn="turno" style="min-width: 5rem">
+              Turno<p-sortIcon field="turno"></p-sortIcon>
+            </th>
+            <th pSortableColumn="linea" style="min-width: 5rem">
+              Linea <p-sortIcon field="linea"></p-sortIcon>
+            </th>
+
+            <th pSortableColumn="ctrlRoc" style="min-width: 1rem">
+              Ctrl Roc <p-sortIcon field="ctrlRoc"></p-sortIcon>
+            </th>
+            <th pSortableColumn="producto" style="min-width: 8rem">
+              Producto(s) <p-sortIcon field="producto"></p-sortIcon>
+            </th>
+            <th pSortableColumn="kgNtCrudo" style="min-width: 1rem">
+              Kg Nt Crudo <p-sortIcon field="kgNtCrudo"></p-sortIcon>
+            </th>
+            <th pSortableColumn="kgNtRociado" style="min-width: 1rem">
+              Kg Nt Rociado <p-sortIcon field="kgNtRociado"></p-sortIcon>
+            </th>
+            <th pSortableColumn="kgMpCalculada" style="min-width: 1rem">
+              Kg Mp Calculada <p-sortIcon field="kgMpCalculada"></p-sortIcon>
+            </th>
+            <th pSortableColumn="coches" style="min-width: 1rem">
+              Coches <p-sortIcon field="coches"></p-sortIcon>
+            </th>
+            <th pSortableColumn="kgLomos" style="min-width: 1rem">
+              Kg Lomos <p-sortIcon field="kgLomos"></p-sortIcon>
+            </th>
+            <th pSortableColumn="percLomo" style="min-width: 1rem">
+              % Lomo <p-sortIcon field="percLomo"></p-sortIcon>
+            </th>
+            <th pSortableColumn="kgFlake" style="min-width: 1rem">
+              Kg Flake <p-sortIcon field="kgFlake"></p-sortIcon>
+
+            </th>
+
+            <th pSortableColumn="percFlake" style="min-width: 1rem">
+              % Flake <p-sortIcon field="percFlake"></p-sortIcon>
+            </th>
+
+            <th pSortableColumn="kgBlanco" style="min-width: 1rem">
+              Kg Blanco <p-sortIcon field="kgBlanco"></p-sortIcon>
+            </th>
+            <th pSortableColumn="kgRechLo" style="min-width: 1rem">
+              Kg Rech Lo <p-sortIcon field="kgRechLo"></p-sortIcon>
+            </th>
+            <th pSortableColumn="relacionLF" style="min-width: 1rem">
+              Relación L/F <p-sortIcon field="relacionLF"></p-sortIcon>
+            </th>
+            <th pSortableColumn="piezas" style="min-width: 1rem">
+              Piezas <p-sortIcon field="piezas"></p-sortIcon>
+            </th>
+            <th pSortableColumn="pesoProm" style="min-width: 1rem">
+              Peso Prom <p-sortIcon field="pesoProm"></p-sortIcon>
+            </th>
+            <th pSortableColumn="rendCurva" style="min-width: 1rem">
+              Rend Curva <p-sortIcon field="rendCurva"></p-sortIcon>
+            </th>
+            <th pSortableColumn="percCurva" style="min-width: 1rem">
+              % Curva <p-sortIcon field="percCurva"></p-sortIcon>
+            </th>
+            <th pSortableColumn="percMerma" style="min-width: 1rem">
+              % Merma <p-sortIcon field="percMerma"></p-sortIcon>
+            </th>
+            <th pSortableColumn="tipoLimpieza" style="min-width: 1rem">
+              Tipo Limpieza <p-sortIcon field="tipoLimpieza"></p-sortIcon>
+            </th>
+
+
+
+           
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-datum>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="datum"></p-tableCheckbox>
+            </td>
+            <td> Turno {{ datum.turno }}</td>
+            <td> Linea {{ datum.linea }}</td>
+            <td>{{ datum.ctrlRoc }}</td>
+            <td>{{ datum.producto }}</td>
+            <td>{{ datum.kgNtCrudo }}</td>
+            <td>{{ datum.kgNtRociado }}</td>
+            <td>{{ datum.kgMpCalculada }}</td>
+            <td>{{ datum.coches }}</td>
+            <td>{{ datum.kgLomos }}</td>
+            <td>{{ datum.percLomo }}</td>
+            <td>{{ datum.kgFlake }}</td>
+            <td>{{ datum.percFlake }}</td>
+            <td>{{ datum.kgBlanco }}</td>
+            <td>{{ datum.kgRechLo }}</td>
+            <td>{{ datum.relacionLF }}</td>
+            <td>{{ datum.piezas }}</td>
+            <td>{{ datum.pesoProm }}</td>
+            <td>{{ datum.rendCurva }}</td>
+            <td>{{ datum.percCurva }}</td>
+            <td>{{ datum.percMerma }}</td>
+            <td>{{ datum.tipoLimpieza }}</td>
+            s
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="9">Obtenga datos.</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="loadingbody">
+          <tr>
+            <td colspan="9">Cargando datos. Por favor, espere.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <div class="mt-4 text-center">
+        <button pButton type="button" label="Grabar" icon="pi pi-save" class="p-button-success mr-3"
+       ></button>
+        <button pButton type="button" label="Añadir" icon="pi pi-plus" class="p-button-info"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>

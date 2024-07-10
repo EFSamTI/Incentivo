@@ -1,0 +1,213 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <ul class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
+        <li>
+          <a
+            class="text-500 no-underline line-height-3 cursor-pointer"
+            (click)="goHome()"
+          >
+            <i class="pi pi-home"></i>
+          </a>
+        </li>
+        <li class="px-2">
+          <i class="pi pi-angle-right text-500 line-height-3"></i>
+        </li>
+        <li>
+          <span class="text-900 line-height-3 cursor-pointer"
+            >Crear parada</span
+          >
+        </li>
+      </ul>
+      <div class="mb-3 font-bold text-2xl">
+        <span class="text-900">Registro, </span>
+        <span class="text-blue-600">Paradas de colaboradores</span>
+    </div>
+    <div class="text-700 text-sm mb-3">
+      Registre y gestione las paradas de usuarios, incluyendo fecha, turno y área.
+    </div>
+      <div class="p-fluid">
+        <div class="field grid">
+          <div class="col-10">
+            <p-selectButton
+              [options]="tipoFiltro"
+              [(ngModel)]="selectTipoFiltro"
+              optionLabel="name"
+            ></p-selectButton>
+          </div>
+
+          <div class="col-2">
+            <button
+              pButton
+              pRipple
+              icon="pi pi-list"
+              label="Paradas"
+              class="p-button-rounded"
+              (click)="navigateMantenimientoParadas()"
+            ></button>
+          </div>
+        </div>
+        <div class="field grid">
+          <label htmlFor="fecha" class="col-12 mb-2 md:col-2 md:mb-0"
+            >Fecha</label
+          >
+          <div class="col-12 md:col-10">
+            <input pInputText id="name3" type="date" [(ngModel)]="fecha" />
+          </div>
+        </div>
+        <div class="field grid">
+          <label htmlFor="turno" class="col-12 mb-2 md:col-2 md:mb-0"
+            >Turno</label
+          >
+          <div class="col-12 md:col-10">
+            <p-selectButton
+              [options]="turnos"
+              [(ngModel)]="selectTurno"
+              optionLabel="name"
+            ></p-selectButton>
+          </div>
+        </div>
+
+        <div class="field grid" *ngIf="selectTipoFiltro">
+          <label htmlFor="linea" class="col-12 mb-2 md:col-2 md:mb-0"
+            >Mesa/Linea</label
+          >
+          <div class="col-12 md:col-10">
+            <p-dropdown
+              [options]="lineas"
+              [(ngModel)]="selectLinea"
+              optionLabel="name"
+              [filter]="true"
+              filterBy="description"
+              [showClear]="true"
+              placeholder="Seleccione el mesa/linea"
+            >
+              <ng-template pTemplate="selectedItem">
+                <div
+                  class="country-item country-item-value"
+                  *ngIf="selectLinea"
+                >
+                  <div>{{ selectLinea.nombrelinea }}</div>
+                </div>
+              </ng-template>
+              <ng-template let-linea pTemplate="item">
+                <div>
+                  <div>{{ linea.nombrelinea }}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+        </div>
+        <div
+          class="field grid"
+          *ngIf="selectTipoFiltro && selectTipoFiltro.name === 'Individual'"
+        >
+          <label htmlFor="colaborador" class="col-12 mb-2 md:col-2 md:mb-0"
+            >Colaborador</label
+          >
+          <div class="col-12 md:col-10">
+            <p-dropdown
+              [options]="empleados"
+              [(ngModel)]="selectEmpleado"
+              optionLabel="name"
+              [showClear]="true"
+              placeholder="Seleccione el empleado"
+              [filter]="true"
+              filterBy="nombre"
+            >
+              <ng-template pTemplate="selectedItem">
+                <div
+                  class="country-item country-item-value"
+                  *ngIf="selectEmpleado"
+                >
+                  <div>{{ selectEmpleado.nombre }}</div>
+                </div>
+              </ng-template>
+              <ng-template let-empleado pTemplate="item">
+                <div>
+                  <div>{{ empleado.nombre }}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="field grid" *ngIf="selectTipoFiltro">
+          <label htmlFor="tipo_parada" class="col-12 mb-2 md:col-2 md:mb-0"
+            >Parada</label
+          >
+          <div class="col-12 md:col-10">
+            <p-dropdown
+              [options]="tipoParada"
+              [(ngModel)]="selectTipoParada"
+              optionLabel="name"
+              [showClear]="true"
+              placeholder="Seleccione la parada"
+              [filter]="true"
+              filterBy="name"
+            >
+              <ng-template pTemplate="selectedItem">
+                <div
+                  class="country-item country-item-value"
+                  *ngIf="selectTipoParada"
+                >
+                  <div>{{ selectTipoParada.name }}</div>
+                </div>
+              </ng-template>
+              <ng-template let-parada pTemplate="item">
+                <div>
+                  <div>{{ parada.name }}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="field grid" *ngIf="selectTipoFiltro">
+          <label htmlFor="hora_inicio" class="col-12 mb-2 md:col-2 md:mb-0"
+            >Hora inicio</label
+          >
+          <div class="col-12 md:col-10">
+            <input
+              pInputText
+              id="hora_inicio"
+              type="datetime-local"
+              [(ngModel)]="hora_inicio"
+            />
+          </div>
+        </div>
+        <div class="field grid" *ngIf="selectTipoFiltro">
+          <label htmlFor="hora_fin" class="col-12 mb-2 md:col-2 md:mb-0"
+            >Hora fin</label
+          >
+          <div class="col-12 md:col-10">
+            <input
+              pInputText
+              id="hora_fin"
+              type="datetime-local"
+              [(ngModel)]="hora_fin"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 text-center">
+        <button
+          pButton
+          pRipple
+          label="Guardar"
+          icon="pi pi-save"
+          severity="success"
+          class="mx-2"
+          (click)="onSave()"
+        ></button>
+        <button
+          pButton
+          pRipple
+          label="Nuevo"
+          icon="pi pi-plus"
+          severity="info"
+          class="mx-2"
+          (click)="cancel()"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<ion-content style="--background: #f0f0f5;">
+  <div class="layout-wrapper" [ngClass]="containerClass">
+    <app-header></app-header>
+    <div class="layout-sidebar">
+      <app-slider-bar></app-slider-bar>
+    </div>
+
+    <div class="layout-main-container">
+      <div class="layout-main">
+        <router-outlet></router-outlet>
+      </div>
+      <app-footer></app-footer>
+    </div>
+
+    <div class="layout-mask"></div>
+  </div>
+</ion-content>

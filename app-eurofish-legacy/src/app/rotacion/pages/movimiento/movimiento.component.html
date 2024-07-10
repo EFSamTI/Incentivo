@@ -1,0 +1,224 @@
+
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <ul class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
+        <li>
+          <a
+            class="text-500 no-underline line-height-3 cursor-pointer"
+            (click)="goHome()"
+          >
+            <i class="pi pi-home"></i>
+          </a>
+        </li>
+        <li class="px-2">
+          <i class="pi pi-angle-right text-500 line-height-3"></i>
+        </li>
+        <li>
+          <span class="text-900 line-height-3">Rotación personal</span>
+        </li>
+      </ul>
+      <div class="mb-3 font-bold text-2xl">
+        <span class="text-900">Rotación de Personal, </span>
+        <span class="text-blue-600">gestión y seguimiento</span>
+      </div>
+      <div class="text-700 text-sm mb-3">
+        Gestione la rotación de personal y realice seguimientos detallados.
+        Filtre por línea o turno para análisis específicos.
+      </div>
+      <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+          <p-dropdown
+            [options]="lineas"
+            [(ngModel)]="selectLinea"
+            optionLabel="name"
+            [showClear]="true"
+            placeholder="Seleccione la linea"
+            class="mr-2"
+            [loading]="isLoading"
+            (onChange)="onLineaChange($event.value)"
+          >
+            <ng-template pTemplate="selectedItem">
+              <div class="country-item country-item-value" *ngIf="selectLinea">
+                <div>{{ selectLinea }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-liena pTemplate="item">
+              <div>
+                <div>{{ liena }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+          <p-dropdown
+            [options]="tunos"
+            [(ngModel)]="selectTurno"
+            optionLabel="name"
+            [filter]="true"
+            filterBy="description"
+            [showClear]="true"
+            placeholder="Seleccione el turno"
+            (onChange)="onTurnoChange($event.value)"
+          >
+            <ng-template pTemplate="selectedItem">
+              <div class="country-item country-item-value" *ngIf="selectTurno">
+                <div>{{ selectTurno }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-turno pTemplate="item">
+              <div>
+                <div>{{ turno }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </ng-template>
+        <ng-template pTemplate="right">
+          <button
+            pButton
+            type="button"
+            label="Bucar"
+            icon="pi pi-search"
+            class="p-button-info mr-3"
+            (click)="loadAsignaciones()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Grabar"
+            icon="pi pi-save"
+            class="p-button-success mr-3"
+            [disabled]="
+              !selectedAsignaciones.length || modifAsignaciones.length === 0
+            "
+            (click)="onDataChange()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Historial"
+            icon="pi pi-list"
+            class="p-button"
+            (click)="navHistorialMovimiento()"
+          ></button>
+        </ng-template>
+      </p-toolbar>
+      <p-table
+        [value]="listAsignaciones"
+        [rows]="5"
+        [loading]="isLoading"
+        [rowHover]="true"
+        styleClass="p-datatable-sm"
+        [paginator]="true"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        responsiveLayout="scroll"
+        [(selection)]="selectedAsignaciones"
+        selectionMode="multiple"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="min-width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="asignacionid" style="min-width: 1rem">
+              ID
+              <p-sortIcon field="asignacionid"></p-sortIcon>
+            </th>
+            <th pSortableColumn="nombre_empleado" style="min-width: 8rem">
+              Cedula - Nombre
+              <p-sortIcon field="nombre_empleado"></p-sortIcon>
+            </th>
+            <th style="min-width: 4rem" pSortableColumn="datum.cargoname">
+              Cargo
+              <p-sortIcon field="datum.cargoname"></p-sortIcon>
+            </th>
+            <th style="min-width: 4rem">Area</th>
+            <th style="width: 10rem">Puesto/Cargo</th>
+            <th style="width: 8rem"></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-datum>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="datum"></p-tableCheckbox>
+            </td>
+            <td>{{ datum.asignacionid }}</td>
+            <td>{{ datum.cedula }} - {{ datum.nombre_empleado }}</td>
+            <td>
+              {{ datum.cargoname }}
+            </td>
+            <td>
+
+              <p-dropdown
+              [options]="areas"
+              [(ngModel)]="datum.nombre_area"
+              (onChange)="onAreaChange(datum)"
+              optionLabel="nombre_area"
+              [style]="{ width: '125px' }"
+              [appendTo]="'body'"
+            >
+              <ng-template pTemplate="selectedItem">
+                <div class="country-item country-item-value">
+                  <div>{{ datum.nombre_area }}</div>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="item" let-area>
+                <div>{{ area }}</div>
+              </ng-template>
+            </p-dropdown>
+            </td>
+            <td>
+              <p-dropdown
+                [options]="cargos"
+                [(ngModel)]="datum.cargoname"
+                (onChange)="onCargoChange(datum)"
+                optionLabel="name"
+                [style]="{ width: '125px' }"
+                [appendTo]="'body'"
+              >
+                <ng-template pTemplate="selectedItem">
+                  <div class="country-item country-item-value">
+                    <div>{{ datum.cargoname }}</div>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="item" let-cargo>
+                  <div>{{ cargo }}</div>
+                </ng-template>
+              </p-dropdown>
+            </td>
+            <td>
+              <span
+                *ngIf="
+                  datum.tipo_asignacion === 'NORMAL' ||
+                  datum.tipo_asignacion === 'COMODIN'
+                "
+                [class]="'customer-badge status-new'"
+              >
+                Sin cambios</span
+              >
+              <span
+                *ngIf="datum.tipo_asignacion === 'CAMBIO'"
+                [class]="'customer-badge status-proposal'"
+              >
+                Modificado</span
+              >
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template
+          pTemplate="emptymessage"
+          *ngIf="listAsignaciones.length === 0"
+        >
+          <tr>
+            <td colspan="8">Obtenga datos.</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="loadingbody">
+          <tr>
+            <td colspan="8">Cargando datos. Por favor, espere.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+
+<app-restablecer-movimiento></app-restablecer-movimiento>

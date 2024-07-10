@@ -1,0 +1,98 @@
+
+<app-loading-scream [isLoading]='isLoading'></app-loading-scream>
+
+<p-dialog header="{{rol ? 'Editar Rol' : 'Crear Rol'}}" [(visible)]="displayForm" [modal]="true" [style]="{width: '450px', minHeight: '500px'}" (onHide)="close()" class="p-fluid">    
+  <ng-template pTemplate="content">
+      <form [formGroup]="rolForm" >
+          <div class="field">
+            <label for="name">Nombre del rol</label>
+            <input type="text" pInputText formControlName="name" class="w-full"
+                name="name" placeholder="Ingrese el nombre del rol" />
+            <small *ngIf="name.invalid && (name.dirty || name.touched)"
+                class="block p-error">
+                <div *ngIf="name.errors?.['required']">El nombre de rol es requerido.</div>
+            </small>
+        </div>
+        <div class="field">
+          <label for="devices" style="margin-bottom: 10px;">Opciones</label>
+          <p-multiSelect formControlName="options" [options]="LisOptions"
+              optionLabel="optionName" optionValue="optionName"
+              placeholder="Seleccione las opciones"
+              [style]="{'width': '100%'}"></p-multiSelect>
+          <small *ngIf="options.invalid && (options.dirty || options.touched)"
+              class="block p-error">
+              <div *ngIf="options.errors?.['required']">El dispositivo es requerido.
+              </div>
+          </small>
+      </div>
+        <div class="field">
+            <label for="description">Descripción</label>
+            <input type="text" pInputText formControlName="description" class="w-full"
+                name="description" placeholder="Ingrese la descripción" />
+            <small *ngIf="description.invalid && (description.dirty || description.touched)"
+                class="block p-error">
+                <div *ngIf="description.errors?.['required']">La descripción es requerida.</div>
+            </small>
+        </div>
+      </form>
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-plus" label="Añadir opción" type="button" (click)="displayFormOption = true" class="p-button-text mr-2 p-button-help"></button>
+        <button pButton type="button" label="Cancelar" (click)="close()" class="p-button-text"></button>
+        <button pButton type="button" label="Guardar" [disabled]="rolForm.invalid" (click)="submit()" class="p-button-text p-button-success"></button>
+    </ng-template>
+</p-dialog>
+  <button  
+  pButton pRipple (click)="displayForm = true" 
+  class="p-button-success mr-2"  icon="pi pi-plus" label="Nuevo" type="button">
+  </button>
+
+
+  <p-dialog header="Crear opción para rol" [(visible)]="displayFormOption" [modal]="true" [style]="{width: '450px'}" (onHide)="closeOptions()" class="p-fluid">    
+    <div class="my-2">
+        <button pButton type="button" label="Cancelar" class="p-button-text" (click)="closeOptions()"></button>
+        <button pButton type="button" label="Guardar" class="p-button-success" [disabled]="optionForm.invalid" (click)="submitOption()" ></button>
+    </div>
+    <ng-template pTemplate="content">
+        <form [formGroup]="optionForm" >
+            <div class="field">
+              <label for="name_option">Nombre de opción</label>
+              <input type="text" pInputText formControlName="name_option" class="w-full"
+                  name="name_option" placeholder="Ingrese el nombre del rol" />
+              <small *ngIf="name_option.invalid && (name_option.dirty || name_option.touched)"
+                  class="block p-error">
+                  <div *ngIf="name_option.errors?.['required']">El nombre de rol es requerido.</div>
+              </small>
+          </div>
+
+          <div class="field">
+              <label for="description_option">Descripción</label>
+              <input type="text" pInputText formControlName="description_option" class="w-full"
+                  name="description_option" placeholder="Ingrese la descripción" />
+              <small *ngIf="description_option.invalid && (description_option.dirty || description_option.touched)"
+                  class="block p-error">
+                  <div *ngIf="description_option.errors?.['required']">La descripción es requerida.</div>
+              </small>
+          </div>
+          <div class="field">
+            <label for="path">Path</label>
+            <input type="text" pInputText formControlName="path" class="w-full"
+                name="path" placeholder="Ingrese el path" />
+            <small *ngIf="path.invalid && (path.dirty || path.touched)"
+                class="block p-error">
+                <div *ngIf="path.errors?.['required']">El path es requerido.</div>
+            </small>
+        </div>
+       
+        </form>
+    
+      </ng-template>
+     
+      <ng-template pTemplate="footer">
+        
+
+      </ng-template>
+  </p-dialog>
+
+
