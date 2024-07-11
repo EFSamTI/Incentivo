@@ -3,14 +3,15 @@ INSERT INTO "public"."users" ("username", "name", "password", "state", "register
 ('admin', 'Administrador', '$2a$08$EgTg/XCYIeyBZ9EJSg2HvO0dtj5KmfoKiYW7PuSfQoede.SEDzl0O', 't', NULL, CURRENT_TIMESTAMP, NULL, NULL);
 
 -- Inserta las opciones disponibles hasta el momento en la tabla "options"
-INSERT INTO "public"."options" ("optionName", "description", "path", "createdAt", "createdByUserId", "updatedAt") VALUES 
-('Mantenimiento roles', 'Periete el acceso a la gestion de roles', '/admin-roles', CURRENT_TIMESTAMP, 1, NULL), 
-('Mantenimiento usuarios', 'Permite al usuario crear otros usuarios', '/admin-users', CURRENT_TIMESTAMP, 1, NULL), 
-('Asignación ', 'Asigna de acuerdo a la informacion obtenida de ARIEL.', '/asignacion', CURRENT_TIMESTAMP, 1, NULL), 
-('Parada', 'Se ingresarán las paradas del usuario ', '/parada', CURRENT_TIMESTAMP, 1, NULL), 
-('Quiebres', 'En esta opción se obtendrá la información de TALI', '/quiebre', CURRENT_TIMESTAMP, 1, NULL), 
-('Rotación personal', 'Esta opcion podra cambiar de area o cargo a el personal asignado', '/movimiento', CURRENT_TIMESTAMP, 1, NULL), 
-('Configuración de peticiones', 'Mantenimiento de peticiones', '/config-request', CURRENT_TIMESTAMP, 1, NULL);
+INSERT INTO "public"."options" ("optionName", "description", "path", "createdAt", "createdByUserId", "updatedAt", "icon") VALUES 
+('Mantenimiento roles', 'Permite el acceso a la gestión de roles', '/admin-roles', CURRENT_TIMESTAMP, 1, NULL, 'key'), 
+('Mantenimiento usuarios', 'Permite al usuario crear otros usuarios', '/admin-users', CURRENT_TIMESTAMP, 1, NULL, 'user'), 
+('Asignación', 'Asigna de acuerdo a la información obtenida de ARIEL.', '/asignacion', CURRENT_TIMESTAMP, 1, NULL, 'plus'), 
+('Parada', 'Se ingresarán las paradas del usuario', '/parada', CURRENT_TIMESTAMP, 1, NULL, 'pause'), 
+('Quiebres', 'En esta opción se obtendrá la información de TALI', '/quiebre', CURRENT_TIMESTAMP, 1, NULL, 'chart-line'), 
+('Rotación personal', 'Esta opción podrá cambiar de área o cargo al personal asignado', '/movimiento', CURRENT_TIMESTAMP, 1, NULL, 'refresh'), 
+('Configuración de peticiones', 'Mantenimiento de peticiones', '/config-request', CURRENT_TIMESTAMP, 1, NULL, 'cog');
+
 
 -- Inserta roles en la tabla "roles"
 INSERT INTO "public"."roles" ("roleName", "description", "registeredByUserId", "createdAt", "updatedAt") VALUES 

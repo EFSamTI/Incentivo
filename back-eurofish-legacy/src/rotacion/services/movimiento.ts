@@ -1,34 +1,45 @@
-import { IChanges, IRestablecerCambios } from "../../asinament/interfaces/ariel";
+import {
+  IChanges,
+  IRestablecerCambios,
+} from "../../asinament/interfaces/ariel";
 
 import { Asignacion } from "../../asinament/models/asignacion";
 import { AsignacionTipoAsignacion } from "../../asinament/models/asignacionTipoAsginacion";
 
 import { findArea } from "../../asinament/services/area";
 import { saveEntrada } from "../../asinament/services/asistencia";
-import { findCargo, findOrCreateCargo } from "../../asinament/services/cargo";
+import { findCargo } from "../../asinament/services/cargo";
 import { findOrCreateTipoAsignacion } from "../../asinament/services/tipoAsignacion";
-import { IFilterAsignaciones, IFilterCambios, IBody } from "../interfaces/movimiento";
+import {
+  IFilterAsignaciones,
+  IFilterCambios,
+  IBody,
+} from "../interfaces/movimiento";
 import { Movimiento } from "../models/movimiento";
 
 const listFilterAsignaciones = async (filter: IFilterAsignaciones) => {
   let sqlQuery = `
-  SELECT a.asignacionid, a.created_at, a.update_at,ta.descripcion as tipo_asignacion, l.nombrelinea, t.nombre_turno, e.nombre AS nombre_empleado, e.ci AS cedula, c.cargoname, ar.nombre_area
-  FROM isentive_tasignaciones a
-  JOIN isentive_tlineas l ON a.lineaid = l.lineaid
-  JOIN isentive_tturnos t ON a.turnoid = t.turnoid
-  JOIN isentive_templeados e ON a.empleadoid = e.empleadoid
-  JOIN isentive_tcargos c ON a.cargoid = c.cargoid
-  JOIN isentive_tareas ar ON a.areaid = ar.areaid
-  JOIN isentive_tasignacion_tipo_asignacion ata ON a.asignacionid = ata.asignacionid
-  JOIN isentive_ttipo_asignacion ta ON ata.tipoid = ta.tipoid
-  WHERE ta.descripcion IN ('NORMAL', 'CAMBIO', 'COMODIN')
-  AND a.estado = TRUE
+  SELECT 
+    asignacionid, 
+    created_at, 
+    update_at, 
+    tipo_asignacion, 
+    nombrelinea, 
+    nombre_turno, 
+    nombre_empleado, 
+    cedula, 
+    cargoname, 
+    nombre_area
+  FROM 
+    vista_asignaciones_detalle
+  WHERE 
+    1=1 
 `;
   if (filter.linea) {
-    sqlQuery += ` AND l.nombrelinea = '${filter.linea}'`;
+    sqlQuery += ` AND nombrelinea = '${filter.linea}'`;
   }
   if (filter.turno) {
-    sqlQuery += ` AND t.nombre_turno = '${filter.turno}'`;
+    sqlQuery += ` AND nombre_turno = '${filter.turno}'`;
   }
 
   const Asignaciones = await Asignacion.query(sqlQuery);
@@ -40,36 +51,30 @@ const listFilterAsignaciones = async (filter: IFilterAsignaciones) => {
 
 const listMovimientosPersonal = async (filter: IFilterCambios) => {
   let sqlQuery = `
-  SELECT  m.movimientoid,
-          m.created_at,
-          l.nombrelinea,
-          t.nombre_turno,
-          e.nombre AS empleado_nombre,
-          e.ci,
-          co.cargoname AS cargo_original,
-          area_o.nombre_area AS area_original,
-          cc.cargoname AS cargo_cambio,
-          area_c.nombre_area AS area_cambio
-  FROM isentive_tmovimientos m
-  JOIN isentive_tasignaciones ao ON m.asignacion_original = ao.asignacionid
-  JOIN isentive_tasignaciones ac ON m.asignacion_cambio = ac.asignacionid
-  JOIN isentive_templeados e ON ao.empleadoid = e.empleadoid
-  JOIN isentive_tlineas l ON ao.lineaid = l.lineaid
-  JOIN isentive_tturnos t ON ao.turnoid = t.turnoid
-  JOIN isentive_tcargos co ON ao.cargoid = co.cargoid
-  JOIN isentive_tareas area_o ON ao.areaid = area_o.areaid
-  JOIN isentive_tcargos cc ON ac.cargoid = cc.cargoid
-  JOIN isentive_tareas area_c ON ac.areaid = area_c.areaid
-  WHERE 1=1
+  SELECT 
+    movimientoid,
+    created_at,
+    nombrelinea,
+    nombre_turno,
+    empleado_nombre,
+    ci,
+    cargo_original,
+    area_original,
+    cargo_cambio,
+    area_cambio
+  FROM 
+    vista_movimientos_detalle
+  WHERE 
+    1=1
   `;
   if (filter.fecha) {
-    sqlQuery += ` AND m.created_at::DATE = '${filter.fecha}'`;
+    sqlQuery += ` AND created_at::DATE = '${filter.fecha}'`;
   }
   if (filter.linea) {
-    sqlQuery += ` AND l.nombrelinea = '${filter.linea}'`;
+    sqlQuery += ` AND nombrelinea = '${filter.linea}'`;
   }
   if (filter.turno) {
-    sqlQuery += ` AND t.nombre_turno = '${filter.turno}'`;
+    sqlQuery += ` AND nombre_turno = '${filter.turno}'`;
   }
 
   const Movimientos = await Movimiento.query(sqlQuery);
@@ -81,40 +86,33 @@ const listMovimientosPersonal = async (filter: IFilterCambios) => {
 
 const listFilterUltimosMovimientos = async (filter: IFilterCambios) => {
   let sqlQuery = `
-   SELECT DISTINCT ON (e.empleadoid) 
-    m.movimientoid,
-    e.empleadoid,
-    e.nombre AS empleado_nombre,
-    e.ci,
-    t.nombre_turno,
-    l.nombrelinea,
-    ao.asignacionid AS id_original,
-    co.cargoname AS cargo_original,
-    ao2.nombre_area AS area_original,
-    ac.asignacionid AS id_cambio,
-    cc.cargoname AS cargo_cambio,
-    ac2.nombre_area AS area_cambio,
-    m.created_at
-  FROM isentive_tmovimientos m
-  INNER JOIN isentive_tasignaciones ao ON m.asignacion_original = ao.asignacionid
-  INNER JOIN isentive_tasignaciones ac ON m.asignacion_cambio = ac.asignacionid
-  INNER JOIN isentive_templeados e ON ao.empleadoid = e.empleadoid
-  INNER JOIN isentive_tlineas l ON ao.lineaid = l.lineaid
-  INNER JOIN isentive_tturnos t ON ao.turnoid = t.turnoid
-  INNER JOIN isentive_tcargos co ON ao.cargoid = co.cargoid
-  INNER JOIN isentive_tareas ao2 ON ao.areaid = ao2.areaid
-  INNER JOIN isentive_tcargos cc ON ac.cargoid = cc.cargoid
-  INNER JOIN isentive_tareas ac2 ON ac.areaid = ac2.areaid
-   WHERE 1=1
+  SELECT 
+    movimientoid,
+    empleadoid,
+    empleado_nombre,
+    ci,
+    nombre_turno,
+    nombrelinea,
+    id_original,
+    cargo_original,
+    area_original,
+    id_cambio,
+    cargo_cambio,
+    area_cambio,
+    created_at
+  FROM 
+    vista_movimientos_empleados_detalle
+  WHERE 
+    1=1
 `;
   if (filter.fecha) {
-    sqlQuery += ` AND m.created_at::DATE = '${filter.fecha}'`;
+    sqlQuery += ` AND created_at::DATE = '${filter.fecha}'`;
   }
   if (filter.linea) {
-    sqlQuery += ` AND l.nombrelinea = '${filter.linea}'`;
+    sqlQuery += ` AND nombrelinea = '${filter.linea}'`;
   }
   if (filter.turno) {
-    sqlQuery += ` AND t.nombre_turno = '${filter.turno}'`;
+    sqlQuery += ` AND nombre_turno = '${filter.turno}'`;
   }
 
   const Movimientos = await Movimiento.query(sqlQuery);
@@ -138,7 +136,10 @@ const aplicarMovimientoAsignacion = async (changes: IChanges[]) => {
       findOrCreateTipoAsignacion("CAMBIO"),
     ]);
     if (!area || !cargo || !tipoChange)
-      return { status: 404, message: "No se encontró la asignación" };
+      return {
+        status: 404,
+        message: "No se encontró la asignación area, cargo, tipochange",
+      };
     const nuevaAsignacion = Asignacion.create({
       linea: asignacionOriginal.linea,
       estado: true,
@@ -303,5 +304,4 @@ export {
   aplicarMovimientoAsignacion,
   restablecerMovimiento,
   listMovimientosFuncionBD,
-  
 };

@@ -5,7 +5,7 @@
   <ng-template pTemplate="content">
       <form [formGroup]="rolForm" >
           <div class="field">
-            <label for="name">Nombre del rol</label>
+            <label for="name" class="block text-900 font-medium text-xl mb-2">Nombre del rol</label>
             <input type="text" pInputText formControlName="name" class="w-full"
                 name="name" placeholder="Ingrese el nombre del rol" />
             <small *ngIf="name.invalid && (name.dirty || name.touched)"
@@ -14,7 +14,7 @@
             </small>
         </div>
         <div class="field">
-          <label for="devices" style="margin-bottom: 10px;">Opciones</label>
+          <label for="devices" style="margin-bottom: 10px;" class="block text-900 font-medium text-xl mb-2">Opciones</label>
           <p-multiSelect formControlName="options" [options]="LisOptions"
               optionLabel="optionName" optionValue="optionName"
               placeholder="Seleccione las opciones"
@@ -26,7 +26,7 @@
           </small>
       </div>
         <div class="field">
-            <label for="description">Descripción</label>
+            <label for="description" class="block text-900 font-medium text-xl mb-2">Descripción</label>
             <input type="text" pInputText formControlName="description" class="w-full"
                 name="description" placeholder="Ingrese la descripción" />
             <small *ngIf="description.invalid && (description.dirty || description.touched)"
@@ -57,7 +57,7 @@
     <ng-template pTemplate="content">
         <form [formGroup]="optionForm" >
             <div class="field">
-              <label for="name_option">Nombre de opción</label>
+              <label for="name_option" class="block text-900 font-medium text-xl mb-2">Nombre de opción</label>
               <input type="text" pInputText formControlName="name_option" class="w-full"
                   name="name_option" placeholder="Ingrese el nombre del rol" />
               <small *ngIf="name_option.invalid && (name_option.dirty || name_option.touched)"
@@ -67,7 +67,7 @@
           </div>
 
           <div class="field">
-              <label for="description_option">Descripción</label>
+              <label for="description_option" class="block text-900 font-medium text-xl mb-2">Descripción</label>
               <input type="text" pInputText formControlName="description_option" class="w-full"
                   name="description_option" placeholder="Ingrese la descripción" />
               <small *ngIf="description_option.invalid && (description_option.dirty || description_option.touched)"
@@ -76,7 +76,7 @@
               </small>
           </div>
           <div class="field">
-            <label for="path">Path</label>
+            <label for="path" class="block text-900 font-medium text-xl mb-2">Path</label>
             <input type="text" pInputText formControlName="path" class="w-full"
                 name="path" placeholder="Ingrese el path" />
             <small *ngIf="path.invalid && (path.dirty || path.touched)"

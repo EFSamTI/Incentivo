@@ -161,7 +161,7 @@ export class AsinacionComponent implements OnInit {
   verifyAsginaciones(data: IItemAriel[]) {
     this.asignacionService.verifiAsignacion(data as IItemAriel[]).subscribe({
       error: (error) => {
-        console.log(error);
+        this.ui.alertaInformativa('Error al verificar asignaciones');
       },
       next: (response) => {
         this.listResponseAriel = response;

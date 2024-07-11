@@ -15,6 +15,9 @@ export class Option extends BaseEntity {
   @Column({ nullable: true })
   path: string;
 
+  @Column({ nullable: true })
+  icon: string;
+
   @Column({ nullable: false })
   createdAt: Date;
 

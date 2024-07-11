@@ -27,7 +27,7 @@
 
           <div class="my-2 ">
             <div class="field">
-              <label for="date">Fecha</label>
+              <label for="date" class="block text-900 font-medium text-xl mb-2">Fecha</label>
               <input type="date" pInputText [(ngModel)]="dateFiltre" class="w-full" name="dateFiltre" id="dateFiltre"
                 placeholder="Fecha" onkeydown="return false;" />
             </div>
@@ -163,7 +163,7 @@
       <div class="field mb-1">
         <div class="grid">
           <div class="col-12 md:col-6">
-            <label for="nombre_empleado">Nombre del empleado</label>
+            <label for="nombre_empleado" class="block text-900 font-medium text-xl mb-2">Nombre del empleado</label>
             <input type="text" pInputText formControlName="nombre_empleado" class="w-full" name="nombre_empleado"
               placeholder="Ingrese el nombre del empleado" />
             <small *ngIf="nombre_empleado.invalid && (nombre_empleado.dirty || nombre_empleado.touched)"
@@ -172,7 +172,7 @@
             </small>
           </div>
           <div class="col-12 md:col-6">
-            <label for="ci_empleado">Cédula del empleado</label>
+            <label for="ci_empleado" class="block text-900 font-medium text-xl mb-2">Cédula del empleado</label>
             <input type="text" pInputText formControlName="ci_empleado" class="w-full" name="ci_empleado"
               placeholder="Ingrese la cédula del empleado" />
             <small *ngIf="ci_empleado.invalid && (ci_empleado.dirty || ci_empleado.touched)" class="block p-error">
@@ -182,7 +182,7 @@
         </div>
       </div>
       <div class="field">
-        <label for="linea">Línea</label>
+        <label for="linea" class="block text-900 font-medium text-xl mb-2">Línea</label>
         <p-dropdown [options]="lineas" formControlName="linea" optionLabel="cargo" [showClear]="true"
           placeholder="Seleccione la linea" [loading]="isLoading">
           <ng-template pTemplate="selectedItem">
@@ -203,7 +203,7 @@
 
 
       <div class="field">
-        <label for="centro_costo">Centro de costo</label>
+        <label for="centro_costo" class="block text-900 font-medium text-xl mb-2">Centro de costo</label>
         <input type="text" pInputText formControlName="centro_costo" class="w-full" name="centro_costo"
           placeholder="Ingrese el centro de costo" />
         <small *ngIf="centro_costo.invalid && (centro_costo.dirty || centro_costo.touched)" class="block p-error">
@@ -211,7 +211,7 @@
         </small>
       </div>
       <div class="field">
-        <label for="cargo">Cargo</label>
+        <label for="cargo" class="block text-900 font-medium text-xl mb-2">Cargo</label>
         <p-dropdown [options]="cargos" formControlName="cargo" optionLabel="cargo" [showClear]="true"
           placeholder="Seleccione el cargo" class=" mr-2" [loading]="isLoading">
           <ng-template pTemplate="selectedItem">
@@ -231,7 +231,7 @@
 
       </div>
       <div class="field">
-        <label for="hora_entrada">Hora de entrada</label>
+        <label for="hora_entrada" class="block text-900 font-medium text-xl mb-2">Hora de entrada</label>
         <input type="time" pInputText formControlName="hora_entrada" class="w-full" name="hora_entrada"
           placeholder="Ingrese la hora de entrada" />
         <small *ngIf="hora_entrada.invalid && (hora_entrada.dirty || hora_entrada.touched)" class="block p-error">

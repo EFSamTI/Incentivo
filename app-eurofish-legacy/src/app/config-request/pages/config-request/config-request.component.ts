@@ -107,7 +107,6 @@ export class ConfigRequestComponent  implements OnInit {
           this.isLoading = false;
         },
         error: (error) => {
-          console.log(error);
           this.ui.alertaInformativa('Error al actualizar configuracion');
           this.isLoading = false;
         },
@@ -119,8 +118,7 @@ export class ConfigRequestComponent  implements OnInit {
           this.loadConfigRequest();
           this.isLoading = false;
         },
-        error: (error) => {
-          console.log(error);
+        error: () => {
           this.ui.alertaInformativa('Error al crear configuracion');
           this.isLoading = false;
         },

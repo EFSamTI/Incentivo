@@ -91,11 +91,9 @@ const updateRoleAndOptions = async (role: IRole, id: number) => {
 const deleteRolAndOptions = async (id: number) => {
   const roleToDelete = await Role.findOne({
     where: { roleId: id },
-    relations: ["roleOptions", "userRoles"], // Cambiado de "users" a "userRoles"
+    relations: ["roleOptions", "userRoles"], 
   });
   if (!roleToDelete) return { status: 404, message: "Role not found" };
-
-  // Verificar si el rol está asociado a algún usuario a través de la relación "userRoles"
   if (roleToDelete.userRoles && roleToDelete.userRoles.length > 0) {
     return { status: 400, message: "Role is associated with one or more users and cannot be deleted" };
   }

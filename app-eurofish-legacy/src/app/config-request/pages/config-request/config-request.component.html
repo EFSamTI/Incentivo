@@ -207,7 +207,7 @@
       <form [formGroup]="formConfig" >
 
         <div class="field"> 
-          <label for="tipo">Sistema</label>
+          <label for="tipo" class="block text-900 font-medium text-xl mb-2">Sistema</label>
           <p-dropdown
           [options]="tipos"
           formControlName="tipo"
@@ -229,7 +229,7 @@
         </div>
 
         <div class="field"> 
-          <label for="tipo">Ambiente</label>
+          <label for="tipo" class="block text-900 font-medium text-xl mb-2">Ambiente</label>
           <p-dropdown
           [options]="ambientes"
           formControlName="ambiente"
@@ -253,7 +253,7 @@
         
 
           <div class="field">
-            <label for="name">Source</label>
+            <label for="name" class="block text-900 font-medium text-xl mb-2">Source</label>
             <input type="text" pInputText formControlName="source" class="w-full"
                 name="source" placeholder="Ingrese el nombre del rol" />
             <small *ngIf="source.invalid && (source.dirty || source.touched)"
@@ -263,7 +263,7 @@
         </div>
 
         <div class="field">
-            <label for="destination">Destination</label>
+            <label for="destination" class="block text-900 font-medium text-xl mb-2">Destination</label>
             <input type="text" pInputText formControlName="destination" class="w-full"
                 name="destination" placeholder="Ingrese la descripción" />
             <small *ngIf="destination.invalid && (destination.dirty || destination.touched)"
@@ -273,7 +273,7 @@
         </div>
 
         <div class="field">
-            <label for="operation">Operation</label>
+            <label for="operation" class="block text-900 font-medium text-xl mb-2">Operation</label>
             <input type="text" pInputText formControlName="operation" class="w-full"
                 name="operation" placeholder="Ingrese la descripción" />
             <small *ngIf="operation.invalid && (operation.dirty || operation.touched)"
@@ -283,7 +283,7 @@
         </div>
 
         <div class="field">
-            <label for="verb">Verb</label>
+            <label for="verb" class="block text-900 font-medium text-xl mb-2">Verb</label>
             <input type="text" pInputText formControlName="verb" class="w-full"
                 name="verb" placeholder="Ingrese la descripción" />
             <small *ngIf="verb.invalid && (verb.dirty || verb.touched)"
@@ -293,7 +293,7 @@
         </div>
 
         <div class="field">
-            <label for="path">Path</label>
+            <label for="path" class="block text-900 font-medium text-xl mb-2">Path</label>
             <input type="text" pInputText formControlName="path" class="w-full"
                 name="path" placeholder="Ingrese la descripción" />
             <small *ngIf="path.invalid && (path.dirty || path.touched)"

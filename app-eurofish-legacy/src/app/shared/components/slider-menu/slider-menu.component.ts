@@ -40,23 +40,24 @@ ngOnInit() {
             command: () => this.navegar('/dashboard'),
           },
         ]
+      },{
+        separator: true
       },
       {
-        label: 'Opciones', // Añade el ítem "Opciones" aquí
-        icon: 'pi pi-fw pi-cog', // Icono para "Opciones", ajusta según sea necesario
-        items: [] // Inicializa el arreglo de submenús vacío
+        label: 'Opciones', 
+        icon: 'pi pi-fw pi-cog', 
+        items: [] 
       }
     ];
-  
     if (this.optionUsers) {
       let opcionesItem = items.find(item => item.label === 'Opciones');
-      // Inicializa opcionesItem.items como un arreglo vacío si es undefined
+    
       if (opcionesItem) {
         opcionesItem.items = opcionesItem.items || [];
         for (let option of this.optionUsers) {
           opcionesItem.items.push({
             label: option.optionName,
-            icon: 'pi pi-fw pi-file',
+            icon: `pi pi-fw pi-${option.icon}`,
             command: () => this.navegar(option.path),
           });
         }

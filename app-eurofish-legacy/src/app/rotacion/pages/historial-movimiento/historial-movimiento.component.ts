@@ -9,6 +9,7 @@ import { LineaService } from 'src/app/asignacion/services/linea.service';
 import { IHistoryMovimiento, IFilterCambios } from '../../interfaces/movimiento';
 import { MovimientoService } from '../../services/movimiento.service';
 import { NavController } from '@ionic/angular';
+import { tunos } from 'src/app/asignacion/interfaces/ariel';
 @Component({
   selector: 'app-historial-movimiento',
   templateUrl: './historial-movimiento.component.html',
@@ -20,7 +21,7 @@ export class HistorialMovimientoComponent implements OnInit {
   copyMovimientos: IHistoryMovimiento[] = [];
   selectMovimientos: IHistoryMovimiento[] = [];
 
-  turnos = ['turno 1', 'turno 2', 'turno 3'];
+  turnos = tunos;
   selectTurno?: string;
 
   filterFecha?: string;
@@ -153,11 +154,6 @@ export class HistorialMovimientoComponent implements OnInit {
       doc.text('info@eurofish.com.ec', inicioX, inicioY + 18);
       doc.text('https://www.eurofish.com.ec/', inicioX, inicioY + 24);
 
-      const fechaActual = new Date().toLocaleDateString('es-ES', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
 
       doc.setFontSize(14);
       doc.text('Informe de Rotación de Personal', 105, inicioY + 40, {
@@ -165,9 +161,13 @@ export class HistorialMovimientoComponent implements OnInit {
       });
 
       doc.setFontSize(10);
-      doc.text(`Fecha de creación: ${fechaActual}`, 105, inicioY + 45, {
-        align: 'center',
-      });
+      if (this.selectLinea) {
+        const lineaSeleccionada = this.selectLinea.nombrelinea;
+        doc.text(`Linea: ${lineaSeleccionada}`, 105, inicioY + 45, { align: 'center' })
+      }
+      if (this.selectTurno) {
+        doc.text(`Turno: ${this.selectTurno}`, 105, inicioY + 50, { align: 'center' });
+      }
 
       doc.setFontSize(10);
       doc.text(
@@ -197,12 +197,19 @@ export class HistorialMovimientoComponent implements OnInit {
       autoTable(doc, {
         head: [columnNames],
         body: data,
-        startY: inicioY + 50,
+        startY: inicioY + 60,
       });
-      const pageCount = doc.internal.pages.length;
+      const pageCount = doc.internal.pages.length - 1;
+      const fechaActual = new Date().toLocaleDateString('es-ES', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
       for (let i = 1; i <= pageCount; i++) {
         doc.setPage(i);
-        doc.text(`Página ${i} de ${pageCount}`, 105, 285, { align: 'center' });
+        doc.text(`Fecha de creación: ${fechaActual}`, 20, 285); 
+        doc.text('Eurofish S.A', 20, 290);
+        doc.text(`Página ${i} de ${pageCount}`, 170, 285);
       }
       doc.save('historial-rotacion-personal.pdf');
     } else {

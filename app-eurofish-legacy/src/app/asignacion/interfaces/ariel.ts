@@ -23,7 +23,7 @@ export interface Condition {
 
 
 export const cargos: string[] = ['OPERARIO EMPACADOR DE FUNDAS','FILETEADOR', 'DESPELLEJADOR', 'PANZA'];
-export const tunos: string[] = ['TURNO 1', 'TURNO 2', 'TURNO 1'];
+export const tunos: string[] = ['TURNO 1', 'TURNO 2', 'TURNO 3'];
 export const lineas: string[] = ['LINEA 1', 'LINEA 2', 'LINEA 3', 'LINEA 4', 'LINEA 5', 'LINEA 6', 'LINEA 7'];
 
 

@@ -115,7 +115,6 @@ const activarConfigRequest = async (id: number) => {
 }
 
 const eliminarConfigRequests = async ( id: number[]) => {
-  console.log(id);
   for (const i of id) {
     const configRequest = await ConfigRequest.findOne({ where: { id: i } });
     if (configRequest){

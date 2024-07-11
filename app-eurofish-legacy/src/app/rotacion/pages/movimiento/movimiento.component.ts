@@ -54,7 +54,6 @@ export class MovimientoComponent {
       filter.linea = this.selectLinea;
     }
     if (this.selectTurno) {
-      console.log(this.selectTurno);
       filter.turno = this.selectTurno;
     }
     this.isLoading = true;
@@ -64,7 +63,6 @@ export class MovimientoComponent {
         this.copyAsignaciones = response;
         this.originalAsignaciones = JSON.parse(JSON.stringify(response));
         this.isLoading = false;
-        console.log(this.listAsignaciones);
       },
       error: (error) => {
         this.ui.alertaInformativa(error.error || error.message);
@@ -137,8 +135,7 @@ export class MovimientoComponent {
         this.modifAsignaciones = [];
         this.selectedAsignaciones = [];
       },
-      error: (error) => {
-        console.log(error);
+      error: () => {
         this.ui.alertaInformativa('Error al guardar cambios');
       }
     });
