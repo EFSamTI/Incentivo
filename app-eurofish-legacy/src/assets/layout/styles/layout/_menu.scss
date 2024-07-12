@@ -19,12 +19,13 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/assets/demo/images/fondo-slider-bar2.jpg');
+    background-image: var(--menu-imagen);
     background-size: cover;
     filter: blur(1px); 
     opacity: 80; 
     z-index: -1;
 }
+
 .menu-separator {
     height: 1px;
     background-color: #ccc;
@@ -99,7 +100,8 @@
             }
 
             &:hover {
-                background-color: #1a4a70; 
+
+                background-color: var(--surface-hover);
               }
 
             &:focus {

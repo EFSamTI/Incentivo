@@ -10,8 +10,9 @@
   </div>
 
   <a class="layout-topbar-logo" routerLink="" style="flex-grow: 0;">
-    <img src="../../../../assets/demo/images/Logo_2.webp" alt="logo" />
+    <img src="assets/demo/images/logo/{{layoutService.config().colorScheme === 'dark' ? 'logo-white-sm' : 'logo-dark-sm'}}.png" alt="logo" />
   </a>
+
 
   <div #topbarmenu class="layout-topbar-menu" style="flex-grow: 1; justify-content: flex-end;">
     <p-menu [model]="items2" popup="true" #menu>

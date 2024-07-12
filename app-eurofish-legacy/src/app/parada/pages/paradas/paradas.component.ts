@@ -10,6 +10,7 @@ import { IRegisterParada } from '../../../parada/interfaces/paradas';
 import { ILinea } from 'src/app/asignacion/interfaces/linea';
 import { EmpleadoService } from 'src/app/asignacion/services/empleado.service';
 import { LineaService } from 'src/app/asignacion/services/linea.service';
+import { tunos } from 'src/app/asignacion/interfaces/ariel';
 
 @Component({
   selector: 'app-paradas',
@@ -48,11 +49,7 @@ export class ParadasComponent implements OnInit {
   selectTipoParada?: any;
 
   ngOnInit() {
-    this.turnos = [
-      { name: 'turno 1', value: 1 },
-      { name: 'turno 2', value: 2 },
-      { name: 'turno 3', value: 3 },
-    ];
+    this.turnos = tunos;
     this.tipoFiltro = [
       { name: 'Individual', value: 'Individual' },
       { name: 'Grupal', value: 'Grupal' },
@@ -115,7 +112,7 @@ export class ParadasComponent implements OnInit {
     }
     const filter: IRegisterParada = {
       fecha: this.fecha,
-      turno: this.selectTurno.name,
+      turno: this.selectTurno,
       linea: this.selectLinea.nombrelinea,
 
       tipo_parada: this.selectTipoParada.name,
@@ -125,6 +122,7 @@ export class ParadasComponent implements OnInit {
     if (this.selectEmpleado) {
       filter.colaborador = this.selectEmpleado.nombre;
     }
+    console.log(filter);
     this.paradaService.createParada(filter).subscribe({
       next: () => {
         this.ui.presentToast('Guardado');

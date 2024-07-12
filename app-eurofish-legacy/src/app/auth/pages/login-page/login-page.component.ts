@@ -5,6 +5,7 @@ import { NavController } from '@ionic/angular';
 
 import { UserLogin } from '../../interfaces/usuario';
 import { MessageService } from 'primeng/api';
+import { LayoutService } from 'src/app/shared/services/app.layout.service';
 
 @Component({
   selector: 'app-login-page',
@@ -21,7 +22,8 @@ export class LoginPageComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private navCtrl: NavController,
-    private msgService: MessageService
+    private msgService: MessageService,
+    public layoutService: LayoutService
   ) { }
 
   get email() {
@@ -30,7 +32,7 @@ export class LoginPageComponent {
   get password() { return this.loginForm.controls['password']; }
 
   loginUser() {
-
+    console.log(this.layoutService.config().colorScheme);
     this.isLoading = true;
     let { email, password } = this.loginForm.value;
     const userLogin: UserLogin = { usuario: email!, password: password! };

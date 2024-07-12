@@ -9,6 +9,9 @@ export class ConfigAmbiente extends BaseEntity {
   @Column( { nullable: true })
   nombre_ambiente: string;
 
+  @Column( { nullable: true })
+  uri: string;
+
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP", nullable: false })
   createdAt: Date;
 

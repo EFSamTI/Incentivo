@@ -15,7 +15,7 @@ interface IFilterParada {
 const listFilterParadas = async (filter: IFilterParada) => {
   let query = `
  SELECT p.paradaid, p.asignacionid, tp.descripcion AS tipo_parada, p.hora_inicio, p.hora_fin, p.created_at, p.update_at,
-           a.nombre_area, a.centro_costo, e.nombre AS empleado, l.nombrelinea, t.nombre_turno
+           a.nombre_area, a.cod_area, e.nombre AS empleado, l.nombrelinea, t.nombre_turno
     FROM isentive_tparada p
     JOIN isentive_tasignaciones asig ON p.asignacionid = asig.asignacionid
     JOIN isentive_tareas a ON asig.areaid = a.areaid
@@ -102,9 +102,9 @@ const eliminarParada = async (paradaid: number) => {
 const createFilterParada = async (filter: IParadaFilter, idCreator: number) => {
   const tiposAsignacion = await TipoAsignacion.find({
     where: [
-      { descripcion: "Normal" },
-      { descripcion: "cambio" },
-      { descripcion: "Comodin" },
+      { descripcion: "NORMAL" },
+      { descripcion: "CAMBIO" },
+      { descripcion: "COMODIN" },
     ],
   });
   const fecha = new Date(filter.fecha);

@@ -1,6 +1,7 @@
 export interface IRegisterRequest {
   id?: number;
   tipo: string;
+  uri: string;
   source: string;
   destination: string;
   operation: string;

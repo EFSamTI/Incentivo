@@ -43,7 +43,7 @@ const createConfigRequest = async (
   config: IRegisterRequest,
   creatorid: number
 ) => {
-  const ambiente = await findOrCreateAmbiente(config.ambiente);
+  const ambiente = await findOrCreateAmbiente(config.ambiente, config.uri);
   const tipoRequest = await findOrCreateTipo(config.tipo);
   ConfigRequest.create({
     source: config.source,
@@ -62,7 +62,7 @@ const createConfigRequest = async (
 const updateConfigRequest = async (
   config: IRegisterRequest
 ) => {
-  const ambiente = await findOrCreateAmbiente(config.ambiente);
+  const ambiente = await findOrCreateAmbiente(config.ambiente, config.uri);
   
   if (!ambiente) return { status: 404, message: "Ambiente no encontrado" };
 

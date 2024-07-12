@@ -30,6 +30,7 @@ export class ConfigRequestComponent  implements OnInit {
     private fb: FormBuilder
   ) { 
     this.formConfig = this.fb.group({
+      uri: ['', Validators.required],
       source: ['', Validators.required],
       destination: ['', Validators.required],
       operation: ['', Validators.required],
@@ -42,6 +43,10 @@ export class ConfigRequestComponent  implements OnInit {
 
   ngOnInit() {
     this.loadConfigRequest();
+  }
+
+  get uri() {
+    return this.formConfig.controls['uri'];
   }
 
   get source() {
@@ -76,6 +81,7 @@ export class ConfigRequestComponent  implements OnInit {
     this.select = config;
     if (config) {
       this.formConfig.patchValue({
+        uri: config.ambiente.uri,
         source: config.source,
         destination: config.destination,
         operation: config.operation,

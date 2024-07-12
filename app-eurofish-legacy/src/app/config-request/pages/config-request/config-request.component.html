@@ -1,22 +1,9 @@
-
-<!-- this.formConfig = this.fb.group({
-  source: ['', Validators.required],
-  destination: ['', Validators.required],
-  operation: ['', Validators.required],
-  verb: ['', Validators.required],
-  path: ['', Validators.required],
-  tipo: ['', Validators.required],
-  ambiente: ['', Validators.required],
-}); -->
 <div class="grid">
   <div class="col-12">
     <div class="card">
       <ul class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
         <li>
-          <a
-            class="text-500 no-underline line-height-3 cursor-pointer"
-            (click)="goHome()"
-          >
+          <a class="text-500 no-underline line-height-3 cursor-pointer" (click)="goHome()">
             <i class="pi pi-home"></i>
           </a>
         </li>
@@ -24,9 +11,7 @@
           <i class="pi pi-angle-right text-500 line-height-3"></i>
         </li>
         <li>
-          <span class="text-900 line-height-3"
-            >Configuración de peticiones</span
-          >
+          <span class="text-900 line-height-3">Configuración de peticiones</span>
         </li>
       </ul>
       <div class="mb-3 font-bold text-2xl">
@@ -43,42 +28,24 @@
         </ng-template>
 
         <ng-template pTemplate="right">
-          <button
-            pButton
-            type="button"
-            label="Nuevo"
-            icon="pi pi-plus"
-            class="p-button-success mr-3"
-            (click)="onSelectConfig()"
-          ></button>
+          <button pButton type="button" label="Nuevo" icon="pi pi-plus" class="p-button-success mr-3"
+            (click)="onSelectConfig()"></button>
 
-          <button
-          pButton
-          type="button"
-          label="Eliminar"
-          icon="pi pi-trash"
-          class="p-button-danger"
-          [disabled]=" !selectConfigsRequest.length "
-          (click)="deleteConfigRequests()"
-        ></button>
+          <button pButton type="button" label="Eliminar" icon="pi pi-trash" class="p-button-danger"
+            [disabled]=" !selectConfigsRequest.length " (click)="deleteConfigRequests()"></button>
         </ng-template>
       </p-toolbar>
-      <p-table
-        [value]="listConfigRequest"
-        [rows]="5"
-        [loading]="isLoading"
-        [rowHover]="true"
-        styleClass="p-datatable-sm"
-        [paginator]="true"
-        [rowsPerPageOptions]="[10, 25, 50]"
-        responsiveLayout="scroll"
-        [(selection)]="selectConfigsRequest"
-        selectionMode="multiple"
-      >
+      <p-table [value]="listConfigRequest" [rows]="5" [loading]="isLoading" [rowHover]="true"
+        styleClass="p-datatable-sm" [paginator]="true" [rowsPerPageOptions]="[10, 25, 50]" responsiveLayout="scroll"
+        [(selection)]="selectConfigsRequest" selectionMode="multiple">
         <ng-template pTemplate="header">
           <tr>
+
             <th style="min-width: 3rem">
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="ambiente.uri" style="min-width: 8rem">
+              URL <p-sortIcon field="ambiente.uri"></p-sortIcon>
             </th>
             <th pSortableColumn="source" style="min-width: 8rem">
               Fuente <p-sortIcon field="source"></p-sortIcon>
@@ -95,16 +62,10 @@
             <th pSortableColumn="path" style="min-width: 8rem">
               Path <p-sortIcon field="path"></p-sortIcon>
             </th>
-            <th
-              pSortableColumn="tipoRequest.nombre_tipo"
-              style="min-width: 8rem"
-            >
+            <th pSortableColumn="tipoRequest.nombre_tipo" style="min-width: 8rem">
               Api <p-sortIcon field="tipoRequest.nombre_tipo"></p-sortIcon>
             </th>
-            <th
-              pSortableColumn="ambiente.nombre_ambiente"
-              style="min-width: 8rem"
-            >
+            <th pSortableColumn="ambiente.nombre_ambiente" style="min-width: 8rem">
               Ambiente
               <p-sortIcon field="ambiente.nombre_ambiente"></p-sortIcon>
             </th>
@@ -122,66 +83,33 @@
             <td>
               <p-tableCheckbox [value]="config"></p-tableCheckbox>
             </td>
+            <td>{{ config.ambiente.uri }}</td>
             <td>{{ config.source }}</td>
             <td>{{ config.destination }}</td>
             <td>{{ config.operation }}</td>
             <td>{{ config.verb }}</td>
-            <td>{{ config.path }}</td>
+            <td>{{ config.path.length > 20 ? (config.path | slice:0:20) + '...' : config.path }}</td>
             <td>{{ config.tipoRequest.nombre_tipo }}</td>
             <td>{{ config.ambiente.nombre_ambiente }}</td>
             <td>
-              <span
-                *ngIf="config.state"
-                [class]="'customer-badge status-qualified'"
-              >
-                Activado</span
-              >
-              <span
-                *ngIf="!config.state"
-                [class]="'customer-badge status-unqualified'"
-              >
-                Desactivado</span
-              >
+              <span *ngIf="config.state" [class]="'customer-badge status-qualified'">
+                Activado</span>
+              <span *ngIf="!config.state" [class]="'customer-badge status-unqualified'">
+                Desactivado</span>
             </td>
             <td>{{ config.createdAt | date : "yyyy-MM-dd h:mm a" }}</td>
             <td>
               <div class="my-button-group">
                 <div class="flex">
-                  <button
-                    pButton
-                    pRipple
-                    [raised]="true"
-                    severity="help"
-                    class="p-button-rounded mr-2"
-                    icon="pi pi-pencil"
-                    pTooltip="Editar configuración"
-                    tooltipPosition="left"
-                    (click)="onSelectConfig(config)"
-                  ></button>
-                  <button
-                    pButton
-                    pRipple
-                    [raised]="true"
-                    severity="success"
-                    class="p-button-rounded mr-2"
-                    icon="pi pi-check"
-                    pTooltip="Activar configuración"
-                    tooltipPosition="right"
-                    [disabled]="config.state" 
-                    (click)="activarConfig(config)"
-                  ></button>
-                  <button
-                    pButton
-                    pRipple
-                    [raised]="true"
-                    severity="danger"
-                    class="p-button-rounded"
-                    icon="pi pi-power-off"
-                    pTooltip="Desactivar configuración"
-                    tooltipPosition="right"
-                    [disabled]="!config.state"
-                    (click)="desactivarConfig(config)"
-                  ></button>
+                  <button pButton pRipple [raised]="true" severity="help" class="p-button-rounded mr-2 btn-small"
+                  icon="pi pi-pencil" pTooltip="Editar configuración" tooltipPosition="left"
+                  (click)="onSelectConfig(config)"></button>
+          <button pButton pRipple [raised]="true" severity="success" class="p-button-rounded mr-2 btn-small"
+                  icon="pi pi-check" pTooltip="Activar configuración" tooltipPosition="right"
+                  [disabled]="config.state" (click)="activarConfig(config)"></button>
+          <button pButton pRipple [raised]="true" severity="danger" class="p-button-rounded btn-small"
+                  icon="pi pi-power-off" pTooltip="Desactivar configuración" tooltipPosition="right"
+                  [disabled]="!config.state" (click)="desactivarConfig(config)"></button>
                 </div>
               </div>
             </td>
@@ -202,18 +130,13 @@
   </div>
 </div>
 
-<p-dialog header="{{select ? 'Editar Rol' : 'Crear Rol'}}" [(visible)]="openDialog" [modal]="true" [style]="{width: '450px', minHeight: '500px'}" (onHide)="close()" class="p-fluid">    
+<p-dialog header="{{select ? 'Editar Rol' : 'Crear Rol'}}" [(visible)]="openDialog" [modal]="true"
+  [style]="{width: '450px', minHeight: '500px'}" (onHide)="close()" class="p-fluid">
   <ng-template pTemplate="content">
-      <form [formGroup]="formConfig" >
-
-        <div class="field"> 
-          <label for="tipo" class="block text-900 font-medium text-xl mb-2">Sistema</label>
-          <p-dropdown
-          [options]="tipos"
-          formControlName="tipo"
-          [showClear]="true"
-          placeholder="Seleccione el sistem"
-        >
+    <form [formGroup]="formConfig">
+      <div class="field">
+        <label for="tipo" class="block text-900 font-medium text-xl mb-2">Sistema</label>
+        <p-dropdown [options]="tipos" formControlName="tipo" [showClear]="true" placeholder="Seleccione el sistem">
           <ng-template pTemplate="selectedItem" let-selectedItem>
             <div class="country-item country-item-value">
               <div>{{ selectedItem }}</div>
@@ -225,17 +148,12 @@
             </div>
           </ng-template>
         </p-dropdown>
-         
-        </div>
+      </div>
 
-        <div class="field"> 
-          <label for="tipo" class="block text-900 font-medium text-xl mb-2">Ambiente</label>
-          <p-dropdown
-          [options]="ambientes"
-          formControlName="ambiente"
-          [showClear]="true"
-          placeholder="Seleccione el ambiente"
-        >
+      <div class="field">
+        <label for="tipo" class="block text-900 font-medium text-xl mb-2">Ambiente</label>
+        <p-dropdown [options]="ambientes" formControlName="ambiente" [showClear]="true"
+          placeholder="Seleccione el ambiente">
           <ng-template pTemplate="selectedItem" let-selectedItem>
             <div class="country-item country-item-value">
               <div>{{ selectedItem }}</div>
@@ -247,70 +165,65 @@
             </div>
           </ng-template>
         </p-dropdown>
-         
-        </div>
 
-        
+      </div>
+      <div class="field">
+        <label for="uri" class="block text-900 font-medium text-xl mb-2">URL</label>
+        <input type="text" pInputText formControlName="uri" class="w-full rounded-lg border-2 border-blue-500 focus:border-blue-600 focus:ring focus:ring-blue-200 focus:ring-opacity-50 shadow-sm" name="uri" placeholder="Ingrese la url" />
+        <small *ngIf="uri.invalid && (uri.dirty || uri.touched)" class="block p-error text-red-500">
+          <div *ngIf="uri.errors?.['required']">Url es requerido.</div>
+        </small>
+      </div>
+      <div class="field">
+        <label for="name" class="block text-900 font-medium text-xl mb-2">Source</label>
+        <input type="text" pInputText formControlName="source" class="w-full" name="source"
+          placeholder="Ingrese el nombre del rol" />
+        <small *ngIf="source.invalid && (source.dirty || source.touched)" class="block p-error">
+          <div *ngIf="source.errors?.['required']">Source es requerido.</div>
+        </small>
+      </div>
 
-          <div class="field">
-            <label for="name" class="block text-900 font-medium text-xl mb-2">Source</label>
-            <input type="text" pInputText formControlName="source" class="w-full"
-                name="source" placeholder="Ingrese el nombre del rol" />
-            <small *ngIf="source.invalid && (source.dirty || source.touched)"
-                class="block p-error">
-                <div *ngIf="source.errors?.['required']">Source es requerido.</div>
-            </small>
-        </div>
+      <div class="field">
+        <label for="destination" class="block text-900 font-medium text-xl mb-2">Destination</label>
+        <input type="text" pInputText formControlName="destination" class="w-full" name="destination"
+          placeholder="Ingrese la descripción" />
+        <small *ngIf="destination.invalid && (destination.dirty || destination.touched)" class="block p-error">
+          <div *ngIf="destination.errors?.['required']">Destination es requerido.</div>
+        </small>
+      </div>
+      <div class="field">
+        <label for="operation" class="block text-900 font-medium text-xl mb-2">Operation</label>
+        <input type="text" pInputText formControlName="operation" class="w-full" name="operation"
+          placeholder="Ingrese la descripción" />
+        <small *ngIf="operation.invalid && (operation.dirty || operation.touched)" class="block p-error">
+          <div *ngIf="operation.errors?.['required']">Operation es requerido.</div>
+        </small>
+      </div>
 
-        <div class="field">
-            <label for="destination" class="block text-900 font-medium text-xl mb-2">Destination</label>
-            <input type="text" pInputText formControlName="destination" class="w-full"
-                name="destination" placeholder="Ingrese la descripción" />
-            <small *ngIf="destination.invalid && (destination.dirty || destination.touched)"
-                class="block p-error">
-                <div *ngIf="destination.errors?.['required']">Destination es requerido.</div>
-            </small>
-        </div>
+      <div class="field">
+        <label for="verb" class="block text-900 font-medium text-xl mb-2">Verb</label>
+        <input type="text" pInputText formControlName="verb" class="w-full" name="verb"
+          placeholder="Ingrese la descripción" />
+        <small *ngIf="verb.invalid && (verb.dirty || verb.touched)" class="block p-error">
+          <div *ngIf="verb.errors?.['required']">Verb es requerido.</div>
+        </small>
+      </div>
 
-        <div class="field">
-            <label for="operation" class="block text-900 font-medium text-xl mb-2">Operation</label>
-            <input type="text" pInputText formControlName="operation" class="w-full"
-                name="operation" placeholder="Ingrese la descripción" />
-            <small *ngIf="operation.invalid && (operation.dirty || operation.touched)"
-                class="block p-error">
-                <div *ngIf="operation.errors?.['required']">Operation es requerido.</div>
-            </small>
-        </div>
+      <div class="field">
+        <label for="path" class="block text-900 font-medium text-xl mb-2">Path</label>
+        <input type="text" pInputText formControlName="path" class="w-full" name="path"
+          placeholder="Ingrese la descripción" />
+        <small *ngIf="path.invalid && (path.dirty || path.touched)" class="block p-error">
+          <div *ngIf="path.errors?.['required']">Path es requerido.</div>
+        </small>
+      </div>
+    </form>
 
-        <div class="field">
-            <label for="verb" class="block text-900 font-medium text-xl mb-2">Verb</label>
-            <input type="text" pInputText formControlName="verb" class="w-full"
-                name="verb" placeholder="Ingrese la descripción" />
-            <small *ngIf="verb.invalid && (verb.dirty || verb.touched)"
-                class="block p-error">
-                <div *ngIf="verb.errors?.['required']">Verb es requerido.</div>
-            </small>
-        </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
 
-        <div class="field">
-            <label for="path" class="block text-900 font-medium text-xl mb-2">Path</label>
-            <input type="text" pInputText formControlName="path" class="w-full"
-                name="path" placeholder="Ingrese la descripción" />
-            <small *ngIf="path.invalid && (path.dirty || path.touched)"
-                class="block p-error">
-                <div *ngIf="path.errors?.['required']">Path es requerido.</div>
-            </small>
-        </div>
-
-      
-        
-          
-      </form>
-
-    </ng-template>
-    <ng-template pTemplate="footer">
-    
-        <button pButton type="button" label="Cancelar" (click)="close()" class="p-button-text"></button>
-        <button pButton type="button" label="Guardar" [disabled]="formConfig.invalid" (click)="onSumit()" class="p-button-text p-button-success"></button>
-    </ng-template>
+    <button pButton type="button" label="Cancelar" (click)="close()" class="p-button-text"></button>
+    <button pButton type="button" label="Guardar" [disabled]="formConfig.invalid" (click)="onSumit()"
+      class="p-button-text p-button-success"></button>
+  </ng-template>
 </p-dialog>

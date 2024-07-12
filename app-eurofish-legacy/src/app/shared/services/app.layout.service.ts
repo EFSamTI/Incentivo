@@ -27,8 +27,8 @@ export class LayoutService {
         ripple: false,
         inputStyle: 'outlined',
         menuMode: 'static',
-        colorScheme: 'light',
-        theme: 'lara-light-indigo',
+        colorScheme: 'dark',
+        theme: 'lara-dark-blue',
         scale: 14,
     };
 
@@ -119,6 +119,7 @@ export class LayoutService {
     }
 
     changeTheme() {
+        console.log('changeTheme');
         const config = this.config();
         const themeLink = <HTMLLinkElement>document.getElementById('theme-css');
         const themeLinkHref = themeLink.getAttribute('href')!;

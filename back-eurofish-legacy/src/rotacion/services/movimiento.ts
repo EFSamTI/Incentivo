@@ -8,7 +8,7 @@ import { AsignacionTipoAsignacion } from "../../asinament/models/asignacionTipoA
 
 import { findArea } from "../../asinament/services/area";
 import { saveEntrada } from "../../asinament/services/asistencia";
-import { findCargo } from "../../asinament/services/cargo";
+import { findOrCreateCargoNew } from "../../asinament/services/cargo";
 import { findOrCreateTipoAsignacion } from "../../asinament/services/tipoAsignacion";
 import {
   IFilterAsignaciones,
@@ -132,7 +132,7 @@ const aplicarMovimientoAsignacion = async (changes: IChanges[]) => {
       return { status: 404, message: "No se encontró la asignación" };
     const [area, cargo, tipoChange] = await Promise.all([
       findArea(a.area),
-      findCargo(a.cargo),
+      findOrCreateCargoNew(a.cargo),
       findOrCreateTipoAsignacion("CAMBIO"),
     ]);
     if (!area || !cargo || !tipoChange)
@@ -189,7 +189,7 @@ const restablecerMovimiento = async (restablecer: IRestablecerCambios[]) => {
       };
     const [area, cargo] = await Promise.all([
       findArea(r.areaOriginal),
-      findCargo(r.cargoOriginal),
+      findOrCreateCargoNew(r.cargoOriginal),
     ]);
     if (!area || !cargo)
       return {

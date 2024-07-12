@@ -135,7 +135,8 @@ export class MovimientoComponent {
         this.modifAsignaciones = [];
         this.selectedAsignaciones = [];
       },
-      error: () => {
+      error: (error) => {
+        console.log(error);
         this.ui.alertaInformativa('Error al guardar cambios');
       }
     });

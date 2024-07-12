@@ -16,10 +16,20 @@ const findOrCreateCargo = async (cargo: string, id:number) => {
     }
 }
 
-const findCargo = async (cargo: string) => {
-    return await Cargo.findOne({
+const findOrCreateCargoNew = async (cargo: string) => {
+    const validatecargo = await Cargo.findOne({
         where: { cargoname: cargo },
     });
+    if (!validatecargo) {
+        const newCargo = Cargo.create({
+    
+            cargoname: cargo,
+            created_at: new Date(),
+        });
+        return await newCargo.save();
+    }
+    else {
+        return validatecargo;
+    }
 }
-
-export { findOrCreateCargo, findCargo };
+export { findOrCreateCargo, findOrCreateCargoNew };
