@@ -5,8 +5,10 @@ async function main() {
     try {
         await AppDataSource.initialize();
         console.log("Base de datos conectada");
-        app.listen(6505, () => {
-            console.log("Server activo en el puero 6505");
+        const server = app.listen(6505, () => {
+            const address = server.address();
+            const port = typeof address === 'string' ? address : address?.port;
+            console.log(`Server activo en el puerto ${port}`);
         });
     } catch (err) {
         if (err instanceof Error) {

@@ -4,7 +4,7 @@ const JWT_SECRET = "token.01010101";
 
 const generateToken = (id: number) => {
   const jwt = sign({ id }, JWT_SECRET, {
-    expiresIn: "2h",
+    expiresIn: "48h",
   });
   return jwt;
 };

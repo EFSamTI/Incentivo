@@ -47,11 +47,9 @@
       </p-toolbar>
       <p-table [value]="listQuiebres" [rows]="5" [loading]="isLoading" [rowHover]="true"
       styleClass="p-datatable-sm" [paginator]="true" [rowsPerPageOptions]="[10, 25, 50]" responsiveLayout="scroll"
-      rowGroupMode="subheader" scrollHeight="400px"
->
+      rowGroupMode="subheader" scrollHeight="400px">
         <ng-template pTemplate="header">
           <tr> 
-            
             <th pSortableColumn="data.prod_date" style="min-width: 5rem">
               Fecha de Producción <p-sortIcon field="prod_date"></p-sortIcon>
             </th>

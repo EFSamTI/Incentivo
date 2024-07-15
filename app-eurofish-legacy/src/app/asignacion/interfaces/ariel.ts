@@ -1,5 +1,4 @@
 
-
 export interface IBody {
   view: string;
   fields: string[];
@@ -20,7 +19,6 @@ export interface Condition {
   operator: string;
   value: number | string;
 }
-
 
 export const cargos: string[] = ['OPERARIO EMPACADOR DE FUNDAS','FILETEADOR', 'DESPELLEJADOR', 'PANZA'];
 export const tunos: string[] = ['TURNO 1', 'TURNO 2', 'TURNO 3'];

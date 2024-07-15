@@ -28,4 +28,19 @@ export class UiServiceService {
     toast.present();
   }
 
+  
+async sessionExpired(message: string, callback?: () => void) {
+  const alert = await this.alertController.create({
+    message: message,
+    buttons: [{
+      text: 'OK',
+      handler: () => {
+        if (callback) callback();
+      }
+    }]
+  });
+
+  await alert.present();
+}
+
 }

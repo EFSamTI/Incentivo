@@ -65,9 +65,6 @@ export class QuiebreComponent  implements OnInit {
   goHome() {
     this.navCtrlr.navigateBack('/dashboard');
   }
-
-
-
   downloadExcel() {
     if (this.listQuiebres && this.listQuiebres.length > 0) {
       let dataForExcel: any[] = [];
@@ -249,7 +246,7 @@ export class QuiebreComponent  implements OnInit {
               day: 'numeric'
             });
             doc.setFontSize(10);
-            doc.text(`Página ${pageNumber} de ${pageCount}`, pageWidth - 30, pageHeight - 10);
+            doc.text(`Página ${pageCount}`, pageWidth - 30, pageHeight - 10);
             doc.text(`Fecha de creación: ${fechaActual}`, 20, pageHeight - 10);
             doc.text('Eurofish S.A', 20, pageHeight - 5);
             pageNumber++;

@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { ChartModule } from 'primeng/chart';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import {SplitButtonModule} from 'primeng/splitbutton';
 import { ChipModule } from 'primeng/chip';
@@ -72,7 +73,8 @@ import {SelectButtonModule} from 'primeng/selectbutton';
     MenuModule,
     OverlayPanelModule,
     SelectButtonModule,
-    CalendarModule
+    CalendarModule,
+    ChartModule
   ],
   providers: [MessageService],
 })
