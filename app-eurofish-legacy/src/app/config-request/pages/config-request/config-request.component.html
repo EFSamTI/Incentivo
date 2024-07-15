@@ -83,7 +83,7 @@
             <td>
               <p-tableCheckbox [value]="config"></p-tableCheckbox>
             </td>
-            <td>{{ config.ambiente.uri }}</td>
+            <td>{{ config.tipoRequest.url }}</td>
             <td>{{ config.source }}</td>
             <td>{{ config.destination }}</td>
             <td>{{ config.operation }}</td>
@@ -168,10 +168,10 @@
 
       </div>
       <div class="field">
-        <label for="uri" class="block text-900 font-medium text-xl mb-2">URL</label>
-        <input type="text" pInputText formControlName="uri" class="w-full rounded-lg border-2 border-blue-500 focus:border-blue-600 focus:ring focus:ring-blue-200 focus:ring-opacity-50 shadow-sm" name="uri" placeholder="Ingrese la url" />
-        <small *ngIf="uri.invalid && (uri.dirty || uri.touched)" class="block p-error text-red-500">
-          <div *ngIf="uri.errors?.['required']">Url es requerido.</div>
+        <label for="url" class="block text-900 font-medium text-xl mb-2">URL</label>
+        <input type="text" pInputText formControlName="url" class="w-full rounded-lg border-2 border-blue-500 focus:border-blue-600 focus:ring focus:ring-blue-200 focus:ring-opacity-50 shadow-sm" name="uri" placeholder="Ingrese la url" />
+        <small *ngIf="url.invalid && (url.dirty || url.touched)" class="block p-error text-red-500">
+          <div *ngIf="url.errors?.['required']">Url es requerido.</div>
         </small>
       </div>
       <div class="field">

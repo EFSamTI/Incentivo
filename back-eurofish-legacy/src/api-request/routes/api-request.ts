@@ -1,11 +1,15 @@
 import { Router } from "express";
-import { activarConfigRequestCtrl, createConfigRequestCtrl, desactivarConfigRequestCtrl, eliminarConfigRequestCtrl, getConfigsRequestCtrl, postAriel, updateConfigRequestCtrl } from "../controller/api-request";
+import { activarConfigRequestCtrl, createConfigRequestCtrl, desactivarConfigRequestCtrl, eliminarConfigRequestCtrl, getConfigsRequestCtrl, postAriel, postTali, updateConfigRequestCtrl } from "../controller/api-request";
 import { checkJwt } from "../../user/middleware/session";
 
 
 const routeApiRequest = Router();
 
-routeApiRequest.post("/api-request",checkJwt, postAriel);
+//Peticiones al middleware
+routeApiRequest.post("/api-request/ariel",checkJwt, postAriel);
+routeApiRequest.post("/api-request/tali",checkJwt, postTali);
+
+
 routeApiRequest.get("/api-request", checkJwt, getConfigsRequestCtrl);
 routeApiRequest.post("/api-request/crear", checkJwt, createConfigRequestCtrl);
 routeApiRequest.put("/api-request", checkJwt, updateConfigRequestCtrl);

@@ -9,7 +9,9 @@ export class ConfigTipo extends BaseEntity {
   @Column( { nullable: true })
   nombre_tipo: string;
 
-
+  @Column( { nullable: true })
+  url: string;
+  
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP", nullable: false })
   createdAt: Date;
 

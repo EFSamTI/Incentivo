@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import {SplitButtonModule} from 'primeng/splitbutton';
-
-import { CommonModule } from '@angular/common';
 import { ChipModule } from 'primeng/chip';
+import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -72,7 +71,8 @@ import {SelectButtonModule} from 'primeng/selectbutton';
     SplitButtonModule,
     MenuModule,
     OverlayPanelModule,
-    SelectButtonModule
+    SelectButtonModule,
+    CalendarModule
   ],
   providers: [MessageService],
 })

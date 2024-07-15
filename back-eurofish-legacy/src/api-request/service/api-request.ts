@@ -11,10 +11,20 @@ import { findOrCreateAmbiente } from "./ambiente";
 import { findOrCreateTipo } from "./tipo";
 
 const requestAriel = async (body: IBodyRequest) => {
-  const peticion: IRequestAriel | null = await obtenerParametros(body);
+  const peticion = await obtenerParametros(body);
   if (!peticion) return null;
   return peticion;
 };
+
+const requestTali = async () => {
+  const data = await ConfigRequest.findOne({
+    where: { state: true, tipoRequest: { nombre_tipo: "Tali" } } 
+    ,relations: ["tipoRequest"],
+  });
+  if (!data) return null;
+  return data;
+}
+
 
 
 
@@ -34,17 +44,17 @@ const obtenerParametros = async (
     path: data.path,
     body: body,
   };
-
   return requestAriel;
 };
+
 
 
 const createConfigRequest = async (
   config: IRegisterRequest,
   creatorid: number
 ) => {
-  const ambiente = await findOrCreateAmbiente(config.ambiente, config.uri);
-  const tipoRequest = await findOrCreateTipo(config.tipo);
+  const ambiente = await findOrCreateAmbiente(config.ambiente);
+  const tipoRequest = await findOrCreateTipo(config.tipo, config.url);
   ConfigRequest.create({
     source: config.source,
     destination: config.destination,
@@ -62,16 +72,32 @@ const createConfigRequest = async (
 const updateConfigRequest = async (
   config: IRegisterRequest
 ) => {
-  const ambiente = await findOrCreateAmbiente(config.ambiente, config.uri);
+  const ambiente = await findOrCreateAmbiente(config.ambiente);
   
   if (!ambiente) return { status: 404, message: "Ambiente no encontrado" };
 
-  const tipoRequest = await findOrCreateTipo(config.tipo);
+  const tipoRequest = await findOrCreateTipo(config.tipo, config.url);
   if (!tipoRequest) return { status: 404, message: "Tipo no encontrado" };
+
   const configRequest = await ConfigRequest.findOne({
     where: { id: config.id },
   });
   if (!configRequest) return { status: 404, message: "Configuracion no encontrada" };
+  
+  if (config.id){
+    const activeConfigOfSameType = await ConfigRequest.findOne({
+      where: { tipoRequest: tipoRequest, state: true, id: Not(Equal(config.id)) },
+    });
+    if (activeConfigOfSameType) {
+      configRequest.state = false;
+    }
+  }
+ 
+
+  tipoRequest.url = config.url;
+  tipoRequest.updateAt = new Date();
+  await tipoRequest.save();
+
   configRequest.source = config.source;
   configRequest.destination = config.destination;
   configRequest.operation = config.operation;
@@ -96,14 +122,6 @@ const desactivarConfigRequest = async (id: number) => {
   return { status: 200, message: "Configuracion eliminada con exito" };
 }
 
-const listConfigRequest = async () => {
-  const configRequest = await ConfigRequest.find({
-    relations: ["ambiente", "tipoRequest"],
-  });
-  if (!configRequest) return { status: 404, message: "Configuracion no encontrada" };
-  return { status: 200, data: configRequest };
-}
-
 const activarConfigRequest = async (id: number) => {
   const configRequestToActivate = await ConfigRequest.findOne({ where: { id: id } });
   if (!configRequestToActivate) return { status: 404, message: "Configuración no encontrada" };
@@ -113,6 +131,16 @@ const activarConfigRequest = async (id: number) => {
   await configRequestToActivate.save();
   return { status: 200, message: "Configuración activada con éxito" };
 }
+
+
+const listConfigRequest = async () => {
+  const configRequest = await ConfigRequest.find({
+    relations: ["ambiente", "tipoRequest"],
+  });
+  if (!configRequest) return { status: 404, message: "Configuracion no encontrada" };
+  return { status: 200, data: configRequest };
+}
+
 
 const eliminarConfigRequests = async ( id: number[]) => {
   for (const i of id) {
@@ -124,4 +152,4 @@ const eliminarConfigRequests = async ( id: number[]) => {
   return { status: 200, message: "Configuraciones eliminadas con éxito" };
 }
 
-export { requestAriel, createConfigRequest, updateConfigRequest, desactivarConfigRequest, listConfigRequest, activarConfigRequest, eliminarConfigRequests};
+export { requestAriel, createConfigRequest, updateConfigRequest, desactivarConfigRequest, listConfigRequest, activarConfigRequest, eliminarConfigRequests, requestTali};

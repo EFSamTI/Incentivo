@@ -30,7 +30,6 @@ export class ConfigRequestComponent  implements OnInit {
     private fb: FormBuilder
   ) { 
     this.formConfig = this.fb.group({
-      uri: ['', Validators.required],
       source: ['', Validators.required],
       destination: ['', Validators.required],
       operation: ['', Validators.required],
@@ -38,6 +37,7 @@ export class ConfigRequestComponent  implements OnInit {
       path: ['', Validators.required],
       tipo: ['', Validators.required],
       ambiente: ['', Validators.required],
+      url: ['', Validators.required],
     });
   }
 
@@ -45,8 +45,8 @@ export class ConfigRequestComponent  implements OnInit {
     this.loadConfigRequest();
   }
 
-  get uri() {
-    return this.formConfig.controls['uri'];
+  get url() {
+    return this.formConfig.controls['url'];
   }
 
   get source() {
@@ -81,7 +81,7 @@ export class ConfigRequestComponent  implements OnInit {
     this.select = config;
     if (config) {
       this.formConfig.patchValue({
-        uri: config.ambiente.uri,
+        url: config.tipoRequest.url,
         source: config.source,
         destination: config.destination,
         operation: config.operation,

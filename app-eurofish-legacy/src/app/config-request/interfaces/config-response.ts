@@ -18,6 +18,7 @@ export interface IConfiRequiest {
 interface TipoRequest {
   tipoid: number;
   nombre_tipo: string;
+  url: string;
   createdAt: string;
   updateAt: null;
 }
@@ -25,14 +26,13 @@ interface TipoRequest {
 interface Ambiente {
   ambienteid: number;
   nombre_ambiente: string;
-  uri: string;
   createdAt: string;
   updateAt: null;
 }
 
 export interface IRegisterRequest {
     id?: number;
-    uri: string;
+    url: string;
     tipo: string;
     source: string;
     destination: string;

@@ -674,6 +674,21 @@
     outline-offset: 0;
     box-shadow: 0 0 0 0.2rem rgba(96, 165, 250, 0.2);
   }
+  :host ::ng-deep .p-rowgroup-footer td {
+    font-weight: 700;
+}
+
+:host ::ng-deep .p-rowgroup-header {
+    span {
+        font-weight: 700;
+    }
+
+    .p-row-toggler {
+        vertical-align: middle;
+        margin-right: .25rem;
+    }
+}
+
 
   p-calendar.p-calendar-clearable .p-inputtext {
     padding-right: 2.5rem;

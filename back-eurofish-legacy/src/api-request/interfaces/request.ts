@@ -1,7 +1,7 @@
 export interface IRegisterRequest {
   id?: number;
   tipo: string;
-  uri: string;
+  url: string;
   source: string;
   destination: string;
   operation: string;
@@ -9,8 +9,6 @@ export interface IRegisterRequest {
   path: string;
   ambiente: string;
 }
-
-
 
 export interface IRequestAriel {
     source: string;

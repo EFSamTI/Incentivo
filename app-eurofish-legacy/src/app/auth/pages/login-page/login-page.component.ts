@@ -32,7 +32,6 @@ export class LoginPageComponent {
   get password() { return this.loginForm.controls['password']; }
 
   loginUser() {
-    console.log(this.layoutService.config().colorScheme);
     this.isLoading = true;
     let { email, password } = this.loginForm.value;
     const userLogin: UserLogin = { usuario: email!, password: password! };

@@ -7,9 +7,10 @@ import {
   eliminarConfigRequests,
   listConfigRequest,
   requestAriel,
+  requestTali,
   updateConfigRequest,
 } from "../service/api-request";
-import { fetchArielMessage } from "../middleware/peticion";
+import { fetchArielMessage, fetchTaliMessage } from "../middleware/peticion";
 import { tokenInfo } from "../../user/utils/jwt.handle";
 
 const postAriel = async (req: Request, res: Response) => {
@@ -28,6 +29,23 @@ const postAriel = async (req: Request, res: Response) => {
   }
 };
 
+const postTali= async (req: Request, res: Response) => {
+  try {
+    const { data } = req.body;
+    if (!data) return httpError(res, "Lista de fecha es requerida para la peticion");
+    const result = await requestTali();
+    if (!result) return httpError(res, "No se encontraron los parametros");
+    const dataResponse = await fetchTaliMessage(result, data);
+    res.status(200).send(dataResponse);
+  } catch (error) {
+    if (error instanceof Error) {
+      httpError(res, error.message);
+    }
+  }
+};
+
+
+
 const createConfigRequestCtrl = async (req: Request, res: Response) => {
   try {
     const { data } = req.body;
@@ -42,7 +60,6 @@ const createConfigRequestCtrl = async (req: Request, res: Response) => {
     }
   }
 };
-
 const updateConfigRequestCtrl = async (req: Request, res: Response) => {
   try {
     const { data } = req.body;
@@ -54,7 +71,6 @@ const updateConfigRequestCtrl = async (req: Request, res: Response) => {
     }
   }
 };
-
 const desactivarConfigRequestCtrl = async (req: Request, res: Response) => {
   try {
     const { id } = req.body;
@@ -66,7 +82,6 @@ const desactivarConfigRequestCtrl = async (req: Request, res: Response) => {
     }
   }
 };
-
 const activarConfigRequestCtrl = async (req: Request, res: Response) => {
   try {
     const { id } = req.body;
@@ -78,7 +93,6 @@ const activarConfigRequestCtrl = async (req: Request, res: Response) => {
     }
   }
 };
-
 const getConfigsRequestCtrl = async (req: Request, res: Response) => {
   try {
     const result = await listConfigRequest();
@@ -89,7 +103,6 @@ const getConfigsRequestCtrl = async (req: Request, res: Response) => {
     }
   }
 }
-
 const eliminarConfigRequestCtrl = async (req: Request, res: Response) => {
   try {
     const { data } = req.body;
@@ -101,10 +114,9 @@ const eliminarConfigRequestCtrl = async (req: Request, res: Response) => {
     }
   }
 }
-
-
 export {
   postAriel,
+  postTali,
   createConfigRequestCtrl,
   updateConfigRequestCtrl,
   desactivarConfigRequestCtrl,

@@ -119,7 +119,6 @@ export class LayoutService {
     }
 
     changeTheme() {
-        console.log('changeTheme');
         const config = this.config();
         const themeLink = <HTMLLinkElement>document.getElementById('theme-css');
         const themeLinkHref = themeLink.getAttribute('href')!;
