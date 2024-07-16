@@ -137,8 +137,8 @@ export class HistorialMovimientoComponent implements OnInit {
     if (this.listCambios && this.listCambios.length > 0) {
       const doc = new jsPDF();
 
-      const logo = '../../../../assets/demo/images/logo.jpg';
-      doc.addImage(logo, 'JPEG', 15, 5, 40, 30);
+      const logo = '../../../../assets/demo/images/logo/logo-blue.png';
+      doc.addImage(logo, 'JPEG', 15, 0, 40, 50);
 
       const inicioY = 10;
       const inicioX = 150;

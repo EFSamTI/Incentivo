@@ -1,0 +1,142 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <ul class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
+        <li>
+          <a class="text-500 no-underline line-height-3 cursor-pointer" (click)="goHome()">
+            <i class="pi pi-home"></i>
+          </a>
+        </li>
+        <li class="px-2">
+          <i class="pi pi-angle-right text-500 line-height-3"></i>
+        </li>
+        <li>
+          <span class="text-900 line-height-3 cursor-pointer">Notificación orden fabricación</span>
+        </li>
+      </ul>
+      <div class="mb-3 font-bold text-2xl">
+        <span class="text-900">Notificación de </span>
+        <span class="text-blue-600">Orden de Fabricación</span>
+      </div>
+      <div class="text-700 text-sm mb-3">
+        En esta página, puede registrar, consultar y notificar el estado de las órdenes de fabricación,
+        asignando los recursos necesarios y detallando el progreso de la producción.
+      </div>
+    </div>
+  </div>
+  <div class="col-12 lg:col-6 xl:col-4">
+    <div class="card mb-0">
+      <div class="field">
+        <label for="date" class="block text-900 font-medium text-xl mb-2">Fecha</label>
+        <input type="date" pInputText [(ngModel)]="date" class="w-full" name="dateFiltre" id="dateFiltre"
+          placeholder="Fecha" onkeydown="return false;" />
+      </div>
+      <div class="field">
+        <label for="turno" class="block text-900 font-medium text-xl mb-2">Turno</label>
+        <p-dropdown [options]="turnos" [(ngModel)]="selectTurno" optionLabel="name" [filter]="true"
+          filterBy="description" [showClear]="true" placeholder="Seleccione el turno" [style]="{ width: '100%' }">
+          <ng-template pTemplate="selectedItem">
+            <div class="country-item country-item-value" *ngIf="selectTurno">
+              <div>{{ selectTurno }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-turno pTemplate="item">
+            <div>
+              <div>{{ turno }}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </div>
+      <div class="field">
+        <button pButton pRipple icon="pi pi-search" label="Obtener" type="button" class="p-button-success w-full"
+          [disabled]="!date || !selectTurno" (click)="getOrdenFabricacion()"></button>
+      </div>
+      <div class="field">
+        <label for="ordenFabricacion" class="block text-900 font-medium text-xl mb-2">Orden de fabricación</label>
+        <p-dropdown [options]="ofs" [(ngModel)]="selectOf" optionLabel="" [filter]="true" filterBy="description"
+          [showClear]="true" placeholder="Seleccione la orden de fabricación" [style]="{ width: '100%' }"
+          [disabled]="!ofs.length">
+          <ng-template pTemplate="selectedItem">
+            <div class="country-item country-item-value" *ngIf="selectOf">
+              <div>{{ selectOf }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-ordenFabricacion pTemplate="item">
+            <div>
+              <div>{{ ordenFabricacion }}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 lg:col-6 xl:col-8">
+    <div class="card mb-0">
+      <p-table [value]="ofsDetalles" [loading]="isLoading" styleClass="p-datatable-sm p-datatable-gridlines"
+        dataKey="id" editMode="row" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Tipo</th>
+            <th style="min-width: 6rem">UM</th>
+            <th style="min-width: 6rem">Cantidad</th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-datum let-editing="editing" let-ri="rowIndex">
+          <tr [pEditableRow]="datum">
+            <td>{{ datum.tipo }}</td>
+            <td>
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input pInputText type="text" [(ngModel)]="datum.um">
+                </ng-template>
+                <ng-template pTemplate="output">
+                  {{datum.um}}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td>
+              <p-cellEditor>
+                <ng-template pTemplate="input">
+                  <input pInputText type="number" [(ngModel)]="datum.cantidad" style="width: 6rem">
+                </ng-template>
+                <ng-template pTemplate="output">
+                  {{datum.cantidad}}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td>
+              <div class="my-button-group">
+                <div class="flex">
+                  <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                    (click)="onRowEditInit(datum)" class="p-button-rounded p-button-text"></button>
+                  <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                    (click)="onRowEditSave(datum)"
+                    class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                  <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                    (click)="onRowEditCancel(datum, ri)"
+                    class="p-button-rounded p-button-text p-button-danger"></button>
+                </div>
+              </div>
+
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="9">Obtenga datos.</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="loadingbody">
+          <tr>
+            <td colspan="9">Cargando datos. Por favor, espere.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <div class="mt-4 text-center">
+        <button pButton type="button" label="Notificar" icon="pi pi-envelope" class="p-button-success "
+          [disabled]=" !ofs.length "></button>
+      </div>
+    </div>
+  </div>
+</div>

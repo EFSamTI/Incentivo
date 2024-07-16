@@ -41,6 +41,14 @@ const routes: Routes = [
         path: '',
         loadChildren: () =>
           import('./parada/parada.module').then((m) => m.ParadaModule),
+      },{
+        path: '',
+        loadChildren: () =>
+          import('./notificacion/notificacion.module').then((m) => m.NotificacionModule),
+      },{
+        path: '',
+        loadChildren: () =>
+          import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
       },
     ],
     canActivate: [AuthGuard],

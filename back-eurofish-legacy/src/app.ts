@@ -11,6 +11,7 @@ import { routeParada } from './rotacion/routes/parada';
 import { routeLinea } from './asinament/routes/linea';
 import { routeApiRequest } from './api-request/routes/api-request';
 import { routeArea } from './asinament/routes/area';
+import { routeDashboard } from './dashboard/routes/dashboard';
 
 const app = express();
 const apiAuthUrl = '/auth';
@@ -23,7 +24,6 @@ app.use(cors());
 app.use(apiAuthUrl,routeAuth);
 app.use(apiUrl,routerUser);
 app.use(apiUrl,routerRol);
-
 app.use(apiUrl, routerAsignacion);
 app.use(apiUrl, routeMovimiento);
 app.use(apiUrl, routeEmpleado)
@@ -31,4 +31,7 @@ app.use(apiUrl, routeParada);
 app.use(apiUrl, routeLinea);
 app.use(apiUrl, routeApiRequest);
 app.use(apiUrl, routeArea);
+app.use(apiUrl, routeDashboard);
+
+
 export default app;

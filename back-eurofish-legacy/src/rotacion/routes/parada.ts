@@ -6,7 +6,7 @@ import { deleteParadasCtrl, getParadasCtrl, postParadasCtrl, putParadasCtrl } fr
 
 const routeParada = Router();
 
-routeParada.post("/paradas", getParadasCtrl);
+routeParada.post("/paradas",checkJwt, getParadasCtrl);
 routeParada.post("/parada", checkJwt, postParadasCtrl);
 routeParada.put("/parada", checkJwt, putParadasCtrl);
 routeParada.put("/parada/delete", checkJwt, deleteParadasCtrl);

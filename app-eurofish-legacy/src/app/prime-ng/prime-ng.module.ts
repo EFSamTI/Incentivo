@@ -37,6 +37,8 @@ import {MenuItem} from 'primeng/api';
 import {CheckboxModule} from 'primeng/checkbox';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {SelectButtonModule} from 'primeng/selectbutton';
+import {TabMenuModule} from 'primeng/tabmenu';
+
 @NgModule({
   exports: [
     CardModule,
@@ -74,7 +76,8 @@ import {SelectButtonModule} from 'primeng/selectbutton';
     OverlayPanelModule,
     SelectButtonModule,
     CalendarModule,
-    ChartModule
+    ChartModule,
+    TabMenuModule
   ],
   providers: [MessageService],
 })

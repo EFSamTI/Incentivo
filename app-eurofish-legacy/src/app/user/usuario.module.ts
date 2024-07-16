@@ -15,8 +15,6 @@ import { AdminUsuariosComponent } from './pages/admin-usuarios/admin-usuarios.co
 import { FormUserComponent } from './components/form-user/form-user.component';
 import { AdminRolesComponent } from './pages/admin-roles/admin-roles.component';
 import { FormRolComponent } from './components/form-rol/form-rol.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-
 
 @NgModule({
   declarations: [
@@ -25,8 +23,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
     AdminUsuariosComponent,
     FormUserComponent,
     AdminRolesComponent,
-    FormRolComponent,
-    DashboardComponent
+    FormRolComponent
   ],
   imports: [
     IonicModule,

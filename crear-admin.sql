@@ -10,8 +10,8 @@ INSERT INTO "public"."options" ("optionName", "description", "path", "createdAt"
 ('Parada', 'Se ingresarán las paradas del usuario', '/parada', CURRENT_TIMESTAMP, 1, NULL, 'pause'), 
 ('Quiebres', 'En esta opción se obtendrá la información de TALI', '/quiebre', CURRENT_TIMESTAMP, 1, NULL, 'chart-line'), 
 ('Rotación personal', 'Esta opción podrá cambiar de área o cargo al personal asignado', '/movimiento', CURRENT_TIMESTAMP, 1, NULL, 'refresh'), 
-('Configuración de peticiones', 'Mantenimiento de peticiones', '/config-request', CURRENT_TIMESTAMP, 1, NULL, 'cog');
-
+('Configuración de peticiones', 'Mantenimiento de peticiones', '/config-request', CURRENT_TIMESTAMP, 1, NULL, 'cog'),
+('Notificación Orden de Fabricación', 'Gestión de notificaciones para órdenes de fabricación', '/notificacion/orden-fabricacion', CURRENT_TIMESTAMP, 1, NULL, 'bell');
 
 -- Inserta roles en la tabla "roles"
 INSERT INTO "public"."roles" ("roleName", "description", "registeredByUserId", "createdAt", "updatedAt") VALUES 
@@ -26,7 +26,9 @@ INSERT INTO "public"."role_options" ("roleId", "optionId") VALUES
 (2, 4), 
 (2, 5), 
 (2, 6), 
-(2, 7);
+(2, 7),
+(2, 8);
+
 
 -- Asocia usuarios con roles en la tabla "user_roles"
 INSERT INTO "public"."user_roles" ("userId", "roleId") VALUES 

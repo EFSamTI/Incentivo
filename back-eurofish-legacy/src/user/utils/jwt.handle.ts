@@ -1,5 +1,4 @@
 import { sign, verify } from "jsonwebtoken";
-import { httpError } from "./error.handle";
 const JWT_SECRET = "token.01010101";
 
 const generateToken = (id: number) => {

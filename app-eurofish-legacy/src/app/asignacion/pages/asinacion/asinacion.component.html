@@ -45,19 +45,7 @@
                 </div>
               </ng-template>
             </p-dropdown>
-            <p-dropdown [options]="tunos" [(ngModel)]="selectTurno" optionLabel="name" [filter]="true"
-              filterBy="description" [showClear]="true" placeholder="Seleccione el turno">
-              <ng-template pTemplate="selectedItem">
-                <div class="country-item country-item-value" *ngIf="selectTurno">
-                  <div>{{ selectTurno }}</div>
-                </div>
-              </ng-template>
-              <ng-template let-turno pTemplate="item">
-                <div>
-                  <div>{{ turno }}</div>
-                </div>
-              </ng-template>
-            </p-dropdown>
+           
           </div>
         </ng-template>
 

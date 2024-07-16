@@ -70,3 +70,88 @@ JOIN isentive_tareas ao2 ON (ao.areaid = ao2.areaid))
 JOIN isentive_tcargos cc ON (ac.cargoid = cc.cargoid))
 JOIN isentive_tareas ac2 ON (ac.areaid = ac2.areaid))
 WHERE (1 = 1);
+
+-- vista movimientos en la ultima sema
+CREATE VIEW vista_movimientos_ultima_semana AS
+ SELECT to_char(dia.dia_semana, 'YYYY-MM-DD'::text) AS fecha,
+    COALESCE(count(m.movimientoid), (0)::bigint) AS total_movimientos
+   FROM (( SELECT generate_series(date_trunc('day'::text, (CURRENT_DATE - '6 days'::interval)), (CURRENT_DATE)::timestamp without time zone, '1 day'::interval) AS dia_semana) dia
+     LEFT JOIN ( SELECT isentive_tmovimientos.movimientoid,
+            date_trunc('day'::text, isentive_tmovimientos.created_at) AS fecha
+           FROM isentive_tmovimientos
+          WHERE (isentive_tmovimientos.created_at >= (CURRENT_DATE - '6 days'::interval))) m ON ((dia.dia_semana = m.fecha)))
+  GROUP BY (to_char(dia.dia_semana, 'YYYY-MM-DD'::text))
+  ORDER BY (min(dia.dia_semana));
+  
+-- Vista totales 
+CREATE VIEW vista_estadisticas_isentivos AS
+WITH 
+total_asignaciones AS (
+    SELECT
+        tipo.descripcion AS tipo_asignacion,
+        COUNT(*) AS total
+    FROM
+        public.isentive_tasignacion_tipo_asignacion tta
+        INNER JOIN public.isentive_tasignaciones asignacion ON tta.asignacionid = asignacion.asignacionid
+        INNER JOIN public.isentive_ttipo_asignacion tipo ON tta.tipoid = tipo.tipoid
+    WHERE
+        asignacion.created_at >= current_date - interval '1 month'
+    GROUP BY
+        tipo.descripcion
+),
+total_movimientos AS (
+    SELECT
+        COUNT(*) AS total
+    FROM
+        public.isentive_tmovimientos
+    WHERE
+        created_at >= current_date - interval '1 day' 
+),
+
+total_paradas_ultima_semana AS (
+    SELECT
+        COUNT(*) AS total
+    FROM
+        public.isentive_tparada
+    WHERE
+        hora_inicio >= current_date - interval '7 days'
+),
+
+total_paradas_en_general AS (
+    SELECT
+        COUNT(*) AS total
+    FROM
+        public.isentive_tparada
+),
+
+total_tiempo_inactividad AS (
+    SELECT
+        SUM(EXTRACT(epoch FROM (hora_fin - hora_inicio)) / 3600.0) AS total_horas
+    FROM
+        public.isentive_tparada
+    WHERE
+        hora_inicio >= current_date - interval '1 month' 
+),
+
+total_tiempo_inactividad_en_general AS (
+    SELECT
+        SUM(EXTRACT(epoch FROM (hora_fin - hora_inicio)) / 3600.0) AS total_horas
+    FROM
+        public.isentive_tparada
+)
+
+SELECT
+    (SELECT total FROM total_asignaciones WHERE tipo_asignacion = 'NORMAL') AS total_asignaciones_normal,
+    (SELECT total FROM total_asignaciones WHERE tipo_asignacion = 'COMODIN') AS total_asignaciones_comodin,
+    total_movimientos.total AS total_movimientos_ultimo_dia,
+    total_movimientos.total AS total_movimientos_en_general,
+    total_paradas_ultima_semana.total AS total_paradas_ultima_semana,
+    total_paradas_en_general.total AS total_paradas_en_general,
+    total_tiempo_inactividad.total_horas AS total_tiempo_inactividad_mes,
+    total_tiempo_inactividad_en_general.total_horas AS total_tiempo_inactividad_en_general
+FROM
+    total_movimientos,
+    total_paradas_ultima_semana,
+    total_paradas_en_general,
+    total_tiempo_inactividad,
+    total_tiempo_inactividad_en_general;
