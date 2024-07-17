@@ -55,7 +55,9 @@
         <label for="ordenFabricacion" class="block text-900 font-medium text-xl mb-2">Orden de fabricación</label>
         <p-dropdown [options]="ofs" [(ngModel)]="selectOf" optionLabel="" [filter]="true" filterBy="description"
           [showClear]="true" placeholder="Seleccione la orden de fabricación" [style]="{ width: '100%' }"
-          [disabled]="!ofs.length">
+          [disabled]="!ofs.length"
+          (onChange)="onSelectOfChange($event)"
+          >
           <ng-template pTemplate="selectedItem">
             <div class="country-item country-item-value" *ngIf="selectOf">
               <div>{{ selectOf }}</div>
@@ -135,7 +137,7 @@
       </p-table>
       <div class="mt-4 text-center">
         <button pButton type="button" label="Notificar" icon="pi pi-envelope" class="p-button-success "
-          [disabled]=" !ofs.length "></button>
+          [disabled]=" !ofs.length " (click)="onSaveOrdenFabricacion()"></button>
       </div>
     </div>
   </div>

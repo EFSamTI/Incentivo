@@ -7,26 +7,25 @@ import { IonicModule } from '@ionic/angular';
 import { SharedModule } from '../shared/shared.module';
 
 import { FormsModule } from '@angular/forms';
-import { AsinacionComponent } from '../asignacion/pages/asinacion/asinacion.component';
-import { AsignacionRoutingModule } from '../asignacion/asignacion-routing.module';
+import { ApisTallyRoutingModule } from './api-tally-routing.module';
+import { LectorApisTallyComponent } from './pages/quiebre/lector-apis-tally.component';
 
 
 @NgModule({
   declarations: [
-    AsinacionComponent,
 
-
+LectorApisTallyComponent,
   ],
   imports: [
     IonicModule,
     CommonModule,
     PrimeNgModule,
     ReactiveFormsModule,
-    AsignacionRoutingModule,
+    ApisTallyRoutingModule,
     SharedModule,
     FormsModule
   ]
 
 
 })
-export class AsignacionModule { }
+export class ApisTallyModule { }

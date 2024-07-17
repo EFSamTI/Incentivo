@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IMovimientoUltimaSemana, ITotales } from '../interfaces/dashboard';
+import { IMovimientoUltimaSemana, IParadasPorArea, ITotales } from '../interfaces/dashboard';
 import { environment } from 'src/environments/environment';
 import { filter, map, catchError } from 'rxjs';
 
@@ -20,6 +20,13 @@ export class DashboardService {
 
   getTotales() {
     return this.http.get<ITotales[]>(`${environment.urlApi}dashboard/totales`).pipe(
+      map(response => response),
+      catchError(error => { throw error })
+    );
+  }
+
+  getParadasUltimoMes() {
+    return this.http.get<IParadasPorArea[]>(`${environment.urlApi}dashboard/paradas`).pipe(
       map(response => response),
       catchError(error => { throw error })
     );

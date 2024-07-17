@@ -155,3 +155,21 @@ FROM
     total_paradas_en_general,
     total_tiempo_inactividad,
     total_tiempo_inactividad_en_general;
+
+-- Vista paradas por area
+CREATE VIEW vista_paradas_por_area_ultimo_mes AS
+    SELECT
+    a.nombre_area,
+    COUNT(p.paradaid) AS total_paradas
+FROM
+    public.isentive_tparada p
+INNER JOIN
+    public.isentive_tasignaciones asg ON p.asignacionid = asg.asignacionid
+INNER JOIN
+    public.isentive_tareas a ON asg.areaid = a.areaid
+WHERE
+    p.hora_inicio >= current_date - interval '1 month'
+GROUP BY
+    a.nombre_area
+ORDER BY
+    total_paradas DESC;

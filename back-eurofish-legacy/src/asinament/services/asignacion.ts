@@ -97,7 +97,7 @@ const saveAsignaciones = async (
       findOrCreateCargo(a.cargo, a.id_cargo),
       findOrCreateLinea(a.linea, a.id_linea),
       findOrCreateArea(a.nombre_area, a.cod_area),
-      findOrCreateTurno(a.turno, a.id_turno),
+      findOrCreateTurno(a.turno),
       findOrCreateTipoAsignacion(tipo),
     ]);
     const asignacion = Asignacion.create({

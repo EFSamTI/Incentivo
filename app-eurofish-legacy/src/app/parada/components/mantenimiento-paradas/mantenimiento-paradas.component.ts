@@ -8,6 +8,7 @@ import {  NavController } from '@ionic/angular';
 import { ILinea } from 'src/app/asignacion/interfaces/linea';
 import { LineaService } from 'src/app/asignacion/services/linea.service';
 import { IParada, IFilterParada, IParadaUpdate } from '../../interfaces/paradas';
+import { tunos } from '../../../asignacion/interfaces/ariel';
 
 @Component({
   selector: 'app-mantenimiento-paradas',
@@ -40,7 +41,7 @@ export class MantenimientoParadasComponent implements OnInit {
   copyListParadas: IParada[] = [];
   dialogForm = false;
 
-  turnos = ['turno 1', 'turno 2', 'turno 3'];
+  turnos = tunos;
   selectTurno?: string;
 
   filterFecha?: string;

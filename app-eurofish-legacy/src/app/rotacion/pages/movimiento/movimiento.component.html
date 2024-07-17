@@ -37,6 +37,7 @@
             class="mr-2"
             [loading]="isLoading"
             (onChange)="onLineaChange($event.value)"
+            [style]="{ width: '15rem' }"
           >
             <ng-template pTemplate="selectedItem">
               <div class="country-item country-item-value" *ngIf="selectLinea">
@@ -58,6 +59,7 @@
             [showClear]="true"
             placeholder="Seleccione el turno"
             (onChange)="onTurnoChange($event.value)"
+            [style]="{ width: '15rem' }"
           >
             <ng-template pTemplate="selectedItem">
               <div class="country-item country-item-value" *ngIf="selectTurno">

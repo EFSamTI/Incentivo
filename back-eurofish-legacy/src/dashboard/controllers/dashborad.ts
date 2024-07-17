@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { httpError } from "../../user/utils/error.handle";
-import { listMovimientos, listTotalesIsentivos } from "../services/dashboard";
+import { listMovimientos, listTotalesIsentivos, listTotalParadasArea } from "../services/dashboard";
 
 
 const getTotales = async (req: Request, res: Response) => {
@@ -25,4 +25,15 @@ const getMovimientos = async (req: Request, res: Response) => {
     }
 }
 
-export { getTotales, getMovimientos };
+const getParadas = async (req: Request, res: Response) => {
+    try {
+        const result = await listTotalParadasArea();
+        res.status(result.status).send(result.data || result.message);
+    } catch (error) {
+        if (error instanceof Error) {
+            httpError(res, error.message);
+        }
+    }
+}
+
+export { getTotales, getMovimientos, getParadas };

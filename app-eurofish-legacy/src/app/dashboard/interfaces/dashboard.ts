@@ -13,3 +13,9 @@ export interface ITotales {
   total_tiempo_inactividad_mes: string;
   total_tiempo_inactividad_en_general: string;
 }
+
+
+export interface IParadasPorArea {
+  nombre_area: string;
+  total_paradas: string;
+}

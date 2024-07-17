@@ -1,3 +1,4 @@
+import { OrdenFabricacionTipoIngreso } from './../notificacion/models/orden-fabricacion-tipo-ingreso';
 import { DataSource } from "typeorm";
 
 import dotenv from "dotenv";
@@ -25,6 +26,10 @@ import { ConfigRequest } from "../api-request/model/config-request";
 import { ConfigAmbiente } from "../api-request/model/ambiente";
 import { ConfigTipo } from "../api-request/model/tipo";
 import { Parada } from "../parada/models/parada";
+import { OrdenFabricacion } from '../notificacion/models/orden-fabricacion';
+import { OrdenFabricacionRecurso } from '../notificacion/models/orden-fabricacion-recurso';
+import { OrdenFabricacionProduccion } from '../notificacion/models/orden-fabricacion-produccion';
+import { ApisTally } from '../apis-tally/models/api-tally';
 
 dotenv.config();
 export const AppDataSource = new DataSource({
@@ -35,6 +40,6 @@ export const AppDataSource = new DataSource({
     password: process.env.PASSWORD_BD,
     database: process.env.DATABASE,
     logging: true,
-    entities: [ConfigRequest, ConfigAmbiente, ConfigTipo, User, Session, RoleOption, Role, UserRole, Option, Asignacion, TipoAsignacion, AsignacionTipoAsignacion, Movimiento, Cargo, Empleado, Linea, Asistencia, Area, Turno, Parada, TipoParada],
+    entities: [ApisTally,OrdenFabricacion, OrdenFabricacionProduccion, OrdenFabricacionRecurso, OrdenFabricacionTipoIngreso,ConfigRequest, ConfigAmbiente, ConfigTipo, User, Session, RoleOption, Role, UserRole, Option, Asignacion, TipoAsignacion, AsignacionTipoAsignacion, Movimiento, Cargo, Empleado, Linea, Asistencia, Area, Turno, Parada, TipoParada],
     synchronize: true
 });

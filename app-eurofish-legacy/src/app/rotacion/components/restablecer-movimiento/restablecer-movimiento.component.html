@@ -17,6 +17,7 @@
           [showClear]="true"
           placeholder="Seleccione la linea"
           class="mr-2"
+          [style]="{ width: '15rem' }"
           [loading]="isLoading"
         >
           <ng-template pTemplate="selectedItem">
@@ -41,6 +42,7 @@
           filterBy="description"
           [showClear]="true"
           placeholder="Seleccione el turno"
+          [style]="{ width: '15rem' }"
         >
           <ng-template pTemplate="selectedItem">
             <div
@@ -81,7 +83,7 @@
           <button
             pButton
             type="button"
-            label="Restablecer"
+            label="Restaurar"
             icon="pi pi-replay"
             class="p-button-warning"
             [disabled]="!selectMovimientos.length"

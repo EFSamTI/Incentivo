@@ -17,12 +17,22 @@
       <h5>Quiebres</h5>
       <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
-
+          <p-dropdown [options]="lisApisTally" [(ngModel)]="selectApisTally" optionLabel="nombre" [filter]="true"
+          filterBy="nombre" [showClear]="true" placeholder="Seleccione el cargo"
+          [loading]="isLoading"  [style]="{ width: '20rem' }">
+          <ng-template pTemplate="selectedItem">
+            <div class="country-item country-item-value" *ngIf="selectApisTally">
+              <div>{{ selectApisTally.nombre }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-api pTemplate="item">
+            <div>
+              <div>{{ api.nombre }}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
           <p-calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" inputId="range"></p-calendar>
-
-
         </ng-template>
-
         <ng-template pTemplate="right">
           <button pButton pRipple label="Obtener datos" icon="pi pi-search" class="p-button" [disabled]="rangeDates.length === 0"
             (click)="loadDataTali()"></button>

@@ -12,6 +12,8 @@ import { routeLinea } from './asinament/routes/linea';
 import { routeApiRequest } from './api-request/routes/api-request';
 import { routeArea } from './asinament/routes/area';
 import { routeDashboard } from './dashboard/routes/dashboard';
+import { routeOrdenFabricacion } from './notificacion/routes/orden-fabricacion';
+import { routeApisTally } from './apis-tally/routes/api-tally';
 
 const app = express();
 const apiAuthUrl = '/auth';
@@ -32,6 +34,6 @@ app.use(apiUrl, routeLinea);
 app.use(apiUrl, routeApiRequest);
 app.use(apiUrl, routeArea);
 app.use(apiUrl, routeDashboard);
-
-
+app.use(apiUrl, routeOrdenFabricacion);
+app.use(apiUrl, routeApisTally);
 export default app;

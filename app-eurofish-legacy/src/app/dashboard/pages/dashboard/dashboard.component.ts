@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IMovimientoUltimaSemana, ITotales } from '../../interfaces/dashboard';
+import { IMovimientoUltimaSemana, IParadasPorArea, ITotales } from '../../interfaces/dashboard';
 import { DashboardService } from '../../services/dashboard.service';
 import { NavController } from '@ionic/angular';
 
@@ -16,13 +16,17 @@ export class DashboardComponent  implements OnInit {
   chartData: any;
   chartOptions: any;
 
-  areas:string[] = ['Proceso', 'Almacen', 'Despacho', 'Mantenimiento', 'Oficina'];
-  selectArea?:string;
+  charDataParadas: any;
+    chartOptionsParadas: any;
+
   totales?:ITotales;
+
+  paradas:IParadasPorArea[] = [];
   ngOnInit() {
     this.initChart();
     this.loadTotales();
     this.loadMovimientosLastWeek();
+    this.loadParadasArea();
   }
 
   totalAsignaciones?: number;
@@ -40,6 +44,13 @@ export class DashboardComponent  implements OnInit {
     });
   }
 
+
+  loadParadasArea() {
+    this.dashboardService.getParadasUltimoMes().subscribe(response => {
+        this.paradas = response;
+        this.initChartParadas();
+    });
+  }
 
 
 
@@ -102,6 +113,40 @@ export class DashboardComponent  implements OnInit {
         }
     };
 }
+
+initChartParadas() {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const labels = this.paradas.map(parada => parada.nombre_area);
+    const data = this.paradas.map(parada => Number(parada.total_paradas));
+
+    const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#cc65fe', '#445ce2', '#e244b1', '#0c9', '#f67019', '#4bc0c0'];
+    const backgroundColors = labels.map((_, index) => colors[index % colors.length]);
+
+    this.charDataParadas = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Total Paradas',
+                data: data,
+                fill: false,
+                backgroundColor: backgroundColors, 
+                borderColor: backgroundColors, 
+                tension: .4
+            }
+        ]
+    };
+    this.chartOptionsParadas = {
+        plugins: {
+            legend: {
+                labels: {
+                    color: textColor
+                }
+            }
+        },
+        aspectRatio: 2, 
+    };
+}
 convertirFechaADia(fecha: string) {
   const diasDeLaSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
   const fechaDate = new Date(fecha);
@@ -111,5 +156,9 @@ convertirFechaADia(fecha: string) {
 
 goHistotialMovimientos() {
     this.navCtrlr.navigateBack('/movimiento/historial');
+}
+
+goMantenimientoParadas() {
+    this.navCtrlr.navigateBack('/parada/mantenimiento');
 }
 }

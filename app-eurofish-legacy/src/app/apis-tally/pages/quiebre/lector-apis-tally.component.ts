@@ -4,22 +4,25 @@ import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
 import { NavController } from '@ionic/angular';
 import { UiServiceService } from 'src/app/shared/services/ui-service.service';
+import { IResonseTali } from 'src/app/asignacion/interfaces/tali';
 import { QuiebreService } from '../../services/quiebre.service';
-import { dataAR, Datum, IResonseTali } from '../../interfaces/tali';
-
+import { IApiTally } from '../../interfaces/apis-tally';
 
 
 @Component({
   selector: 'app-quiebre',
-  templateUrl: './quiebre.component.html',
+  templateUrl: './lector-apis-tally.component.html',
 })
-export class QuiebreComponent  implements OnInit {
+export class LectorApisTallyComponent  implements OnInit {
 
   constructor(    private navCtrlr: NavController, private ui: UiServiceService, private quiebreService: QuiebreService) { }
   isLoading = false;
 
 
   listQuiebres: IResonseTali[] = [];
+
+  lisApisTally: IApiTally[] = [];
+  selectApisTally?: IApiTally;
 
   group: any; 
 
@@ -29,7 +32,22 @@ export class QuiebreComponent  implements OnInit {
 
 
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadApisTally();
+  }
+
+
+  loadApisTally() {
+    this.quiebreService.getApisTally().subscribe({
+      next: (response) => {
+        this.lisApisTally = response;
+        console.log(this.lisApisTally);
+      },
+      error: (error) => {
+        this.ui.alertaInformativa('Error al cargar los datos');
+      }
+    });
+  }
 
   loadDataTali() {
     if (this.rangeDates.length !== 2) {

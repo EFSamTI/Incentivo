@@ -32,8 +32,8 @@
                 placeholder="Fecha" onkeydown="return false;" />
             </div>
             <p-dropdown [options]="cargos" [(ngModel)]="selectCargo" optionLabel="name" [filter]="true"
-              filterBy="description" [showClear]="true" placeholder="Seleccione el cargo" class=" mr-2"
-              [loading]="isLoading">
+              filterBy="description" [showClear]="true" placeholder="Seleccione el cargo"
+              [loading]="isLoading"  [style]="{ width: '20rem' }">
               <ng-template pTemplate="selectedItem">
                 <div class="country-item country-item-value" *ngIf="selectCargo">
                   <div>{{ selectCargo }}</div>
