@@ -5,3 +5,4 @@ export interface IApiTally {
   url_base: string;
   parametros: string[];
 }
+

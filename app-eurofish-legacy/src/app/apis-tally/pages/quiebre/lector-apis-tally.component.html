@@ -11,27 +11,48 @@
             <i class="pi pi-angle-right text-500 line-height-3"></i>
         </li>
         <li>
-            <span class="text-900 line-height-3 cursor-pointer">Quiebres</span>
+            <span class="text-900 line-height-3 cursor-pointer">Lector de APIs Tally</span>
         </li>
     </ul>
-      <h5>Quiebres</h5>
+    <div class="mb-3 font-bold text-2xl">
+      <span class="text-900">Lector</span>
+      <span class="text-blue-600"> APIs Tally </span>
+    </div>
+    <div class="text-700 text-sm mb-3">
+      Descargue reportes de Tally en Excel o PDF. Filtre por
+      API, rango de fechas para obtener la información precisa.
+    </div>
       <p-toolbar styleClass="mb-4">
+
+      
+
         <ng-template pTemplate="left">
-          <p-dropdown [options]="lisApisTally" [(ngModel)]="selectApisTally" optionLabel="nombre" [filter]="true"
-          filterBy="nombre" [showClear]="true" placeholder="Seleccione el cargo"
-          [loading]="isLoading"  [style]="{ width: '20rem' }">
-          <ng-template pTemplate="selectedItem">
-            <div class="country-item country-item-value" *ngIf="selectApisTally">
-              <div>{{ selectApisTally.nombre }}</div>
+
+          <div class="my-2">
+            <div class="flied">
+              <label for="date" class="block text-900 font-medium text-xl mb-2">Seleccione API</label>
+              <p-dropdown [options]="lisApisTally" [(ngModel)]="selectApisTally" optionLabel="nombre" [filter]="true"
+              filterBy="nombre" [showClear]="true" placeholder="Seleccione el cargo"
+              [loading]="isLoading"  [style]="{ width: '20rem' }" styleClass="mb-3">
+              <ng-template pTemplate="selectedItem">
+                <div class="country-item country-item-value" *ngIf="selectApisTally">
+                  <div>{{ selectApisTally.nombre }}</div>
+                </div>
+              </ng-template>
+              <ng-template let-api pTemplate="item">
+                <div>
+                  <div>{{ api.nombre }}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
             </div>
-          </ng-template>
-          <ng-template let-api pTemplate="item">
-            <div>
-              <div>{{ api.nombre }}</div>
+            <div class="flied">
+              <label for="date" class="block text-900 font-medium text-xl mb-2">Rango de fechas</label>
+              <p-calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" inputId="range"[style]="{ width: '20rem' }" [disabled]="!selectApisTally"></p-calendar>
             </div>
-          </ng-template>
-        </p-dropdown>
-          <p-calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" inputId="range"></p-calendar>
+          </div>
+        
+        
         </ng-template>
         <ng-template pTemplate="right">
           <button pButton pRipple label="Obtener datos" icon="pi pi-search" class="p-button" [disabled]="rangeDates.length === 0"
@@ -55,174 +76,24 @@
           ></button>
         </ng-template>
       </p-toolbar>
-      <p-table [value]="listQuiebres" [rows]="5" [loading]="isLoading" [rowHover]="true"
-      styleClass="p-datatable-sm" [paginator]="true" [rowsPerPageOptions]="[10, 25, 50]" responsiveLayout="scroll"
+      <p-table [value]="listAny" [rows]="5" [loading]="isLoading" 
+      styleClass="p-datatable-sm"  responsiveLayout="scroll"
       rowGroupMode="subheader" scrollHeight="400px">
-        <ng-template pTemplate="header">
-          <tr> 
-            <th pSortableColumn="data.prod_date" style="min-width: 5rem">
-              Fecha de Producción <p-sortIcon field="prod_date"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.shift" style="min-width: 5rem">
-              Turno<p-sortIcon field="shift"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.line" style="min-width: 5rem">
-              Linea <p-sortIcon field="line"></p-sortIcon>
-            </th>
-           
-            <th pSortableColumn="data.vessel_lot" style="min-width: 5rem">
-              Lote de Embarcación <p-sortIcon field="vessel_lot"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.vessel_name" style="min-width: 5rem">
-              Nombre de Embarcación <p-sortIcon field="vessel_name"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.final_species" style="min-width: 5rem">
-              Especie Final <p-sortIcon field="final_species"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.final_species_size" style="min-width: 5rem">
-              Tamaño de Especie Final <p-sortIcon field="final_species_size"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.species_code" style="min-width: 5rem">
-              Código de Especie <p-sortIcon field="species_code"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.final_control_no" style="min-width: 5rem">
-              Control Final No <p-sortIcon field="final_control_no"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.final_control_sprayed" style="min-width: 5rem">
-              Control Final Rociado <p-sortIcon field="final_control_sprayed"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.mp_calculada" style="min-width: 5rem">
-              MP Calculada <p-sortIcon field="mp_calculada"></p-sortIcon>
-            </th> 
-            <th pSortableColumn="data.mp_calculada_perc" style="min-width: 5rem">
-              MP Calculada % <p-sortIcon field="mp_calculada_perc"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.final_trolley_count" style="min-width: 5rem">
-              Cantidad de Trolley Final <p-sortIcon field="final_trolley_count"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.net_weight_crudo" style="min-width: 5rem">
-              Peso Neto Crudo <p-sortIcon field="net_weight_crudo"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.loin_kg" style="min-width: 5rem">
-              Lomo Kg <p-sortIcon field="loin_kg"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.flake_kg" style="min-width: 5rem">
-              Flake Kg <p-sortIcon field="flake_kg"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.other_loin_kg" style="min-width: 5rem">
-              Otro Lomo Kg <p-sortIcon field="other_loin_kg"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.other_flake_kg" style="min-width: 5rem">
-              Otro Flake Kg <p-sortIcon field="other_flake_kg"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.total_loin" style="min-width: 5rem">
-              Total Lomo <p-sortIcon field="total_loin"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.total_flake" style="min-width: 5rem">
-              Total Flake <p-sortIcon field="total_flake"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.relac" style="min-width: 5rem">
-              Relac <p-sortIcon field="relac"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.weight_kg_rociado" style="min-width: 5rem">
-              Peso Kg Rociado <p-sortIcon field="weight_kg_rociado"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.weight_kg_cocido" style="min-width: 5rem">
-              Peso Kg Cocido <p-sortIcon field="weight_kg_cocido"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.cleaning_type" style="min-width: 5rem">
-              Tipo de Limpieza <p-sortIcon field="cleaning_type"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.piezas" style="min-width: 5rem">
-              Piezas <p-sortIcon field="piezas"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.factor" style="min-width: 5rem">
-              Factor <p-sortIcon field="factor"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.exponente" style="min-width: 5rem">
-              Exponente <p-sortIcon field="exponente"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.peso_prom" style="min-width: 5rem">
-              Peso Prom <p-sortIcon field="peso_prom"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.loin_pct" style="min-width: 5rem">
-              Lomo % <p-sortIcon field="loin_pct"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.flake_pct" style="min-width: 5rem">
-              Flake % <p-sortIcon field="flake_pct"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.rend_curva" style="min-width: 5rem">
-              Rend Curva <p-sortIcon field="rend_curva"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.curva_pct" style="min-width: 5rem">
-              Curva % <p-sortIcon field="curva_pct"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.merma_perc" style="min-width: 5rem">
-              Merma % <p-sortIcon field="merma_perc"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.total_reject" style="min-width: 5rem">
-              Total Rechazo <p-sortIcon field="total_reject"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.bleach_weight" style="min-width: 5rem">
-              Peso Blanqueo <p-sortIcon field="bleach_weight"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.distributed_value" style="min-width: 5rem">
-              Valor Distribuido <p-sortIcon field="distributed_value"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.std_loin" style="min-width: 5rem">
-              Lomo Estándar <p-sortIcon field="std_loin"></p-sortIcon>
-            </th>
-            <th pSortableColumn="data.rend_kg_field" style="min-width: 5rem">
-              Rend Kg Campo <p-sortIcon field="rend_kg_field"></p-sortIcon>
-            </th>
-
-          </tr>
-        </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th *ngFor="let col of columns" pSortableColumn="{{col.field}}" style="min-width: 5rem">
+            {{ col.field }} <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
        
-        <ng-template pTemplate="body" let-datum>
-         
-          <tr *ngFor="let item of datum.data">
-            <td>{{ item.prod_date }}</td>
-            <td>{{ item.shift }}</td>
-            <td>{{ item.line }}</td>
-         
-            <td>{{ item.vessel_lot }}</td>
-            <td>{{ item.vessel_name }}</td>
-            <td>{{ item.final_species }}</td>
-            <td>{{ item.final_species_size }}</td>
-            <td>{{ item.species_code }}</td>
-            <td>{{ item.final_control_no }}</td>
-            <td>{{ item.final_control_sprayed }}</td>
-            <td>{{ item.mp_calculada }}</td>
-            <td>{{ item.mp_calculada_perc }}</td>
-            <td>{{ item.final_trolley_count }}</td>
-            <td>{{ item.net_weight_crudo }}</td>
-            <td>{{ item.loin_kg }}</td>
-            <td>{{ item.flake_kg }}</td>
-            <td>{{ item.other_loin_kg }}</td>
-            <td>{{ item.other_flake_kg }}</td>
-            <td>{{ item.total_loin }}</td>
-            <td>{{ item.total_flake }}</td>
-            <td>{{ item.relac }}</td>
-            <td>{{ item.weight_kg_rociado }}</td>
-            <td>{{ item.weight_kg_cocido }}</td>
-            <td>{{ item.cleaning_type }}</td>
-            <td>{{ item.piezas }}</td>
-            <td>{{ item.factor }}</td>
-            <td>{{ item.exponente }}</td>
-            <td>{{ item.peso_prom }}</td>
-            <td>{{ item.loin_pct }}</td>
-            <td>{{ item.flake_pct }}</td>
-            <td>{{ item.rend_curva }}</td>
-            <td>{{ item.curva_pct }}</td>
-            <td>{{ item.merma_perc }}</td>
-            <td>{{ item.total_reject }}</td>
-            <td>{{ item.bleach_weight }}</td>
-            <td>{{ item.distributed_value }}</td>
-            <td>{{ item.std_loin }}</td>
-            <td>{{ item.rend_kg_field }}</td>
-          </tr>
-        </ng-template>
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td *ngFor="let col of columns">
+            {{ item[col.field] }}
+          </td>
+        </tr>
+      </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>
             <td colspan="9">Obtenga datos.</td>

@@ -12,10 +12,11 @@ import { IApiTally } from '../interfaces/apis-tally';
 export class QuiebreService {
 
   constructor(private http: HttpClient) { }
-  postAriel(fechas: string[]) {
-    return this.http.post<IResonseTali[]>(`${environment.urlApi}api-request/tali`,
+  postAriel(fechas: string[], apiTally: IApiTally) {
+    return this.http.post(`${environment.urlApi}apis/tally`,
       {
-        data: fechas
+        api: apiTally,
+        fechas: fechas
       }
     ).pipe(
       map(response => response),
