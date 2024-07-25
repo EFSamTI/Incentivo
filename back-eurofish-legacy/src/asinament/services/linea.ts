@@ -1,14 +1,13 @@
 import { Linea } from "../models/linea";
 
 
-const findOrCreateLinea = async (linea: string, id: number) => {
+const findOrCreateLinea = async (linea: string) => {
     const validate = await Linea.findOne({
         where: { nombrelinea: linea },
     });
 
     if (!validate) {
         const newLinea = Linea.create({
-            lineaid: id,
             nombrelinea: linea,
             created_at: new Date(),
         });

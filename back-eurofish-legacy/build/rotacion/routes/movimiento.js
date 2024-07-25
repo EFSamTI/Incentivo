@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.routeMovimiento = void 0;
+const express_1 = require("express");
+const session_1 = require("../../user/middleware/session");
+const movimiento_1 = require("../controllers/movimiento");
+const routeMovimiento = (0, express_1.Router)();
+exports.routeMovimiento = routeMovimiento;
+routeMovimiento.post("/asignaciones", session_1.checkJwt, movimiento_1.getAsignaciones);
+routeMovimiento.post("/movimientos", session_1.checkJwt, movimiento_1.getCambios);
+routeMovimiento.get("/movimientos/enviar", session_1.checkJwt, movimiento_1.getCambiosFuncionBD);
+routeMovimiento.post("/movimiento/ultimos", session_1.checkJwt, movimiento_1.getUltimoCamnbios);
+routeMovimiento.post("/movimiento/aplicar", session_1.checkJwt, movimiento_1.postAplicarCambios);
+routeMovimiento.post("/movimiento/restablecer", session_1.checkJwt, movimiento_1.postRestablecerCambios);

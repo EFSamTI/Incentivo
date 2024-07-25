@@ -2,18 +2,16 @@ import { Component, OnInit } from '@angular/core';
 
 import {
   Condition,
-  IBody,
 
   IItemAriel,
-
+  IRequestAriel,
   cargos,
 
-  itemExampleAriel,
-
   lineas,
-
   tunos,
 } from '../../interfaces/ariel';
+
+
 import { AsignacionService } from '../../services/asignacion.service';
 import { UiServiceService } from 'src/app/shared/services/ui-service.service';
 import { of, catchError, forkJoin } from 'rxjs';
@@ -91,24 +89,17 @@ export class AsinacionComponent implements OnInit {
   selectedAsignaciones: IItemAriel[] = [];
   copyListResponse: IItemAriel[] = [];
 
-  requestAriel?: IBody;
+  requestAriel?: IRequestAriel;
 
   loadData() {
     let conditiosnsAriel: Condition[] = [];
-    // if (this.selectCargo) {
-    //   conditiosnsAriel.push({
-    //     field: 'cargo',
-    //     operator: 'EQ',
-    //     value: this.selectCargo,
-    //   });
-    // }
-    // if (this.selectTurno) {
-    //   conditiosnsAriel.push({
-    //     field: 'turno',
-    //     operator: 'EQ',
-    //     value: this.selectTurno,
-    //   });
-    // }
+    if (this.selectTurno) {
+      conditiosnsAriel.push({
+        field: 'turno',
+        operator: 'EQ',
+        value: this.selectTurno,
+      });
+    }
     if (this.dateFiltre) {
       conditiosnsAriel.push({
         field: 'fecha_ingreso',
@@ -118,32 +109,15 @@ export class AsinacionComponent implements OnInit {
     }
 
     this.requestAriel = {
-      view: 'vw_nomina_mes',
-      fields: [
-        'codigo_persona',
-        'cedula',
-        'nombre',
-        'cod_area',
-        'area',
-        'centro_costo_01',
-        'codigo_centro_costo_01',
-        'centro_costo_02',
-        'codigo_centro_costo_02',
-        'centro_costo_03',
-        'codigo_centro_costo_03',
-        'centro_costo_04',
-        'codigo_centro_costo_04',
-        'centro_costo_05',
-        'codigo_centro_costo_05',
-        'fecha_ingreso',
-      ],
+      view: 'vw_asistencia_actividad',
+      fields: [],
       operators: [],
       conditions: conditiosnsAriel,
       order: [
         {
-          field: 'nombre',
+          field: 'nombre_persona',
           order: 'DESC',
-          option: 'LAST',
+          option: 'LAST'
         },
         {
           field: 'cedula',
@@ -151,10 +125,16 @@ export class AsinacionComponent implements OnInit {
       ],
       limit: 3,
     };
+    this.asignacionService.obtenerDatosAriel(this.requestAriel).subscribe({
+      error: (error) => {
+        console.log(error);
+        this.ui.presentToast('Error al cargar datos');
+      },
+      next: (response) => {
+        this.verifyAsginaciones(response.items);
+      },
+    });
 
-    console.log(this.requestAriel);
-    const data = itemExampleAriel;
-    this.verifyAsginaciones(data);
     this.copyListResponse = JSON.parse(JSON.stringify(this.listResponseAriel));
   }
 

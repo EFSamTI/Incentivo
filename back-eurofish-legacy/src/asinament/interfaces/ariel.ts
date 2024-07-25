@@ -27,21 +27,36 @@ export interface IResponseAriel {
   message: null;
 }
 
-export interface IItemAriel {
+
+
+export interface IItemAriel{
   cod_area: string;
   id_linea: number;
   cod_persona: string;
-  nombre_persona: string;
+  cedula: string;
   turno: string;
   linea: string;
-  id_turno: number;
-  fecha: string;
+  actividad: null;
+  horas: number;
+  cod_jefatura: string;
   area_persona: string;
-  nombre_area: string;
   cargo: string;
   cod_area_persona: string;
   id_cargo: number;
-  cedula: string;
+  proceso: null;
   hora_entrada: string;
-  asignado?: string;
+  nombre_persona: string;
+  tipo_gasto: string;
+  num_empresa: number;
+  cod_gerencia: string;
+  id_turno: number;
+  id_proceso: null;
+  fecha: string;
+  hora_salida: string;
+  nombre_area: string;
+  nombre_gerencia: string;
+  id_actividad: null;
+  nombre_jefatura: string;
+  asignado?:string
+  isComodin?:boolean
 }

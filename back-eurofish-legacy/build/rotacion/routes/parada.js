@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.routeParada = void 0;
+const express_1 = require("express");
+const session_1 = require("../../user/middleware/session");
+const parada_1 = require("../../parada/controllers/parada");
+const routeParada = (0, express_1.Router)();
+exports.routeParada = routeParada;
+routeParada.post("/paradas", session_1.checkJwt, parada_1.getParadasCtrl);
+routeParada.post("/parada", session_1.checkJwt, parada_1.postParadasCtrl);
+routeParada.put("/parada", session_1.checkJwt, parada_1.putParadasCtrl);
+routeParada.put("/parada/delete", session_1.checkJwt, parada_1.deleteParadasCtrl);

@@ -9,11 +9,11 @@ export class Asistencia extends BaseEntity {
   @Column()
   asignacionid: number;
 
-@Column({ type: "time" })
-hora_entrada: string;
+  @Column({ type: "time" })
+  hora_entrada: string;
 
-@Column({ type: "time", nullable: true })
-hora_salida: string;
+  @Column({ type: "time", nullable: true })
+  hora_salida: string;
 
   @Column({ type: "interval", nullable: true })
   tiempo_trabajo: any;

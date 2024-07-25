@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.routeDashboard = void 0;
+const express_1 = require("express");
+const dashborad_1 = require("../controllers/dashborad");
+const session_1 = require("../../user/middleware/session");
+const routeDashboard = (0, express_1.Router)();
+exports.routeDashboard = routeDashboard;
+routeDashboard.get("/dashboard/totales", session_1.checkJwt, dashborad_1.getTotales);
+routeDashboard.get("/dashboard/movimientos", session_1.checkJwt, dashborad_1.getMovimientos);
+routeDashboard.get("/dashboard/paradas", session_1.checkJwt, dashborad_1.getParadas);

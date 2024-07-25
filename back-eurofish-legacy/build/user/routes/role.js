@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.routerRol = void 0;
+const express_1 = require("express");
+const role_1 = require("../controllers/role");
+const session_1 = require("../middleware/session");
+const routerRol = (0, express_1.Router)();
+exports.routerRol = routerRol;
+routerRol.get("/roles/user", session_1.checkJwt, role_1.getRolesUserCtrl);
+routerRol.post("/role", session_1.checkJwt, role_1.registerRoleCtrl);
+routerRol.put("/role/update", session_1.checkJwt, role_1.updateRoleCtrl);
+routerRol.post("/role/delete", session_1.checkJwt, role_1.deleteRoleCtrl);
+routerRol.get("/roles", session_1.checkJwt, role_1.getRolesCtrl);
+routerRol.get("/options", session_1.checkJwt, role_1.getOptionsCtrl);
+routerRol.post("/new/option", session_1.checkJwt, role_1.createOptionCtrl);

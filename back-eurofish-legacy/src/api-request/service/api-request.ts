@@ -1,19 +1,19 @@
 import { Not, Equal } from "typeorm";
-import { AppDataSource } from "../../config/postgres";
 import {
-  IBodyRequest,
   IRegisterRequest,
-  IRequestAriel,
 } from "../interfaces/request";
 import { ConfigRequest } from "../model/config-request";
 import { ConfigTipo } from "../model/tipo";
 import { findOrCreateAmbiente } from "./ambiente";
 import { findOrCreateTipo } from "./tipo";
 
-const requestAriel = async (body: IBodyRequest) => {
-  const peticion = await obtenerParametros(body);
-  if (!peticion) return null;
-  return peticion;
+const requestAriel = async () => {
+  const data  = await ConfigRequest.findOne({
+    where: { state: true, tipoRequest: { nombre_tipo: "Ariel" } } 
+    ,relations: ["tipoRequest"],
+  });
+  if (!data) return null;
+  return data;
 };
 
 const requestTali = async () => {
@@ -26,26 +26,6 @@ const requestTali = async () => {
 }
 
 
-
-
-const obtenerParametros = async (
-  body: IBodyRequest
-): Promise<IRequestAriel | null> => {
-  const data = await ConfigRequest.findOne({
-    where: { state: true, tipoRequest: { nombre_tipo: "Ariel" } },
-  
-  });
-  if (!data) return null;
-  const requestAriel: IRequestAriel = {
-    source: data.source,
-    destination: data.destination,
-    operation: data.operation,
-    verb: data.verb,
-    path: data.path,
-    body: body,
-  };
-  return requestAriel;
-};
 
 
 

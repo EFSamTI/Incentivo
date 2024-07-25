@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IBody, IItemAriel, IResponseAriel } from '../interfaces/ariel';
+import { IRequestAriel, IItemAriel, IResponseArieL, IResponseArielMarcacion } from '../interfaces/ariel';
 import { map, catchError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -12,8 +12,8 @@ export class AsignacionService {
   constructor(private http: HttpClient) { }
 
 
-  obtenerDatosAriel(filter:IBody){
-    return this.http.post<IResponseAriel>(`${environment.urlApi}api-request`, {
+  obtenerDatosAriel(filter:IRequestAriel){
+    return this.http.post<IResponseArieL>(`${environment.urlApi}api-request/ariel`, {
       body: filter
     }).pipe(
       map(response => response),
@@ -29,6 +29,19 @@ export class AsignacionService {
       catchError(error => { throw error })
     );
   }
+
+  verifiMarcacionItemAsistencia(data: IRequestAriel) {
+    console.log({
+      bodyMarcacion: data
+    });
+    return this.http.post<IResponseArielMarcacion>(`${environment.urlApi}api-request/ariel/marcacion`, {
+      bodyMarcacion: data
+    }).pipe(
+      map(response => response),
+      catchError(error => { throw error })
+    );
+  }
+
 
   saveAsignacionComodin(data: IItemAriel[]) {
     return this.http.post<IItemAriel[]>(`${environment.urlApi}asignacion/comodin`, {

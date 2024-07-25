@@ -1,19 +1,37 @@
-import dotenv from "dotenv";
-import { IRequestTali, IResponseTali } from "../interfaces/tali";
-import { ConfigRequest } from "../model/config-request";
-dotenv.config();
 
-const fetchArielMessage = async (result: any): Promise<any> => {
-    const response = await fetch(`${process.env.URL_ARIEL}/v1/message`, {
+import { ConfigRequest } from "../model/config-request";
+import {  IBodyRequest } from "../interfaces/request";
+
+
+const fetchArielMessage = async (config: ConfigRequest, body: IBodyRequest[]) => {
+    const url = `${config.tipoRequest.url}`;
+    const response = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(result),
+        body: JSON.stringify({
+            source: config.source,
+            destination: config.destination,
+            operation: config.operation,
+            verb: config.verb,
+            path: config.path,
+            body: body
+        })
     });
-    if (!response.ok) return null;
-    return response.json();
+    if (!response.ok) {
+        return { status: 404, message: "No se encontraron los parametros" };
+    } else {
+        const text = await response.text(); 
+        if (text) { 
+            const data = JSON.parse(text); 
+            return { status: 200, data: data };
+        } else {
+            return { status: 204, message: "Respuesta vacía del servidor" };
+        }
+    }
 };
+
 
 interface IResponseFechaAndData {
     fecha: string;

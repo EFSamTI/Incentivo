@@ -12,22 +12,37 @@ import {
 } from "../service/api-request";
 import { fetchArielMessage, fetchTaliMessage } from "../middleware/peticion";
 import { tokenInfo } from "../../user/utils/jwt.handle";
+import { get } from 'http';
+import { getAsistenciaWithMarcacion } from "../service/asignacion";
 
 const postAriel = async (req: Request, res: Response) => {
   try {
     const { body } = req.body;
-    const result = await requestAriel(body);
-    if (!result) return httpError(res, "No se encontraron los parametros");
-    const dataResponse = await fetchArielMessage(result);
-    if (!dataResponse)
-      return httpError(res, "No se pudo obtener la respuesta de Ariel");
-    res.status(200).send(dataResponse);
+    const configAriel = await requestAriel();
+    if (!configAriel) return httpError(res, "No se encontraron los parametros");
+    const dataResponse = await fetchArielMessage(configAriel, body);
+    res.status(dataResponse.status).send(dataResponse.data || dataResponse.message);
   } catch (error) {
     if (error instanceof Error) {
       httpError(res, error.message);
     }
   }
 };
+
+const getAsistenciaWithMarcacionCtrl = async (req: Request, res: Response) => {
+  try {
+    const { bodyMarcacion } = req.body;
+    const dataResponse = await getAsistenciaWithMarcacion(bodyMarcacion);
+    if (!dataResponse) return httpError(res, "No se encontraron los parametros");
+    res.status(dataResponse.status).send(dataResponse.data || dataResponse.message);
+  } catch (error) {
+    if (error instanceof Error) {
+      httpError(res, error.message);
+    }
+  }
+}
+
+
 
 const postTali= async (req: Request, res: Response) => {
   try {
@@ -117,6 +132,7 @@ const eliminarConfigRequestCtrl = async (req: Request, res: Response) => {
 export {
   postAriel,
   postTali,
+  getAsistenciaWithMarcacionCtrl,
   createConfigRequestCtrl,
   updateConfigRequestCtrl,
   desactivarConfigRequestCtrl,

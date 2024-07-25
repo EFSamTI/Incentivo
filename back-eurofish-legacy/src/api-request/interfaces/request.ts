@@ -24,8 +24,8 @@ export  interface IBodyRequest {
     fields: string[];
     operators: any[];
     conditions: Condition[];
-    order: Order[];
-    limit: number;
+    order?: Order[];
+    limit?: number;
   }
   
   interface Order {

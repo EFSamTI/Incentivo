@@ -95,7 +95,7 @@ const saveAsignaciones = async (
     const [empleado, cargo, linea, area, turno, tipoAsignacion] = await Promise.all([
       findOrCreateEmpleado(a.nombre_persona, a.cedula, a.cod_persona),
       findOrCreateCargo(a.cargo, a.id_cargo),
-      findOrCreateLinea(a.linea, a.id_linea),
+      findOrCreateLinea(a.linea),
       findOrCreateArea(a.nombre_area, a.cod_area),
       findOrCreateTurno(a.turno),
       findOrCreateTipoAsignacion(tipo),

@@ -1,14 +1,9 @@
 import { DowloadPdfService } from './../../services/dowload-pdf.service';
 import { Component, OnInit } from '@angular/core';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
-import * as XLSX from 'xlsx';
 import { NavController } from '@ionic/angular';
 import { UiServiceService } from 'src/app/shared/services/ui-service.service';
-import { IResonseTali } from 'src/app/asignacion/interfaces/tali';
 import { QuiebreService } from '../../services/quiebre.service';
 import { IApiTally } from '../../interfaces/apis-tally';
-import { itemExampleAriel } from 'src/app/asignacion/interfaces/ariel';
 import { DowloadExcelService } from '../../services/dowload-excel.service';
 
 

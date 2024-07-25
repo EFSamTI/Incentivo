@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.routerAsignacion = void 0;
+const express_1 = require("express");
+const session_1 = require("../../user/middleware/session");
+const asignacion_1 = require("../controllers/asignacion");
+const routerAsignacion = (0, express_1.Router)();
+exports.routerAsignacion = routerAsignacion;
+routerAsignacion.post("/asignacion/verificar", session_1.checkJwt, asignacion_1.verifiAsignacionesCtrl);
+routerAsignacion.post("/asignacion/comodin", session_1.checkJwt, asignacion_1.asignacionesComodinCtrl);
+routerAsignacion.post("/asignacion/ariel", session_1.checkJwt, asignacion_1.asignacionesArielCtrl);
+routerAsignacion.post("/asignacion", session_1.checkJwt, asignacion_1.asignacionesSinCambiosCtrl);
+routerAsignacion.delete("/asignacion", session_1.checkJwt, asignacion_1.deleteAsignacionesCtrl);

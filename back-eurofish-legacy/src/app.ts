@@ -36,4 +36,6 @@ app.use(apiUrl, routeArea);
 app.use(apiUrl, routeDashboard);
 app.use(apiUrl, routeOrdenFabricacion);
 app.use(apiUrl, routeApisTally);
+
+
 export default app;
