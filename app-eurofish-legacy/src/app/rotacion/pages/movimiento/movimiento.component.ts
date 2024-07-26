@@ -4,7 +4,7 @@ import { UiServiceService } from '../../../shared/services/ui-service.service';
 import { Subject, debounceTime } from 'rxjs';
 import { NavController } from '@ionic/angular';
 import { MenuItem } from 'primeng/api';
-import { cargos, lineas, tunos } from 'src/app/asignacion/interfaces/ariel';
+import { actividades, cargos, lineas, tunos } from 'src/app/asignacion/interfaces/ariel';
 import { EmpleadoService } from 'src/app/asignacion/services/empleado.service';
 import { IAsignacion, IFilterAsignaciones } from '../../interfaces/movimiento';
 import { MovimientoService } from '../../services/movimiento.service';
@@ -29,7 +29,7 @@ export class MovimientoComponent {
   lineas = lineas;
   areas: string[] = [];
 
-  cargos: string[] = cargos;
+  actividades: string[] = actividades;
   tunos: string[] = tunos;
 
   selectLinea?: string;
@@ -65,6 +65,7 @@ export class MovimientoComponent {
         this.isLoading = false;
       },
       error: (error) => {
+        console.log(error);
         this.ui.alertaInformativa(error.error || error.message);
         this.listAsignaciones = [];
         this.isLoading = false;
@@ -124,7 +125,7 @@ export class MovimientoComponent {
       const change: IChanges = {
         asignacionid: asignacion.asignacionid,
         area: asignacion.nombre_area,
-        cargo: asignacion.cargoname
+        cargo: asignacion.actividadname
       };
       return change;
     });

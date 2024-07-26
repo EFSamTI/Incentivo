@@ -2,13 +2,13 @@ import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from "t
 import { Empleado } from "./empleado";
 import { Asignacion } from "./asignacion";
 
-@Entity("isentive_tcargos")
-export class Cargo extends BaseEntity {
+@Entity("isentive_tactividades")
+export class Actividad extends BaseEntity {
   @PrimaryGeneratedColumn()
-  cargoid: number;
+   actividadid: number;
 
   @Column({ length: 50 })
-  cargoname: string;
+  actividadname: string;
 
   @Column({ type: "timestamp" })
   created_at: Date;
@@ -16,6 +16,6 @@ export class Cargo extends BaseEntity {
   @Column({ type: "timestamp", nullable: true })
   update_at: Date;
 
-  @OneToMany(() => Asignacion, asignacion => asignacion.cargo)
+  @OneToMany(() => Asignacion, asignacion => asignacion.actividad)
   asignaciones: Asignacion[];
 }

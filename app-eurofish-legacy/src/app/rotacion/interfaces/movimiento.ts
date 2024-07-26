@@ -9,7 +9,7 @@ export interface IAsignacion {
   nombre_turno: string;
   nombre_empleado: string;
   cedula: string;
-  cargoname: string;
+  actividadname: string;
   nombre_area: string;
 }
 

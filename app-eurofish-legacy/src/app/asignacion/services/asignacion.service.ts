@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IRequestAriel, IItemAriel, IResponseArieL, IResponseArielMarcacion } from '../interfaces/ariel';
+
 import { map, catchError } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { IRequestAriel, IResponseAriel, IResponseEntradaAndSalida, ItemAsistencia } from '../interfaces/ariel';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class AsignacionService {
 
 
   obtenerDatosAriel(filter:IRequestAriel){
-    return this.http.post<IResponseArieL>(`${environment.urlApi}api-request/ariel`, {
+    return this.http.post<IResponseAriel<ItemAsistencia>>(`${environment.urlApi}api-request/ariel`, {
       body: filter
     }).pipe(
       map(response => response),
@@ -21,8 +22,8 @@ export class AsignacionService {
     );
   }
 
-  verifiAsignacion(data: IItemAriel[]) {
-    return this.http.post<IItemAriel[]>(`${environment.urlApi}asignacion/verificar`, {
+  verifiAsignacion(data: ItemAsistencia[]) {
+    return this.http.post<ItemAsistencia[]>(`${environment.urlApi}asignacion/verificar`, {
       data: data
     }).pipe(
       map(response => response),
@@ -30,12 +31,14 @@ export class AsignacionService {
     );
   }
 
-  verifiMarcacionItemAsistencia(data: IRequestAriel) {
+  verifiMarcacionItemAsistencia(data: IRequestAriel, itemAsistencia: ItemAsistencia) {
     console.log({
-      bodyMarcacion: data
+      bodyMarcacion: data,
+      itemAsistencia: itemAsistencia
     });
-    return this.http.post<IResponseArielMarcacion>(`${environment.urlApi}api-request/ariel/marcacion`, {
-      bodyMarcacion: data
+    return this.http.post<IResponseEntradaAndSalida>(`${environment.urlApi}api-request/ariel/marcacion`, {
+      bodyMarcacion: data,
+      itemAsistencia: itemAsistencia
     }).pipe(
       map(response => response),
       catchError(error => { throw error })
@@ -43,8 +46,8 @@ export class AsignacionService {
   }
 
 
-  saveAsignacionComodin(data: IItemAriel[]) {
-    return this.http.post<IItemAriel[]>(`${environment.urlApi}asignacion/comodin`, {
+  saveAsignacionComodin(data: ItemAsistencia[]) {
+    return this.http.post<ItemAsistencia[]>(`${environment.urlApi}asignacion/comodin`, {
       data: data
     }).pipe(
       map(response => response),
@@ -52,8 +55,8 @@ export class AsignacionService {
     );
   }
 
-  saveDatosAriel(data: IItemAriel[]) {
-    return this.http.post<IItemAriel[]>(`${environment.urlApi}asignacion/ariel`, {
+  saveDatosAriel(data: ItemAsistencia[]) {
+    return this.http.post<ItemAsistencia[]>(`${environment.urlApi}asignacion/ariel`, {
       data: data
     }).pipe(
       map(response => response),
@@ -61,8 +64,8 @@ export class AsignacionService {
     );
   }
 
-  saveAsinacionSinCambios(data: IItemAriel[]) {
-    return this.http.post<IItemAriel[]>(`${environment.urlApi}asignacion`, {
+  saveAsinacionSinCambios(data: ItemAsistencia[]) {
+    return this.http.post<ItemAsistencia[]>(`${environment.urlApi}asignacion`, {
       data: data
     }).pipe(
       map(response => response),
@@ -70,7 +73,7 @@ export class AsignacionService {
     );
   }
 
-  deleteAsignacion(data: IItemAriel) {
+  deleteAsignacion(data: ItemAsistencia) {
     return this.http.delete(`${environment.urlApi}asignacion`, {
       body: {
         data: data

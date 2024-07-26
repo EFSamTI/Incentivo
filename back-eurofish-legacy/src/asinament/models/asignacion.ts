@@ -2,10 +2,11 @@ import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOn
 import { Empleado } from "./empleado";
 import { Linea } from "./linea";
 import { AsignacionTipoAsignacion } from "./asignacionTipoAsginacion";
-import { Asistencia } from "./asistencia";
+
 import { Area } from "./area";
 import { Turno } from "./turno";
-import { Cargo } from "./cargo";
+import { Actividad } from "./actividad";
+import { Marcaje } from "./marcaje";
 
 @Entity("isentive_tasignaciones")
 export class Asignacion extends BaseEntity {
@@ -19,7 +20,7 @@ export class Asignacion extends BaseEntity {
   empleadoid: number;
 
   @Column()
-  cargoid: number;
+  actividadid: number;
 
   @Column()
   areaid: number;
@@ -57,9 +58,9 @@ export class Asignacion extends BaseEntity {
   @JoinColumn({ name: "areaid" })
   area: Area;
   
-  @ManyToOne(() => Cargo, cargo => cargo.asignaciones)
-  @JoinColumn({ name: "cargoid" })
-  cargo: Cargo;
+  @ManyToOne(() => Actividad, actividad => actividad.asignaciones)
+  @JoinColumn({ name: "actividadid" })
+  actividad: Actividad;
 
 
   @ManyToOne(() => Turno, turno => turno.asignaciones)
@@ -70,6 +71,6 @@ export class Asignacion extends BaseEntity {
   @JoinColumn({ name: "empleadoid" })
   empleado: Empleado;
 
-  @OneToMany(() => Asistencia, asitencia => asitencia.asignacion)
-  asistencia: Asistencia[];
+  @OneToMany(() => Marcaje, marcaje => marcaje.asignacion)
+  marcaje: Marcaje[];
 }

@@ -1,6 +1,6 @@
-import { Cargo } from "../models/cargo";
+
 import { Empleado } from '../models/empleado';
-import { findOrCreateCargo } from "./cargo";
+
 
 
 const listEmpleados = async () => {

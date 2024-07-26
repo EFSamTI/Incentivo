@@ -4,16 +4,17 @@ import { AsignacionTipoAsignacion } from "../models/asignacionTipoAsginacion";
 import { findOrCreateEmpleado } from "./empleado";
 import { findOrCreateLinea } from "./linea";
 import { findOrCreateTipoAsignacion } from "./tipoAsignacion";
-import { saveEntrada } from "./asistencia";
+
 import { findOrCreateArea } from "./area";
 import { findOrCreateTurno } from "./turno";
 import { TipoAsignacion } from "../models/tipoAsignacion";
 import { In } from "typeorm";
-import { findOrCreateCargo } from "./cargo";
-import { IItemAriel } from "../interfaces/ariel";
+import { findOrCreateActividad } from "./cargo";
+import { ItemAsistencia } from "../../api-request/interfaces/ariel";
+import { saveMarcacion } from "./asistencia";
 
 const saveAsignacionesComodin = async (
-  comodin: IItemAriel[],
+  comodin: ItemAsistencia[],
   idCreator: number
 ) => {
   const asignaciones = await saveAsignaciones(comodin, "COMODIN", idCreator);
@@ -25,7 +26,7 @@ const saveAsignacionesComodin = async (
 };
 
 const saveAsignacionesAriel = async (
-  ariel: IItemAriel[],
+  ariel: ItemAsistencia[],
   idCreator: number
 ) => {
   const asignaciones = await saveAsignaciones(ariel, "ARIEL", idCreator);
@@ -36,7 +37,7 @@ const saveAsignacionesAriel = async (
 };
 
 const saveAsignacionesSinCambios = async (
-  ariel: IItemAriel[],
+  ariel: ItemAsistencia[],
   idCreator: number
 ) => {
   const asignaciones = await saveAsignaciones(ariel, "NORMAL", idCreator);
@@ -46,21 +47,21 @@ const saveAsignacionesSinCambios = async (
   return { status: 404, message: "No se encontraron asignaciones" };
 };
 
-const verifyAsignaciones = async (itemsAriel: IItemAriel[]) => {
-  let asignacionesModificadas: IItemAriel[] = [];
+const verifyAsignaciones = async (itemsAriel: ItemAsistencia[]) => {
+  let asignacionesModificadas: ItemAsistencia[] = [];
   try {
     const tiposAsignacion = await TipoAsignacion.find({
       where: [
         { descripcion: "NORMAL" },
         { descripcion: "CAMBIO" },
-        { descripcion: "COMODIN"}
-      ]
+        { descripcion: "COMODIN" },
+      ],
     });
     if (tiposAsignacion.length === 0) {
-      return { status: 200, data: itemsAriel }; 
+      return { status: 200, data: itemsAriel };
     }
 
-    const idsTiposAsignacion = tiposAsignacion.map(tipo => tipo.tipoid);
+    const idsTiposAsignacion = tiposAsignacion.map((tipo) => tipo.tipoid);
     for (const a of itemsAriel) {
       const fechaCorteRemesulDate = new Date(a.fecha);
       const asignacionExistente = await Asignacion.findOne({
@@ -68,70 +69,72 @@ const verifyAsignaciones = async (itemsAriel: IItemAriel[]) => {
           asignacionTipoAsignaciones: { tipoid: In(idsTiposAsignacion) },
           empleado: { ci: a.cedula, nombre: a.nombre_persona },
           turno: { nombre_turno: a.turno },
-          fecha_ariel: fechaCorteRemesulDate
-        }
+          fecha_ariel: fechaCorteRemesulDate,
+          estado: true,
+        },
       });
       if (asignacionExistente) {
-          const codigo = `${a.hora_entrada}-${a.cod_persona}-${a.nombre_area}`;
-          a.asignado = codigo;
+        const codigo = `${a.hora_entrada}-${a.cod_persona}-${a.nombre_area}`;
+        a.asignado = codigo;
       }
       asignacionesModificadas.push(a);
     }
     return { status: 200, data: asignacionesModificadas };
   } catch (error) {
-
     return { status: 500, message: "Error interno del servidor" };
   }
 };
 
-
 const saveAsignaciones = async (
-  ariel: IItemAriel[],
+  ariel: ItemAsistencia[],
   tipo: string,
   idCreator: number
 ) => {
   const asignacionesGuardadas = [];
   for (const a of ariel) {
-    const [empleado, cargo, linea, area, turno, tipoAsignacion] = await Promise.all([
-      findOrCreateEmpleado(a.nombre_persona, a.cedula, a.cod_persona),
-      findOrCreateCargo(a.cargo, a.id_cargo),
-      findOrCreateLinea(a.linea),
-      findOrCreateArea(a.nombre_area, a.cod_area),
-      findOrCreateTurno(a.turno),
-      findOrCreateTipoAsignacion(tipo),
-    ]);
+    const [empleado, actividad, linea, area, turno, tipoAsignacion] =
+      await Promise.all([
+        findOrCreateEmpleado(a.nombre_persona, a.cedula, a.cod_persona),
+        findOrCreateActividad(a.actividad, a.id_actividad),
+        findOrCreateLinea(a.linea),
+        findOrCreateArea(a.nombre_area, a.cod_area),
+        findOrCreateTurno(a.turno),
+        findOrCreateTipoAsignacion(tipo),
+      ]);
     const asignacion = Asignacion.create({
       estado: true,
       created_at: new Date(),
       registeredByUserId: idCreator,
       fecha_ariel: new Date(a.fecha),
-      hora_asignacion: new Date().toISOString().split('T')[1].substring(0, 8),
+      hora_asignacion: new Date().toISOString().split("T")[1].substring(0, 8),
       area,
       turno,
       empleado,
-      cargo,
+      actividad,
       linea,
     });
-    
-    await asignacion.save();
 
+    await asignacion.save();
+    if (a.entrada) {
+      saveMarcacion(asignacion, a.entrada);
+    }
+    if (a.salida) {
+      saveMarcacion(asignacion, a.salida);
+    }
     const asignacionTipoAsignacion = AsignacionTipoAsignacion.create({
       asignacion: asignacion,
       tipoAsignacion: tipoAsignacion,
       created_at: new Date(),
     });
     await asignacionTipoAsignacion.save();
-    if (tipo !== "Ariel") {
-      await saveEntrada(asignacion);
-    }
     asignacionesGuardadas.push(asignacion);
   }
   return asignacionesGuardadas;
 };
 
-const deleteAsignacion = async (asignacion: IItemAriel) => {
+const deleteAsignacion = async (asignacion: ItemAsistencia) => {
   const asignacionDelete = await Asignacion.findOne({
-    where: {     
+    where: {
       empleado: { ci: asignacion.cedula, nombre: asignacion.nombre_persona },
       turno: { nombre_turno: asignacion.turno },
       fecha_ariel: new Date(asignacion.fecha),
@@ -149,5 +152,5 @@ export {
   saveAsignacionesAriel,
   saveAsignacionesSinCambios,
   deleteAsignacion,
-  verifyAsignaciones
+  verifyAsignaciones,
 };

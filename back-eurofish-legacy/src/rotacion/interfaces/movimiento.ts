@@ -22,3 +22,27 @@ export interface IFilterCambios {
   linea?: string;
   turno?: string;
 }
+
+
+
+
+export interface IChanges {
+  asignacionid: number;
+  area: string;
+  actividad: string;
+}
+
+
+export  interface IRestablecerCambios {
+  idMovimiento: number;
+  empleado: string; 
+  ci: string;
+  idOriginal: number;
+  actividadOriginal: string;
+  areaOriginal: string;
+  idCambio: number;
+  actividadCambio: string;
+  areaCambio: string;
+  hora: string;
+}
+

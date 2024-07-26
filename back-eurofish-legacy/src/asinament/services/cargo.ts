@@ -1,12 +1,12 @@
-import { Cargo } from "../models/cargo";
-const findOrCreateCargo = async (cargo: string, id:number) => {
-    const validatecargo = await Cargo.findOne({
-        where: { cargoname: cargo },
+import { Actividad } from "../models/actividad";
+const findOrCreateActividad = async (cargo: string, id:number) => {
+    const validatecargo = await Actividad.findOne({
+        where: { actividadname: cargo },
     });
     if (!validatecargo) {
-        const newCargo = Cargo.create({
-            cargoid: id,
-            cargoname: cargo,
+        const newCargo = Actividad.create({
+            actividadid: id,
+            actividadname: cargo,
             created_at: new Date(),
         });
         return await newCargo.save();
@@ -16,20 +16,20 @@ const findOrCreateCargo = async (cargo: string, id:number) => {
     }
 }
 
-const findOrCreateCargoNew = async (cargo: string) => {
-    const validatecargo = await Cargo.findOne({
-        where: { cargoname: cargo },
+const findOrCreateActividadNew = async (cargo: string) => {
+    const validate = await Actividad.findOne({
+        where: { actividadname: cargo },
     });
-    if (!validatecargo) {
-        const newCargo = Cargo.create({
+    if (!validate) {
+        const newActividad = Actividad.create({
     
-            cargoname: cargo,
+            actividadname: cargo,
             created_at: new Date(),
         });
-        return await newCargo.save();
+        return await newActividad.save();
     }
     else {
-        return validatecargo;
+        return validate;
     }
 }
-export { findOrCreateCargo, findOrCreateCargoNew };
+export { findOrCreateActividad, findOrCreateActividadNew };

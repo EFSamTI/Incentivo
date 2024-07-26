@@ -1,18 +1,17 @@
-
-export interface IRequestAsistencia {
-  items: Asistencia[];
+export interface IResponseAriel<T> {
+  items: T[];
   total: number;
   message: null;
 }
 
-interface Asistencia {
+export interface ItemAsistencia {
   cod_area: string;
   id_linea: null | number;
   cod_persona: string;
   cedula: string;
   turno: string;
-  linea: null | string;
-  actividad: null | string;
+  linea: string;
+  actividad:  string;
   horas: number;
   cod_jefatura: string;
   area_persona: string;
@@ -31,18 +30,15 @@ interface Asistencia {
   hora_salida: string;
   nombre_area: string;
   nombre_gerencia: string;
-  id_actividad: null | number;
-  nombre_jefatura: string;
+  id_actividad: number;
+  nombre_jefatura: string;  
+  asignado?:string
+  isComodin?:boolean
+  entrada?:ItemMarcaje;
+  salida?:ItemMarcaje;
 }
 
-
-export interface IRequestMarcacion {
-  items: Marca[];
-  total: number;
-  message: null;
-}
-
-interface Marca {
+export interface ItemMarcaje {
   codigo: string;
   hora: string;
   tipo_marcaje: string;

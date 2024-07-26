@@ -1,19 +1,17 @@
-import {
-  IChanges,
-  IRestablecerCambios,
-} from "../../asinament/interfaces/ariel";
 
 import { Asignacion } from "../../asinament/models/asignacion";
 import { AsignacionTipoAsignacion } from "../../asinament/models/asignacionTipoAsginacion";
 
 import { findArea } from "../../asinament/services/area";
-import { saveEntrada } from "../../asinament/services/asistencia";
-import { findOrCreateCargoNew } from "../../asinament/services/cargo";
+
+import { findOrCreateActividadNew } from "../../asinament/services/cargo";
 import { findOrCreateTipoAsignacion } from "../../asinament/services/tipoAsignacion";
 import {
   IFilterAsignaciones,
   IFilterCambios,
   IBody,
+  IChanges,
+  IRestablecerCambios,
 } from "../interfaces/movimiento";
 import { Movimiento } from "../models/movimiento";
 
@@ -28,7 +26,7 @@ const listFilterAsignaciones = async (filter: IFilterAsignaciones) => {
     nombre_turno, 
     nombre_empleado, 
     cedula, 
-    cargoname, 
+    actividadname,
     nombre_area
   FROM 
     vista_asignaciones_detalle
@@ -130,12 +128,12 @@ const aplicarMovimientoAsignacion = async (changes: IChanges[]) => {
     });
     if (!asignacionOriginal)
       return { status: 404, message: "No se encontró la asignación" };
-    const [area, cargo, tipoChange] = await Promise.all([
+    const [area, actividad, tipoChange] = await Promise.all([
       findArea(a.area),
-      findOrCreateCargoNew(a.cargo),
+      findOrCreateActividadNew(a.actividad),
       findOrCreateTipoAsignacion("CAMBIO"),
     ]);
-    if (!area || !cargo || !tipoChange)
+    if (!area || !actividad || !tipoChange)
       return {
         status: 404,
         message: "No se encontró la asignación area, cargo, tipochange",
@@ -146,14 +144,13 @@ const aplicarMovimientoAsignacion = async (changes: IChanges[]) => {
       registeredByUserId: asignacionOriginal.registeredByUserId,
       empleado: asignacionOriginal.empleado,
       area,
-      cargo,
+      actividad,
       turno: asignacionOriginal.turno,
       created_at: new Date(),
       fecha_ariel: asignacionOriginal.fecha_ariel,
       hora_asignacion: asignacionOriginal.hora_asignacion,
     });
     await nuevaAsignacion.save();
-    await saveEntrada(nuevaAsignacion);
     const asignacionTipoAsingacion = AsignacionTipoAsignacion.create({
       asignacion: nuevaAsignacion,
       tipoAsignacion: tipoChange,
@@ -189,7 +186,7 @@ const restablecerMovimiento = async (restablecer: IRestablecerCambios[]) => {
       };
     const [area, cargo] = await Promise.all([
       findArea(r.areaOriginal),
-      findOrCreateCargoNew(r.cargoOriginal),
+      findOrCreateActividadNew(r.actividadOriginal),
     ]);
     if (!area || !cargo)
       return {
@@ -199,7 +196,7 @@ const restablecerMovimiento = async (restablecer: IRestablecerCambios[]) => {
 
     asignacionOriginal.estado = true;
     asignacionOriginal.area = area;
-    asignacionOriginal.cargo = cargo;
+    asignacionOriginal.actividad = cargo;
     asignacionOriginal.update_at = new Date();
     await asignacionOriginal.save();
     const asignacionCambio = await Asignacion.findOne({

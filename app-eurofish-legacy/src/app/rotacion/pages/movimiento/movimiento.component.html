@@ -128,12 +128,12 @@
               Cedula - Nombre
               <p-sortIcon field="nombre_empleado"></p-sortIcon>
             </th>
-            <th style="min-width: 4rem" pSortableColumn="datum.cargoname">
-              Cargo
-              <p-sortIcon field="datum.cargoname"></p-sortIcon>
+            <th style="min-width: 4rem" pSortableColumn="datum.actividadname">
+              Actividad
+              <p-sortIcon field="datum.actividadname"></p-sortIcon>
             </th>
             <th style="min-width: 4rem">Area</th>
-            <th style="width: 10rem">Puesto/Cargo</th>
+            <th style="width: 10rem">Puesto/Actividad</th>
             <th style="width: 8rem"></th>
           </tr>
         </ng-template>
@@ -145,7 +145,7 @@
             <td>{{ datum.asignacionid }}</td>
             <td>{{ datum.cedula }} - {{ datum.nombre_empleado }}</td>
             <td>
-              {{ datum.cargoname }}
+              {{ datum.actividadname }}
             </td>
             <td>
 
@@ -169,8 +169,8 @@
             </td>
             <td>
               <p-dropdown
-                [options]="cargos"
-                [(ngModel)]="datum.cargoname"
+                [options]="actividades"
+                [(ngModel)]="datum.actividadname"
                 (onChange)="onCargoChange(datum)"
                 optionLabel="name"
                 [style]="{ width: '125px' }"
@@ -178,11 +178,11 @@
               >
                 <ng-template pTemplate="selectedItem">
                   <div class="country-item country-item-value">
-                    <div>{{ datum.cargoname }}</div>
+                    <div>{{ datum.actividadname }}</div>
                   </div>
                 </ng-template>
-                <ng-template pTemplate="item" let-cargo>
-                  <div>{{ cargo }}</div>
+                <ng-template pTemplate="item" let-actividad>
+                  <div>{{ actividad }}</div>
                 </ng-template>
               </p-dropdown>
             </td>

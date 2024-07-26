@@ -14,10 +14,9 @@ import { TipoAsignacion } from "../asinament/models/tipoAsignacion";
 import { AsignacionTipoAsignacion } from "../asinament/models/asignacionTipoAsginacion";
 import { Movimiento } from "../rotacion/models/movimiento";
 
-import { Cargo } from "../asinament/models/cargo";
 import { Empleado } from "../asinament/models/empleado";
 import { Linea } from "../asinament/models/linea";
-import { Asistencia } from "../asinament/models/asistencia";
+
 import { Area } from "../asinament/models/area";
 import { Turno } from "../asinament/models/turno";
 
@@ -30,6 +29,8 @@ import { OrdenFabricacion } from '../notificacion/models/orden-fabricacion';
 import { OrdenFabricacionRecurso } from '../notificacion/models/orden-fabricacion-recurso';
 import { OrdenFabricacionProduccion } from '../notificacion/models/orden-fabricacion-produccion';
 import { ApisTally } from '../apis-tally/models/api-tally';
+import { Marcaje } from '../asinament/models/marcaje';
+import { Actividad } from '../asinament/models/actividad';
 
 dotenv.config();
 export const AppDataSource = new DataSource({
@@ -40,6 +41,6 @@ export const AppDataSource = new DataSource({
     password: process.env.PASSWORD_BD,
     database: process.env.DATABASE,
     logging: true,
-    entities: [ApisTally,OrdenFabricacion, OrdenFabricacionProduccion, OrdenFabricacionRecurso, OrdenFabricacionTipoIngreso,ConfigRequest, ConfigAmbiente, ConfigTipo, User, Session, RoleOption, Role, UserRole, Option, Asignacion, TipoAsignacion, AsignacionTipoAsignacion, Movimiento, Cargo, Empleado, Linea, Asistencia, Area, Turno, Parada, TipoParada],
+    entities: [ApisTally,OrdenFabricacion, OrdenFabricacionProduccion, OrdenFabricacionRecurso, OrdenFabricacionTipoIngreso,ConfigRequest, ConfigAmbiente, ConfigTipo, User, Session, RoleOption, Role, UserRole, Option, Asignacion, TipoAsignacion, AsignacionTipoAsignacion, Movimiento, Actividad, Empleado, Linea, Marcaje, Area, Turno, Parada, TipoParada],
     synchronize: true
 });

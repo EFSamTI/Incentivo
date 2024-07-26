@@ -31,8 +31,8 @@ const postAriel = async (req: Request, res: Response) => {
 
 const getAsistenciaWithMarcacionCtrl = async (req: Request, res: Response) => {
   try {
-    const { bodyMarcacion } = req.body;
-    const dataResponse = await getAsistenciaWithMarcacion(bodyMarcacion);
+    const { bodyMarcacion, itemAsistencia } = req.body;
+    const dataResponse = await getAsistenciaWithMarcacion(bodyMarcacion, itemAsistencia);
     if (!dataResponse) return httpError(res, "No se encontraron los parametros");
     res.status(dataResponse.status).send(dataResponse.data || dataResponse.message);
   } catch (error) {

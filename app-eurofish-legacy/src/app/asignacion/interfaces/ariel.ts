@@ -23,36 +23,21 @@ export interface Condition {
 export const cargos: string[] = ['OPERARIO EMPACADOR DE FUNDAS','OPERADOR DE AUTOCLAVE','AUTOCLAVE (ESTERILIZADO)','FILETEADOR', 'DESPELLEJADOR', 'PANZA'];
 export const tunos: string[] = ['TURNO 1', 'TURNO 2', 'TURNO 3'];
 export const lineas: string[] = ['LINEA 1', 'LINEA 2', 'LINEA 3', 'LINEA 4', 'LINEA 5', 'LINEA 6', 'LINEA 7'];
+export const actividades: string[] = ['BANDA FLAKE', 'DETECTOR DE METALES / TERMOENCOGIDO', 'LIMPIEZA DE LOMOS', 'ADM - SUPERVISION', 'SELLADOR FUNDA', 'CONTROL BAÑO', 'RECOGE FLAKE', 'EMPAQUE FUNDAS FLAKE', 'LIMPIEZA DE CACHOS', 'LIQUIDADOR','RECOGE CHAROLAS Y SANGRE'];
 
-
-export interface IResponseArielMarcacion {
-  items: ItemMarcacion[];
+export interface IResponseAriel<T> {
+  items: T[];
   total: number;
   message: null;
 }
 
-interface ItemMarcacion {
-  codigo: string;
-  hora: string;
-  tipo_marcaje: string;
-  num_empresa: number;
-  nombre: string;
-}
-
-
-export interface IResponseArieL {
-  items: IItemAriel[];
-  total: number;
-  message: null;
-}
-
-export interface IItemAriel {
+export interface ItemAsistencia {
   cod_area: string;
   id_linea: null | number;
   cod_persona: string;
   cedula: string;
   turno: string;
-  linea: null | string;
+  linea: string;
   actividad: null | string;
   horas: number;
   cod_jefatura: string;
@@ -73,10 +58,24 @@ export interface IItemAriel {
   nombre_area: string;
   nombre_gerencia: string;
   id_actividad: null | number;
-  nombre_jefatura: string;
-  asignado?: string
-  isComodin?: boolean;
-  itemMarcacion?: ItemMarcacion;
+  nombre_jefatura: string;  
+  asignado?:string
+  isComodin?:boolean
+  entrada?:ItemMarcaje;
+  salida?:ItemMarcaje;
 }
 
+export interface ItemMarcaje {
+  codigo: string;
+  hora: string;
+  tipo_marcaje: string;
+  num_empresa: number;
+  nombre: string;
+}
+
+
+export interface IResponseEntradaAndSalida {
+  entrada: ItemMarcaje;
+  salida: ItemMarcaje;
+}
 

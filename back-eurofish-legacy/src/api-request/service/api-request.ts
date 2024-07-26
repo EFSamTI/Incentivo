@@ -3,7 +3,6 @@ import {
   IRegisterRequest,
 } from "../interfaces/request";
 import { ConfigRequest } from "../model/config-request";
-import { ConfigTipo } from "../model/tipo";
 import { findOrCreateAmbiente } from "./ambiente";
 import { findOrCreateTipo } from "./tipo";
 

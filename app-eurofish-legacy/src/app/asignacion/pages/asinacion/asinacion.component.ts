@@ -3,8 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import {
   Condition,
 
-  IItemAriel,
+
   IRequestAriel,
+  ItemAsistencia,
   cargos,
 
   lineas,
@@ -84,10 +85,10 @@ export class AsinacionComponent implements OnInit {
   dateFiltre?: string;
   displayNewComodin = false;
 
-  listResponseAriel: IItemAriel[] = [];
+  listResponseAriel: ItemAsistencia[] = [];
 
-  selectedAsignaciones: IItemAriel[] = [];
-  copyListResponse: IItemAriel[] = [];
+  selectedAsignaciones: ItemAsistencia[] = [];
+  copyListResponse: ItemAsistencia[] = [];
 
   requestAriel?: IRequestAriel;
 
@@ -138,8 +139,8 @@ export class AsinacionComponent implements OnInit {
     this.copyListResponse = JSON.parse(JSON.stringify(this.listResponseAriel));
   }
 
-  verifyAsginaciones(data: IItemAriel[]) {
-    this.asignacionService.verifiAsignacion(data as IItemAriel[]).subscribe({
+  verifyAsginaciones(data: ItemAsistencia[]) {
+    this.asignacionService.verifiAsignacion(data as ItemAsistencia[]).subscribe({
       error: (error) => {
         this.ui.alertaInformativa('Error al verificar asignaciones');
       },
@@ -244,7 +245,7 @@ export class AsinacionComponent implements OnInit {
     this.displayNewComodin = false;
   }
 
-  deleteAsignacion(asignacion: IItemAriel) {
+  deleteAsignacion(asignacion: ItemAsistencia) {
     if (!asignacion.asignado) {
       this.ui.alertaInformativa(
         'No se puede eliminar una asignación sin asignar'

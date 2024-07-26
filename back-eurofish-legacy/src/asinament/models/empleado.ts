@@ -1,5 +1,4 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from "typeorm";
-import { Cargo } from "./cargo";
 import { Asignacion } from "./asignacion";
 
 @Entity("isentive_templeados")
