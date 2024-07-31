@@ -1,58 +1,63 @@
-
-<div class="grid">
+<div class="grid" style="height: 80vh">
   <div class="col-12">
-    <div class="card">
+    <div class="card" style="min-height: 100%">
+      <p-messages class="layout-message" [value]="msgs"></p-messages>
       <ul class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
         <li>
-          <a class="text-500 no-underline line-height-3 cursor-pointer" (click)="goHome()">
-              <i class="pi pi-home"></i>
+          <a
+            class="text-500 no-underline line-height-3 cursor-pointer"
+            (click)="goHome()"
+          >
+            <i class="pi pi-home"></i>
           </a>
-      </li>
-        <li class="px-2">
-            <i class="pi pi-angle-right text-500 line-height-3"></i>
-        </li>
-        <li>
-            <span class="text-900 line-height-3 cursor-pointer" (click)="goParadas()">Crear parada</span>
         </li>
         <li class="px-2">
-            <i class="pi pi-angle-right text-500 line-height-3"></i>
+          <i class="pi pi-angle-right text-500 line-height-3"></i>
         </li>
         <li>
-            <span class="text-900 line-height-3">Mantenimiento paradas</span>
+          <span
+            class="text-900 line-height-3 cursor-pointer"
+            (click)="goParadas()"
+            >Crear parada</span
+          >
         </li>
-    </ul>
-    <div class="mb-3 font-bold text-2xl">
-      <span class="text-900">Mantenimiento, </span>
-      <span class="text-blue-600">Paradas</span>
-    </div>
-    <div class="text-700 text-sm mb-3">
-      Edite o elimine paradas registradas y envíe la información a Tali.
-    </div>
+        <li class="px-2">
+          <i class="pi pi-angle-right text-500 line-height-3"></i>
+        </li>
+        <li>
+          <span class="text-900 line-height-3">Mantenimiento paradas</span>
+        </li>
+      </ul>
+
       <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
-          <div class="my-2">
-            <div class="field">
-              <label for="date" class="block text-900 font-medium text-xl mb-2">Fecha</label>
-              <input
-                type="date"
-                pInputText
-                [(ngModel)]="filterFecha"
-                class="w-full"
-                name="filterFecha"
-                id="filterFecha"
-                placeholder="Fecha"
-                onkeydown="return false;"
-              />
-            </div>
+          <p-inputGroup>
+            <p-inputGroupAddon>
+              <label for="filtro" class="text-900 font-medium text-xl"
+                >Filtro</label
+              >
+            </p-inputGroupAddon>
+            <input
+              type="date"
+              pInputText
+              [(ngModel)]="filterFecha"
+              name="filterFecha"
+              id="filterFecha"
+              placeholder="Fecha"
+            />
             <p-dropdown
               [options]="lineas"
               [(ngModel)]="selectLinea"
               optionLabel="name"
               [showClear]="true"
               placeholder="Seleccione la linea"
-              class="mr-2"
               [loading]="isLoading"
-              [style]="{ width: '15rem' }"
+              [style]="{
+                width: '15rem',
+                height: '100%',
+                'border-radius': '0',
+                'align-items': 'center'
+              }"
             >
               <ng-template pTemplate="selectedItem">
                 <div
@@ -68,6 +73,7 @@
                 </div>
               </ng-template>
             </p-dropdown>
+
             <p-dropdown
               [options]="turnos"
               [(ngModel)]="selectTurno"
@@ -76,7 +82,12 @@
               filterBy="description"
               [showClear]="true"
               placeholder="Seleccione el turno"
-              [style]="{ width: '15rem' }"
+              [style]="{
+                width: '15rem',
+                height: '100%',
+                'border-radius': '0',
+                'align-items': 'center'
+              }"
             >
               <ng-template pTemplate="selectedItem">
                 <div
@@ -92,28 +103,28 @@
                 </div>
               </ng-template>
             </p-dropdown>
-          </div>
+
+            <button
+              pButton
+              type="button"
+              icon="pi pi-search"
+              class="p-button-info mr-3"
+              (click)="obtenerData()"
+            ></button>
+          </p-inputGroup>
+          <div class="my-2"></div>
         </ng-template>
 
         <ng-template pTemplate="right">
           <button
             pButton
             type="button"
-            label="Bucar"
-            icon="pi pi-search"
-            class="p-button-info mr-3"
-            (click)="obtenerData()"
+            label="Enviar"
+            icon="pi pi-send"
+            class="p-button-success"
+            [disabled]="!selectParadas.length"
+            (click)="enviarParada()"
           ></button>
-
-          <button
-          pButton
-          type="button"
-          label="Enviar"
-          icon="pi pi-send"
-          class="p-button-success"
-          [disabled]=" !selectParadas.length "
-          (click)="enviarParada()"
-        ></button>
         </ng-template>
       </p-toolbar>
 
@@ -122,12 +133,12 @@
         [rows]="5"
         [loading]="isLoading"
         [rowHover]="true"
-
         styleClass="p-datatable-sm"
         [paginator]="true"
         [rowsPerPageOptions]="[10, 25, 50]"
         responsiveLayout="scroll"
-        [(selection)]="selectParadas" selectionMode="multiple"
+        [(selection)]="selectParadas"
+        selectionMode="multiple"
       >
         <ng-template pTemplate="header">
           <tr>
@@ -222,7 +233,9 @@
 >
   <ng-template pTemplate="content">
     <div class="field">
-      <label for="name" class="block text-900 font-medium text-xl mb-2">Hora inicio</label>
+      <label for="name" class="block text-900 font-medium text-xl mb-2"
+        >Hora inicio</label
+      >
       <input
         type="datetime-local"
         pInputText
@@ -233,7 +246,9 @@
       />
     </div>
     <div class="field">
-      <label for="name" class="block text-900 font-medium text-xl mb-2">Hora fin</label>
+      <label for="name" class="block text-900 font-medium text-xl mb-2"
+        >Hora fin</label
+      >
       <input
         type="datetime-local"
         pInputText

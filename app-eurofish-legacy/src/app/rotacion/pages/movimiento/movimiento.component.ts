@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { UiServiceService } from '../../../shared/services/ui-service.service';
 import { Subject, debounceTime } from 'rxjs';
 import { NavController } from '@ionic/angular';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, Message } from 'primeng/api';
 import { actividades, cargos, lineas, tunos } from 'src/app/asignacion/interfaces/ariel';
 import { EmpleadoService } from 'src/app/asignacion/services/empleado.service';
 import { IAsignacion, IFilterAsignaciones } from '../../interfaces/movimiento';
@@ -45,6 +45,7 @@ export class MovimientoComponent {
   ];
 
   ngOnInit() {
+    this.showInfoViaMessages();
     this.loadAreas();
   }
 
@@ -125,7 +126,7 @@ export class MovimientoComponent {
       const change: IChanges = {
         asignacionid: asignacion.asignacionid,
         area: asignacion.nombre_area,
-        cargo: asignacion.actividadname
+        actividad: asignacion.actividadname
       };
       return change;
     });
@@ -145,10 +146,21 @@ export class MovimientoComponent {
   goHome() {
     this.navCtrl.navigateBack('/dashboard');
   }
+  msgs: Message[] = [];
+  showInfoViaMessages() {
+    this.msgs = [];
+    this.msgs.push({
+      severity: 'info',
+      summary: 'Rotación de Personal',
+      detail:
+        'Gestione la rotación de personal y realice seguimientos detallados.',
+      icon: 'pi pi-users',
+    });
+  }
 }
 
 interface IChanges {
   asignacionid: number;
   area: string;
-  cargo: string;
+  actividad: string;
 }

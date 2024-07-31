@@ -4,7 +4,7 @@ import { Empleado } from '../../../rotacion/interfaces/movimiento';
 import { UiServiceService } from 'src/app/shared/services/ui-service.service';
 
 import { ParadaService } from '../../../parada/services/parada.service';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, Message } from 'primeng/api';
 import { NavController } from '@ionic/angular';
 import { IRegisterParada } from '../../../parada/interfaces/paradas';
 import { ILinea } from 'src/app/asignacion/interfaces/linea';
@@ -49,6 +49,7 @@ export class ParadasComponent implements OnInit {
   selectTipoParada?: any;
 
   ngOnInit() {
+    this.showInfoViaMessages();
     this.turnos = tunos;
     this.tipoFiltro = [
       { name: 'Individual', value: 'Individual' },
@@ -150,5 +151,15 @@ export class ParadasComponent implements OnInit {
   goHome() {
     this.navCtrlr.navigateBack('/dashboard');
   }
-
+  msgs: Message[] = [];
+  showInfoViaMessages() {
+    this.msgs = [];
+    this.msgs.push({
+      severity: 'info',
+      summary: 'Registro de Paradas',
+      detail:
+        'Registre y gestione las paradas de usuarios, incluyendo fecha, turno y área.',
+      icon: 'pi pi-file',
+    });
+  }
 }

@@ -1,34 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfigService } from '../../services/config.service';
 import { UiServiceService } from 'src/app/shared/services/ui-service.service';
-import {  NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { IConfiRequiest } from '../../interfaces/config-response';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Message } from 'primeng/api';
 @Component({
   selector: 'app-config-request',
-  templateUrl: './config-request.component.html'
+  templateUrl: './config-request.component.html',
 })
-
-export class ConfigRequestComponent  implements OnInit {
-
+export class ConfigRequestComponent implements OnInit {
   formConfig: FormGroup;
   isLoading = false;
   listConfigRequest: IConfiRequiest[] = [];
   selectConfigsRequest: IConfiRequiest[] = [];
 
-  tipos = [ 'Ariel', 'Tali'];
-  selectTipo?:string;
+  tipos = [
+    'ARIEL',
+    'TALI',
+    'BUSSINES-ONE-DETALLE-OF',
+    'BUSSINES-ONE-INVENTORY-EXITS',
+  ];
+  selectTipo?: string;
   ambientes = ['Desarrollo', 'Produccion', 'Pruebas'];
-  selectAmbiente?:string;
+  selectAmbiente?: string;
 
   select?: IConfiRequiest;
- openDialog = false;
+  openDialog = false;
   constructor(
     private ui: UiServiceService,
     private configService: ConfigService,
     private navCtrlr: NavController,
     private fb: FormBuilder
-  ) { 
+  ) {
     this.formConfig = this.fb.group({
       source: ['', Validators.required],
       destination: ['', Validators.required],
@@ -43,6 +47,7 @@ export class ConfigRequestComponent  implements OnInit {
 
   ngOnInit() {
     this.loadConfigRequest();
+    this.showInfoViaMessages();
   }
 
   get url() {
@@ -96,7 +101,6 @@ export class ConfigRequestComponent  implements OnInit {
     }
   }
 
-
   onSumit() {
     if (this.formConfig.invalid) {
       this.ui.alertaInformativa('Formulario invalido');
@@ -106,7 +110,7 @@ export class ConfigRequestComponent  implements OnInit {
     const configRequest = this.formConfig.value;
     if (this.select) {
       configRequest.id = this.select.id;
-      this.configService.updateConfigRequest(configRequest ).subscribe({
+      this.configService.updateConfigRequest(configRequest).subscribe({
         next: () => {
           this.ui.presentToast('Configuracion actualizada');
           this.loadConfigRequest();
@@ -129,9 +133,8 @@ export class ConfigRequestComponent  implements OnInit {
           this.isLoading = false;
         },
       });
+    }
   }
-}
-
 
   loadConfigRequest() {
     this.isLoading = true;
@@ -188,11 +191,19 @@ export class ConfigRequestComponent  implements OnInit {
     this.navCtrlr.navigateBack('/dashboard');
   }
 
-
   close() {
     this.openDialog = false;
     this.formConfig.reset();
   }
-
-
+  msgs: Message[] = [];
+  showInfoViaMessages() {
+    this.msgs = [];
+    this.msgs.push({
+      severity: 'info',
+      summary: 'Configuracion de Parametros',
+      detail:
+        'Cree, edite o elimine las configuraciones de las peticiones (solo una se puede tener activa a la vez de cada tipo)',
+      icon: 'pi pi-cog',
+    });
+  }
 }

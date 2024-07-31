@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { cargos } from 'src/app/asignacion/interfaces/ariel';
+import { actividades, cargos } from 'src/app/asignacion/interfaces/ariel';
 import { ILinea } from 'src/app/asignacion/interfaces/linea';
 import { LineaService } from 'src/app/asignacion/services/linea.service';
 import { UiServiceService } from 'src/app/shared/services/ui-service.service';
@@ -7,6 +7,7 @@ import { IMovimiento, IFilterCambios, Empleado } from '../../interfaces/movimien
 import { MovimientoService, IChanges } from '../../services/movimiento.service';
 import { AreaService } from '../../services/area.service';
 import { IArea } from '../../interfaces/area';
+import { Message, MessageService } from 'primeng/api';
 
 
 @Component({
@@ -23,13 +24,14 @@ export class RestablecerMovimientoComponent implements OnInit {
   modifAsignaciones: IMovimiento[] = [];
 
   areas: string[] = [];
-  cargos: string[] = cargos;
+  actividades: string[] = actividades;
 
   turnos = ['turno 1', 'turno 2', 'turno 3'];
   selectTurno?: string;
 
   lineas: ILinea[] = [];
   selectLinea?: ILinea;
+  msgs: Message[] = [];
 
   filterList: IFilterCambios = {};
 
@@ -37,7 +39,8 @@ export class RestablecerMovimientoComponent implements OnInit {
     private movimientoService: MovimientoService,
     private ui: UiServiceService,
     private lineaService: LineaService,
-    private areaService: AreaService
+    private areaService: AreaService,
+    private service: MessageService
   ) {}
 
   ngOnInit() {
@@ -165,7 +168,7 @@ export class RestablecerMovimientoComponent implements OnInit {
       const change: IChanges = {
         asignacionid: asignacion.id_original,
         area: asignacion.area_cambio,
-        cargo: asignacion.cargo_cambio,
+        actividad: asignacion.actividad_cambio,
       };
       return change;
     });
@@ -181,4 +184,9 @@ export class RestablecerMovimientoComponent implements OnInit {
       },
     });
   }
+  showInfoViaMessages() {
+    this.msgs = [];
+    this.msgs.push({ severity: 'info', summary: 'Info Message', detail: 'PrimeNG rocks' });
+}
+
 }

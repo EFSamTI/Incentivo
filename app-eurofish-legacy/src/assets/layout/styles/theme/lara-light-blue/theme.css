@@ -999,6 +999,7 @@
     border-top-left-radius: 6px;
   }
   .p-dropdown-panel .p-dropdown-header .p-dropdown-filter {
+    width: 100% !important;
     padding-right: 1.75rem;
     margin-right: -1.75rem;
   }

@@ -1,5 +1,5 @@
 import { httpError } from "../../user/utils/error.handle";
-import { aplicarMovimientoAsignacion, listFilterAsignaciones, listFilterUltimosMovimientos, listMovimientosFuncionBD, listMovimientosPersonal, restablecerMovimiento } from "../services/movimiento";
+import { aplicarMovimientoAsignacion, listFilterAsignaciones, listFilterUltimosMovimientos, listMovimientosPersonal, restablecerMovimiento } from "../services/movimiento";
 
 import { Request, Response } from "express";
 
@@ -41,17 +41,7 @@ const postRestablecerCambios = async (req: Request, res: Response) => {
     }
 }
 
-const getCambiosFuncionBD = async (req: Request, res: Response) => {
-    try {
-        const { body } = req.body;
-        const result = await listMovimientosFuncionBD(body);
-        res.status(result.status).send(result.data || result.message);
-    } catch (error) {
-        if (error instanceof Error) {
-            httpError(res, error.message);
-        }
-    }
-}
+
 
 const getCambios = async (req: Request, res: Response) => {
     try {
@@ -75,4 +65,4 @@ const getUltimoCamnbios = async (req: Request, res: Response) => {
         }
     }
 }
-export  { getAsignaciones, postAplicarCambios, postRestablecerCambios, getCambios, getUltimoCamnbios, getCambiosFuncionBD};
+export  { getAsignaciones, postAplicarCambios, postRestablecerCambios, getCambios, getUltimoCamnbios};

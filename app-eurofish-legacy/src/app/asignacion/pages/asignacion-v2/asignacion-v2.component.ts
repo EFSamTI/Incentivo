@@ -4,15 +4,22 @@ import { Subject, of, forkJoin } from 'rxjs';
 import { debounceTime, catchError } from 'rxjs/operators';
 
 import { NavController } from '@ionic/angular';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, Message } from 'primeng/api';
 import { UiServiceService } from 'src/app/shared/services/ui-service.service';
-import { actividades, Condition, IRequestAriel, IResponseAriel, ItemAsistencia, lineas, tunos } from '../../interfaces/ariel';
+import {
+  actividades,
+  Condition,
+  IRequestAriel,
+  IResponseAriel,
+  ItemAsistencia,
+  lineas,
+  tunos,
+} from '../../interfaces/ariel';
 import { AsignacionService } from '../../services/asignacion.service';
 
 @Component({
   selector: 'app-asignacion-v2',
   templateUrl: './asignacion-v2.component.html',
-
 })
 export class AsignacionV2Component implements OnInit {
   isLoading = false;
@@ -54,7 +61,10 @@ export class AsignacionV2Component implements OnInit {
   }
 
   ngOnInit() {
-    this.searchTerm.pipe(debounceTime(300)).subscribe((search) => this.filter(search));
+    this.searchTerm
+      .pipe(debounceTime(300))
+      .subscribe((search) => this.filter(search));
+    this.showInfoViaMessages();
   }
 
   get nombre_empleado() {
@@ -79,8 +89,16 @@ export class AsignacionV2Component implements OnInit {
   loadData() {
     const conditions: Condition[] = [
       { field: 'nombre_area', operator: 'EQ', value: 'PROCESO' },
-      this.selectTurno && { field: 'turno', operator: 'EQ', value: this.selectTurno },
-      this.dateFiltre && { field: 'fecha', operator: 'EQ', value: this.dateFiltre },
+      this.selectTurno && {
+        field: 'turno',
+        operator: 'EQ',
+        value: this.selectTurno,
+      },
+      this.dateFiltre && {
+        field: 'fecha',
+        operator: 'EQ',
+        value: this.dateFiltre,
+      },
     ].filter(Boolean) as Condition[];
 
     this.requestAriel = {
@@ -104,7 +122,9 @@ export class AsignacionV2Component implements OnInit {
       next: (response) => {
         this.dataAriel = response;
         this.verifyAsginaciones(response.items);
-        this.copyListResponse = JSON.parse(JSON.stringify(this.listResponseAriel));
+        this.copyListResponse = JSON.parse(
+          JSON.stringify(this.listResponseAriel)
+        );
       },
     });
   }
@@ -113,7 +133,9 @@ export class AsignacionV2Component implements OnInit {
     this.asignacionService.verifiAsignacion(data).subscribe({
       error: (error) => {
         this.isLoading = false;
-        this.ui.alertaInformativa(error.error || 'Error al verificar asignaciones');
+        this.ui.alertaInformativa(
+          error.error || 'Error al verificar asignaciones'
+        );
       },
       next: (response) => {
         this.isLoading = false;
@@ -161,7 +183,11 @@ export class AsignacionV2Component implements OnInit {
           minute: '2-digit',
         });
         this.listResponseAriel.forEach((item) => {
-          if (this.selectedAsignaciones.some((selectedItem) => selectedItem.cod_persona === item.cod_persona)) {
+          if (
+            this.selectedAsignaciones.some(
+              (selectedItem) => selectedItem.cod_persona === item.cod_persona
+            )
+          ) {
             const codigoAsignacion = `${horaActual}-${item.cod_persona}-${item.nombre_area}`;
             item.asignado = codigoAsignacion;
           }
@@ -172,9 +198,22 @@ export class AsignacionV2Component implements OnInit {
     };
 
     const observables = [
-      this.copyListResponse.length > 0 && this.asignacionService.saveDatosAriel(this.copyListResponse).pipe(catchError(handleError)),
-      this.selectedAsignaciones.filter((item) => !item.isComodin).length > 0 && this.asignacionService.saveAsinacionSinCambios(this.selectedAsignaciones.filter((item) => !item.isComodin)).pipe(catchError(handleError)),
-      this.selectedAsignaciones.filter((item) => item.isComodin).length > 0 && this.asignacionService.saveAsignacionComodin(this.selectedAsignaciones.filter((item) => item.isComodin)).pipe(catchError(handleError)),
+      this.copyListResponse.length > 0 &&
+        this.asignacionService
+          .saveDatosAriel(this.copyListResponse)
+          .pipe(catchError(handleError)),
+      this.selectedAsignaciones.filter((item) => !item.isComodin).length > 0 &&
+        this.asignacionService
+          .saveAsinacionSinCambios(
+            this.selectedAsignaciones.filter((item) => !item.isComodin)
+          )
+          .pipe(catchError(handleError)),
+      this.selectedAsignaciones.filter((item) => item.isComodin).length > 0 &&
+        this.asignacionService
+          .saveAsignacionComodin(
+            this.selectedAsignaciones.filter((item) => item.isComodin)
+          )
+          .pipe(catchError(handleError)),
     ].filter(Boolean);
 
     if (observables.length > 0) {
@@ -190,7 +229,9 @@ export class AsignacionV2Component implements OnInit {
 
   deleteAsignacion(asignacion: ItemAsistencia) {
     if (!asignacion.asignado) {
-      this.ui.alertaInformativa('No se puede eliminar una asignación sin asignar');
+      this.ui.alertaInformativa(
+        'No se puede eliminar una asignación sin asignar'
+      );
       return;
     }
     this.asignacionService.deleteAsignacion(asignacion).subscribe({
@@ -235,7 +276,9 @@ export class AsignacionV2Component implements OnInit {
       },
       error: (error) => {
         console.log(error);
-        this.ui.alertaInformativa(error.message || 'Error al validar marcaciones');
+        this.ui.alertaInformativa(
+          error.message || 'Error al validar marcaciones'
+        );
         this.isLoading = false;
       },
     });
@@ -260,7 +303,21 @@ export class AsignacionV2Component implements OnInit {
 
   filter(search: string) {
     this.listResponseAriel = search
-      ? this.copyListResponseAsistencia.filter((evento) => evento.cedula.includes(search))
+      ? this.copyListResponseAsistencia.filter((evento) =>
+          evento.cedula.includes(search)
+        )
       : [...this.copyListResponseAsistencia];
+  }
+
+  msgs: Message[] = [];
+  showInfoViaMessages() {
+    this.msgs = [];
+    this.msgs.push({
+      severity: 'info',
+      summary: 'Asignación',
+      detail:
+        'En esta página, se asignará al personal a áreas y líneas específicas usando información de Ariel.',
+      icon: 'pi pi-sitemap',
+    });
   }
 }

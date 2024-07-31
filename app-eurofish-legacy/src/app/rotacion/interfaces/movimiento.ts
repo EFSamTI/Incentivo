@@ -31,10 +31,10 @@ export interface IMovimiento {
   nombre_turno: string;
   nombrelinea: string;
   id_original: number;
-  cargo_original: string;
+  actividad_original: string;
   area_original: string;
   id_cambio: number;
-  cargo_cambio: string;
+  actividad_cambio: string;
   area_cambio: string;
   created_at: string;
 }
@@ -45,9 +45,9 @@ export interface IHistoryMovimiento {
   nombre_turno: string;
   empleado_nombre: string;
   ci: string;
-  cargo_original: string;
+  actividad_original: string;
   area_original: string;
-  cargo_cambio: string;
+  actividad_cambio: string;
   area_cambio: string;
 }
 

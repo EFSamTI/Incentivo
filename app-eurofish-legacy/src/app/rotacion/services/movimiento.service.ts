@@ -63,5 +63,5 @@ export class MovimientoService {
 export interface IChanges {
   asignacionid: number;
   area: string;
-  cargo: string;
+  actividad: string;
 }

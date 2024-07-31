@@ -1,5 +1,6 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from "typeorm";
 import { OrdenFabricacion } from "./orden-fabricacion";
+import { OrdenFabricacionConsumo } from "./orden-fabricacion-consumo";
 
 @Entity("orden_fabricacion_recurso")
 export class OrdenFabricacionRecurso extends BaseEntity {
@@ -14,13 +15,19 @@ export class OrdenFabricacionRecurso extends BaseEntity {
   ordenFabricacion: OrdenFabricacion;
 
   @Column({ nullable: true })
-  codigo_posicion: string;
+  codigo: string;
 
   @Column({ type: "text", nullable: true })
   descripcion: string;
 
   @Column({ type: "numeric", nullable: true })
-  cantidad: number;
+  cantidad_planificada: number;
+
+  @Column({ type: "numeric", nullable: true })
+  cantidad_completada: number;
+
+  @Column({ type: "numeric", nullable: true })
+  cantidad_rechazada: number;
 
   @Column({ nullable: true })
   um: string;
@@ -36,4 +43,8 @@ export class OrdenFabricacionRecurso extends BaseEntity {
 
   @Column({ nullable: true })
   updatedAt: Date;
+
+
+  @OneToMany(() => OrdenFabricacionConsumo, ordenFabricacionConsumos => ordenFabricacionConsumos.ordenFabricacionRecurso)
+  consumos: OrdenFabricacionConsumo[];
 }

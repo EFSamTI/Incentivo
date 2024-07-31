@@ -1,9 +1,13 @@
-<div class="grid">
+<div class="grid" style="height: 80vh">
   <div class="col-12">
-    <div class="card">
+    <div class="card" style="min-height: 100%">
+      <p-messages class="layout-message" [value]="msgs"></p-messages>
       <ul class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
         <li>
-          <a class="text-500 no-underline line-height-3 cursor-pointer" (click)="goHome()">
+          <a
+            class="text-500 no-underline line-height-3 cursor-pointer"
+            (click)="goHome()"
+          >
             <i class="pi pi-home"></i>
           </a>
         </li>
@@ -11,210 +15,403 @@
           <i class="pi pi-angle-right text-500 line-height-3"></i>
         </li>
         <li>
-          <span class="text-900 line-height-3 cursor-pointer">Asignar personal</span>
+          <span class="text-900 line-height-3 cursor-pointer"
+            >Asignar personal</span
+          >
         </li>
       </ul>
-      <div class="mb-3 font-bold text-2xl">
-        <span class="text-900">Asignación, </span>
-        <span class="text-blue-600">Área y línea</span>
-      </div>
-      <div class="text-700 text-sm mb-3">
-        En esta página, se asignará al personal a un área y línea específicos, utilizando la información obtenida de
-        Ariel.
-      </div>
       <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
-          <div class="my-2">
-            <div class="field">
-              <label for="date" class="block text-900 font-medium text-xl mb-2">Fecha</label>
-              <input type="date" pInputText [(ngModel)]="dateFiltre" class="w-full" name="dateFiltre" id="dateFiltre"
-                placeholder="Fecha" onkeydown="return false;" />
-            </div>
-            <div class="field">
-              <label for="turno" class="block text-900 font-medium text-xl mb-2">Turno</label>
-              <p-dropdown [options]="tunos" [(ngModel)]="selectTurno" optionLabel="" placeholder="Seleccione el turno"
-                [style]="{ width: '20rem' }">
-                <ng-template pTemplate="selectedItem">
-                  <div class="country-item country-item-value">
-                    <div>{{ selectTurno }}</div>
-                  </div>
-                </ng-template>
-                <ng-template pTemplate="item" let-turno>
-                  <div>{{ turno }}</div>
-                </ng-template>
-              </p-dropdown>
-            </div>
-          </div>
+          <p-inputGroup>
+            <p-inputGroupAddon>
+              <label for="date" class="text-900 font-medium text-xl"
+                >Fecha</label
+              >
+            </p-inputGroupAddon>
+            <input
+              type="date"
+              pInputText
+              [(ngModel)]="dateFiltre"
+              name="dateFiltre"
+              id="dateFiltre"
+              placeholder="Fecha"
+            />
+            <p-inputGroupAddon>
+              <label for="turno" class="text-900 font-medium text-xl"
+                >Turno</label
+              >
+            </p-inputGroupAddon>
+            <p-dropdown
+              [options]="tunos"
+              [(ngModel)]="selectTurno"
+              optionLabel=""
+              placeholder="Seleccione el turno"
+              [style]="{
+                width: '15rem',
+                height: '100%',
+                'border-radius': '0',
+                'align-items': 'center'
+              }"
+            >
+              <ng-template pTemplate="selectedItem">
+                <div class="country-item country-item-value">
+                  <div>{{ selectTurno }}</div>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="item" let-turno>
+                <div>{{ turno }}</div>
+              </ng-template>
+            </p-dropdown>
+            <button
+              pButton
+              pRipple
+              icon="pi pi-search"
+              (click)="loadData()"
+            ></button>
+          </p-inputGroup>
         </ng-template>
 
         <ng-template pTemplate="right">
-          <button pButton pRipple label="Obtener" icon="pi pi-search" class="p-button mr-2"
-            (click)="loadData()"></button>
-
-            <button pButton pRipple label="Validar" icon="pi pi-check" class="p-button-success"
-            (click)="validarMarcaciones()" [disabled]="!selectedAsignaciones.length"></button>
+          <span class="p-buttonset">
+            <button
+              pButton
+              pRipple
+              label="Validar"
+              icon="pi pi-check"
+              class="p-button-success"
+              (click)="validarMarcaciones()"
+              [disabled]="!selectedAsignaciones.length"
+            ></button>
+          </span>
         </ng-template>
       </p-toolbar>
 
-      <p-table [value]="listResponseAriel" [rows]="20" [loading]="isLoading" [rowHover]="true"
-      styleClass="p-datatable-sm p-datatable-gridlines" [paginator]="true" [rowsPerPageOptions]="[20, 40, 60]" 
-      [scrollable]="true" scrollHeight="400px" [(selection)]="selectedAsignaciones" selectionMode="multiple" rowGroupMode="subheader">
-      <ng-template pTemplate="caption" >        
-        <div class="flex justify-content-between flex-column sm:flex-row">
+      <p-table
+        [value]="listResponseAriel"
+        [rows]="20"
+        [loading]="isLoading"
+        [rowHover]="true"
+        styleClass="p-datatable-sm p-datatable-gridlines"
+        [paginator]="true"
+        [rowsPerPageOptions]="[20, 40, 60]"
+        [scrollable]="true"
+        scrollHeight="400px"
+        [(selection)]="selectedAsignaciones"
+        selectionMode="multiple"
+        rowGroupMode="subheader"
+      >
+        <ng-template pTemplate="caption">
+          <div class="flex justify-content-between flex-column sm:flex-row">
             <h5 class="m-0">Asignar</h5>
-            <span class="p-input-icon-left ">
-                <i class="pi pi-search"></i>
-                <input #filter pInputText type="text" (input)="onInput($event)"
-                    placeholder="Buscar por cedula..." class="w-full" />
+            <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input
+                #filter
+                pInputText
+                type="text"
+                (input)="onInput($event)"
+                placeholder="Buscar por cedula..."
+                class="w-full"
+              />
             </span>
-        </div>
-    </ng-template>
-      <ng-template pTemplate="header">
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th rowspan="2" style="min-width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th colspan="2">Persona</th>
+            <th colspan="3">Planificación del día</th>
+            <th colspan="3">Detalles del Trabajo</th>
+            <th colspan="2">Marcación</th>
+            <th rowspan="2" pSortableColumn="asignado">
+              Asignado <p-sortIcon field="asignado"></p-sortIcon>
+            </th>
+            <th rowspan="2" style="width: 5rem"></th>
+          </tr>
 
-        <tr>
-          <th rowspan="2" style="min-width: 3rem">
-            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-          </th>
-          <th colspan="2">Persona</th>
-          <th colspan="3">Planificación del día</th>
-          <th colspan="3">Detalles del Trabajo</th>
-          <th colspan="2">Marcación</th>
-          <th rowspan="2" pSortableColumn="asignado">Asignado <p-sortIcon field="asignado"></p-sortIcon></th>
-          <th rowspan="2" style="width: 5rem"></th>
-        </tr>
+          <tr>
+            <th pSortableColumn="cedula">
+              Cédula <p-sortIcon field="cedula"></p-sortIcon>
+            </th>
+            <th pSortableColumn="nombre_persona">
+              Nombre <p-sortIcon field="nombre_persona"></p-sortIcon>
+            </th>
+            <th pSortableColumn="turno">
+              Turno <p-sortIcon field="turno"></p-sortIcon>
+            </th>
+            <th pSortableColumn="hora_entrada">
+              Entrada <p-sortIcon field="hora_entrada"></p-sortIcon>
+            </th>
+            <th pSortableColumn="hora_salida">
+              Salida <p-sortIcon field="hora_salida"></p-sortIcon>
+            </th>
+            <th pSortableColumn="area_persona">
+              Proceso <p-sortIcon field="area_persona"></p-sortIcon>
+            </th>
+            <th pSortableColumn="cargo">
+              Actividad <p-sortIcon field="cargo"></p-sortIcon>
+            </th>
+            <th pSortableColumn="linea">
+              Línea <p-sortIcon field="linea"></p-sortIcon>
+            </th>
+            <th pSortableColumn="codigo">
+              Entrada<p-sortIcon field="codigo"></p-sortIcon>
+            </th>
+            <th pSortableColumn="hora">
+              Salida<p-sortIcon field="hora"></p-sortIcon>
+            </th>
+          </tr>
+          <tr></tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-datum>
+          <tr>
+            <td>
+              <p-tableCheckbox
+                [value]="datum"
+                [disabled]="datum.asignado != null"
+              ></p-tableCheckbox>
+            </td>
+            <td>{{ datum.cedula }}</td>
+            <td style="width: 14%; min-width: 20rem">
+              {{ datum.nombre_persona }}
+            </td>
+            <td style="width: 10%; min-width: 8rem">{{ datum.turno }}</td>
+            <td style="width: 14%; min-width: 10rem">
+              {{
+                datum.hora_entrada
+                  ? (datum.hora_entrada
+                    | date
+                      : "yyyy MM dd
+              HH:mm")
+                  : "No registrado"
+              }}
+            </td>
+            <td style="width: 14%; min-width: 10rem">
+              {{
+                datum.hora_salida
+                  ? (datum.hora_salida
+                    | date
+                      : "yyyy MM dd
+              HH:mm")
+                  : "No registrado"
+              }}
+            </td>
+            <td>{{ datum.nombre_area }}</td>
+            <td style="width: 14%; min-width: 12rem">
+              <p-dropdown
+                [options]="actividades"
+                [(ngModel)]="datum.actividad"
+                optionLabel="name"
+                [style]="{ width: '100%' }"
+                [appendTo]="'body'"
+              >
+                <ng-template pTemplate="selectedItem">
+                  <div class="country-item country-item-value">
+                    <div>{{ datum.actividad }}</div>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="item" let-actividad>
+                  <div>{{ actividad }}</div>
+                </ng-template>
+              </p-dropdown>
+            </td>
+            <td>
+              <p-dropdown
+                [options]="lineas"
+                [(ngModel)]="datum.linea"
+                optionLabel="name"
+                [style]="{ width: '110px' }"
+                [appendTo]="'body'"
+              >
+                <ng-template pTemplate="selectedItem">
+                  <div class="country-item country-item-value">
+                    <div>{{ datum.linea }}</div>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="item" let-linea>
+                  <div>{{ linea }}</div>
+                </ng-template>
+              </p-dropdown>
+            </td>
+            <td style="width: 14%; min-width: 10rem">
+              {{
+                datum?.entrada?.hora
+                  ? (datum.entrada.hora | date : "yyyy MM dd HH:mm")
+                  : "Valide su entrada"
+              }}
+            </td>
+            <td style="width: 14%; min-width: 10rem">
+              {{
+                datum?.salida?.hora
+                  ? (datum.salida.hora | date : "yyyy MM dd HH:mm")
+                  : "Valide su entrada"
+              }}
+            </td>
+            <td style="width: 14%; min-width: 10rem">
+              {{ datum.asignado || "N/A" }}
+            </td>
 
-        <tr>  
-          <th pSortableColumn="cedula">Cédula <p-sortIcon field="cedula"></p-sortIcon></th>
-          <th pSortableColumn="nombre_persona">Nombre <p-sortIcon field="nombre_persona"></p-sortIcon></th>
-          <th pSortableColumn="turno">Turno <p-sortIcon field="turno"></p-sortIcon></th>
-          <th pSortableColumn="hora_entrada">Entrada <p-sortIcon field="hora_entrada"></p-sortIcon></th>
-          <th pSortableColumn="hora_salida">Salida <p-sortIcon field="hora_salida"></p-sortIcon></th>
-          <th pSortableColumn="area_persona">Proceso <p-sortIcon field="area_persona"></p-sortIcon></th>
-          <th pSortableColumn="cargo">Actividad <p-sortIcon field="cargo"></p-sortIcon></th>
-          <th pSortableColumn="linea">Línea <p-sortIcon field="linea"></p-sortIcon></th>
-          <th pSortableColumn="codigo">Entrada<p-sortIcon field="codigo"></p-sortIcon></th>
-          <th pSortableColumn="hora">Salida<p-sortIcon field="hora"></p-sortIcon></th>
-
-        </tr>
-        <tr>
-         
-    
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-datum>
-        <tr>
-          <td>
-            <p-tableCheckbox [value]="datum" [disabled]="datum.asignado != null"></p-tableCheckbox>
-          </td>
-          <td>{{ datum.cedula }}</td>
-          <td style="width:14%; min-width:20rem;">{{ datum.nombre_persona }}</td>
-          <td style="width:10%; min-width:8rem;">{{ datum.turno }}</td>
-          <td style="width:14%; min-width:10rem;">{{ datum.hora_entrada ? (datum.hora_entrada |  date: 'yyyy MM dd HH:mm') : 'No registrado' }}</td>
-          <td style="width:14%; min-width:10rem;">{{ datum.hora_salida ? (datum.hora_salida |  date: 'yyyy MM dd HH:mm') : 'No registrado' }}</td>
-          <td>{{ datum.nombre_area }}</td>
-          <td  style="width:14%; min-width:12rem;">
-            <p-dropdown [options]="actividades" [(ngModel)]="datum.actividad" optionLabel="name" [style]="{width: '100%'}"
-              [appendTo]="'body'">
-              <ng-template pTemplate="selectedItem">
-                <div class="country-item country-item-value">
-                  <div>{{ datum.actividad }}</div>
+            <td>
+              <div class="my-button-group">
+                <div class="flex">
+                  <button
+                    pButton
+                    pRipple
+                    [raised]="true"
+                    severity="success"
+                    class="p-button-rounded p-button-sm mr-2"
+                    icon="pi pi-check"
+                    pTooltip="Validar llegada"
+                    tooltipPosition="left"
+                    (click)="validarMarcacion(datum)"
+                  ></button>
+                  <button
+                    pButton
+                    pRipple
+                    [raised]="true"
+                    severity="danger"
+                    class="p-button-rounded mr-2"
+                    icon="pi pi-trash"
+                    pTooltip="Eliminar asignación"
+                    tooltipPosition="left"
+                    (click)="deleteAsignacion(datum)"
+                  ></button>
                 </div>
-              </ng-template>
-              <ng-template pTemplate="item" let-actividad>
-                <div>{{ actividad }}</div>
-              </ng-template>
-            </p-dropdown>
-          </td>
-          <td>
-            <p-dropdown [options]="lineas" [(ngModel)]="datum.linea" optionLabel="name" [style]="{width: '110px'}"
-              [appendTo]="'body'">
-              <ng-template pTemplate="selectedItem">
-                <div class="country-item country-item-value">
-                  <div>{{ datum.linea }}</div>
-                </div>
-              </ng-template>
-              <ng-template pTemplate="item" let-linea>
-                <div>{{ linea }}</div>
-              </ng-template>
-            </p-dropdown>
-          </td>
-          <td style="width:14%; min-width:10rem;">
-            {{ datum?.entrada?.hora ? (datum.entrada.hora |  date: 'yyyy MM dd HH:mm') : 'Valide su entrada'  }}
-          </td>
-          <td style="width:14%; min-width:10rem;">
-            {{ datum?.salida?.hora ? (datum.salida.hora |  date: 'yyyy MM dd HH:mm') : 'Valide su entrada'  }}
-          </td>
-          <td  style="width:14%; min-width:10rem;">{{ datum.asignado || 'N/A' }}</td>
-         
-       
-          <td>
-            <div class="my-button-group">
-              <div class="flex">
-                <button pButton pRipple [raised]="true" severity="success" class="p-button-rounded p-button-sm mr-2"
-                  icon="pi pi-check" pTooltip="Validar llegada" tooltipPosition="left"
-                  (click)="validarMarcacion(datum)"></button>
-                <button pButton pRipple [raised]="true" severity="danger" class="p-button-rounded mr-2"
-                  icon="pi pi-trash" pTooltip="Eliminar asignación" tooltipPosition="left"
-                  (click)="deleteAsignacion(datum)"></button>
               </div>
-            </div>
-          </td>
-         
-        </tr>
-      </ng-template>
-    </p-table>
-    
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
 
       <div class="mt-4 text-center">
-        <button pButton type="button" label="Grabar" icon="pi pi-save" class="p-button-success mr-3"
-          [disabled]="!listResponseAriel.length || !selectedAsignaciones.length" (click)="asignar()"></button>
-        <button pButton type="button" label="Añadir" icon="pi pi-plus" class="p-button-info"
-          [disabled]="!listResponseAriel.length" (click)="displayNewComodin = true"></button>
+        <button
+          pButton
+          type="button"
+          label="Grabar"
+          icon="pi pi-save"
+          class="p-button-success mr-3"
+          [disabled]="!listResponseAriel.length || !selectedAsignaciones.length"
+          (click)="asignar()"
+        ></button>
+        <button
+          pButton
+          type="button"
+          label="Añadir"
+          icon="pi pi-plus"
+          class="p-button-info"
+          [disabled]="!listResponseAriel.length"
+          (click)="displayNewComodin = true"
+        ></button>
       </div>
     </div>
   </div>
 </div>
 
-
-<p-dialog header="Nueva asignación" [(visible)]="displayNewComodin" [modal]="true" [style]="{width: '600px'}"
-  (onHide)="closeDialog()" class="p-fluid">
+<p-dialog
+  header="Nueva asignación"
+  [(visible)]="displayNewComodin"
+  [modal]="true"
+  [style]="{ width: '600px' }"
+  (onHide)="closeDialog()"
+  class="p-fluid"
+>
   <ng-template pTemplate="content">
     <form [formGroup]="comodinForm">
       <div class="field mb-1">
         <div class="grid">
           <div class="col-12 md:col-6">
-            <label for="nombre_empleado" class="block text-900 font-medium text-xl mb-2">Nombre del empleado</label>
-            <input type="text" pInputText formControlName="nombre_empleado" class="w-full" name="nombre_empleado"
-              placeholder="Ingrese el nombre del empleado" />
-            <small *ngIf="nombre_empleado.invalid && (nombre_empleado.dirty || nombre_empleado.touched)"
-              class="block p-error">
-              <div *ngIf="nombre_empleado.errors?.['required']">El nombre del empleado es requerido.</div>
+            <label
+              for="nombre_empleado"
+              class="block text-900 font-medium text-xl mb-2"
+              >Nombre del empleado</label
+            >
+            <input
+              type="text"
+              pInputText
+              formControlName="nombre_empleado"
+              class="w-full"
+              name="nombre_empleado"
+              placeholder="Ingrese el nombre del empleado"
+            />
+            <small
+              *ngIf="
+                nombre_empleado.invalid &&
+                (nombre_empleado.dirty || nombre_empleado.touched)
+              "
+              class="block p-error"
+            >
+              <div *ngIf="nombre_empleado.errors?.['required']">
+                El nombre del empleado es requerido.
+              </div>
             </small>
           </div>
           <div class="col-12 md:col-6">
-            <label for="ci_empleado" class="block text-900 font-medium text-xl mb-2">Cédula del empleado</label>
-            <input type="text" pInputText formControlName="ci_empleado" class="w-full" name="ci_empleado"
-              placeholder="Ingrese la cédula del empleado" />
-            <small *ngIf="ci_empleado.invalid && (ci_empleado.dirty || ci_empleado.touched)" class="block p-error">
-              <div *ngIf="ci_empleado.errors?.['required']">La cédula del empleado es requerida.</div>
+            <label
+              for="ci_empleado"
+              class="block text-900 font-medium text-xl mb-2"
+              >Cédula del empleado</label
+            >
+            <input
+              type="text"
+              pInputText
+              formControlName="ci_empleado"
+              class="w-full"
+              name="ci_empleado"
+              placeholder="Ingrese la cédula del empleado"
+            />
+            <small
+              *ngIf="
+                ci_empleado.invalid &&
+                (ci_empleado.dirty || ci_empleado.touched)
+              "
+              class="block p-error"
+            >
+              <div *ngIf="ci_empleado.errors?.['required']">
+                La cédula del empleado es requerida.
+              </div>
             </small>
           </div>
         </div>
       </div>
       <div class="field">
-        <label for="linea" class="block text-900 font-medium text-xl mb-2">Línea</label>
-        <p-dropdown [options]="lineas" formControlName="linea" optionLabel="cargo" [showClear]="true"
-          placeholder="Seleccione una línea"></p-dropdown>
-        <small *ngIf="linea.invalid && (linea.dirty || linea.touched)" class="block p-error">
+        <label for="linea" class="block text-900 font-medium text-xl mb-2"
+          >Línea</label
+        >
+        <p-dropdown
+          [options]="lineas"
+          formControlName="linea"
+          optionLabel="cargo"
+          [showClear]="true"
+          placeholder="Seleccione una línea"
+        ></p-dropdown>
+        <small
+          *ngIf="linea.invalid && (linea.dirty || linea.touched)"
+          class="block p-error"
+        >
           <div *ngIf="linea.errors?.['required']">La línea es requerida.</div>
         </small>
       </div>
     </form>
   </ng-template>
   <ng-template pTemplate="footer">
-    <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-text"
-      (click)="displayNewComodin = false"></button>
-    <button pButton type="button" label="Guardar" icon="pi pi-check" class="p-button-text"
-      [disabled]="comodinForm.invalid" (click)="submitComodin()"></button>
+    <button
+      pButton
+      type="button"
+      label="Cancelar"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="displayNewComodin = false"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Guardar"
+      icon="pi pi-check"
+      class="p-button-text"
+      [disabled]="comodinForm.invalid"
+      (click)="submitComodin()"
+    ></button>
   </ng-template>
 </p-dialog>

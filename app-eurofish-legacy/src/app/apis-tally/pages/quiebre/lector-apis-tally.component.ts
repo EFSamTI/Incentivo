@@ -5,6 +5,7 @@ import { UiServiceService } from 'src/app/shared/services/ui-service.service';
 import { QuiebreService } from '../../services/quiebre.service';
 import { IApiTally } from '../../interfaces/apis-tally';
 import { DowloadExcelService } from '../../services/dowload-excel.service';
+import { Message } from 'primeng/api';
 
 
 @Component({
@@ -38,6 +39,7 @@ export class LectorApisTallyComponent  implements OnInit {
 
   ngOnInit() {
     this.loadApisTally();
+    this.showInfoViaMessages();
   }
 
 
@@ -119,5 +121,17 @@ export class LectorApisTallyComponent  implements OnInit {
     const headers = this.columns.map(column => column.field);
     const columnKeys = this.columns.map(column => column.field);
     this.dowloadPdfService.downloadPdfFile(this.selectApisTally.nombre, headers, this.listAny, columnKeys);
+  }
+
+  msgs: Message[] = [];
+  showInfoViaMessages() {
+    this.msgs = [];
+    this.msgs.push({
+      severity: 'info',
+      summary: 'Lector de APIs Tally ',
+      detail:
+        '      Descargue reportes de Tally en Excel o PDF. Filtre por API, rango de fechas para obtener la información precisa.',
+      icon: 'pi pi-download',
+    });
   }
 }

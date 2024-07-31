@@ -1,6 +1,5 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, ManyToOne, JoinColumn } from "typeorm";
 import { OrdenFabricacionRecurso } from "./orden-fabricacion-recurso";
-import { OrdenFabricacionTipoIngreso } from "./orden-fabricacion-tipo-ingreso";
 
 @Entity("orden_fabricacion")
 export class OrdenFabricacion extends BaseEntity {
@@ -15,10 +14,7 @@ export class OrdenFabricacion extends BaseEntity {
 
   @Column({ nullable: true })
   estado: boolean;
-
-  @Column()
-  tipo_ingreso_id: number;
-
+  
   @Column({ nullable: true })
   id_ordenpadre: number;
 
@@ -34,8 +30,5 @@ export class OrdenFabricacion extends BaseEntity {
   @OneToMany(() => OrdenFabricacionRecurso, ordenFabricacionRecurso => ordenFabricacionRecurso.ordenFabricacion)
   recursos: OrdenFabricacionRecurso[];
 
-  @ManyToOne(() => OrdenFabricacionTipoIngreso, tipo_ingreso => tipo_ingreso.tipo_ingreso)
-  @JoinColumn({ name: "tipo_ingreso_id" })
-  tipo_ingreso: OrdenFabricacionTipoIngreso;
 
 }

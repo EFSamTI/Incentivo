@@ -3,7 +3,7 @@ import { ParadaService } from '../../services/parada.service';
 import { UiServiceService } from 'src/app/shared/services/ui-service.service';
 import { formatDate } from '@angular/common';
 
-import { MenuItem } from 'primeng/api';
+import { MenuItem, Message } from 'primeng/api';
 import {  NavController } from '@ionic/angular';
 import { ILinea } from 'src/app/asignacion/interfaces/linea';
 import { LineaService } from 'src/app/asignacion/services/linea.service';
@@ -51,6 +51,7 @@ export class MantenimientoParadasComponent implements OnInit {
 
   ngOnInit() {
     this.loadLineas();
+    this.showInfoViaMessages();
   }
   loadLineas() {
     this.lineaService.getLinea().subscribe({
@@ -191,5 +192,16 @@ export class MantenimientoParadasComponent implements OnInit {
 
   goParadas() {
     this.navCtrlr.navigateBack('/parada');
+  }
+  msgs: Message[] = [];
+  showInfoViaMessages() {
+    this.msgs = [];
+    this.msgs.push({
+      severity: 'info',
+      summary: 'Mantenimiento de Paradas',
+      detail:
+        'Edite o elimine paradas registradas y envíe la información a Tali.',
+      icon: 'pi pi-cog', 
+    });
   }
 }

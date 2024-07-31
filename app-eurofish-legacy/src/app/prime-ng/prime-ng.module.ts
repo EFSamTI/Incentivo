@@ -38,7 +38,8 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {TabMenuModule} from 'primeng/tabmenu';
-
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 @NgModule({
   exports: [
     CardModule,
@@ -77,7 +78,9 @@ import {TabMenuModule} from 'primeng/tabmenu';
     SelectButtonModule,
     CalendarModule,
     ChartModule,
-    TabMenuModule
+    TabMenuModule,
+    InputGroupModule,
+    InputGroupAddonModule
   ],
   providers: [MessageService],
 })

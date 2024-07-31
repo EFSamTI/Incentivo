@@ -1,32 +1,24 @@
 import { OrdenFabricacionRecurso } from "../models/orden-fabricacion-recurso";
 import { OrdenFabricacion } from '../models/orden-fabricacion';
-
-export interface IOrdenFabricacionRecursos {
-    codigo_posicion: string;
-    tipo: string;
-    cantidad?: number;
-    um?: string;
-}
+import { IOrdenFabricacionSave } from "../interfaces/orden-fabricacion";
 
 
-const createOrdenFabricacionRecurso = async (recursos:IOrdenFabricacionRecursos[], idCreator: number, ordenFabricacion: OrdenFabricacion) => {
-  
-    const recursosSave = [];
-    for (const recurso of recursos) {
-    const ordenFabricacionRecurso = OrdenFabricacionRecurso.create({
-        codigo_posicion: recurso.codigo_posicion,
+
+const createOrdenFabricacionRecurso = async (of:IOrdenFabricacionSave, idCreator: number, ordenFabricacion: OrdenFabricacion) => {
+    const recursoSave = OrdenFabricacionRecurso.create({
+        codigo: of.codigo,
         ordenFabricacion: ordenFabricacion,
-        descripcion: recurso.tipo,
-        cantidad: recurso.cantidad,
-        um: recurso.um,
+        descripcion: of.descripcion,
+        cantidad_planificada: of.cantidad_planificada,
+        cantidad_completada: of.cantidad_completada,
+        cantidad_rechazada: of.cantidad_rechazada,
+        um: of.unidad_medida,
         estado: true,
         registeredByUserId: idCreator,
     });
-    const save  = await ordenFabricacionRecurso.save();
-    recursosSave.push(save);
 
-  }
-    return recursosSave;
+    const save = await recursoSave.save();
+    return save;
 }
 
 

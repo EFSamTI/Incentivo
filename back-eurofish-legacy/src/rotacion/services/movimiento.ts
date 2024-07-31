@@ -56,9 +56,9 @@ const listMovimientosPersonal = async (filter: IFilterCambios) => {
     nombre_turno,
     empleado_nombre,
     ci,
-    cargo_original,
+    actividad_original,
     area_original,
-    cargo_cambio,
+    actividad_cambio,
     area_cambio
   FROM 
     vista_movimientos_detalle
@@ -92,10 +92,10 @@ const listFilterUltimosMovimientos = async (filter: IFilterCambios) => {
     nombre_turno,
     nombrelinea,
     id_original,
-    cargo_original,
+    actividad_original,
     area_original,
     id_cambio,
-    cargo_cambio,
+    actividad_cambio,
     area_cambio,
     created_at
   FROM 
@@ -124,7 +124,7 @@ const aplicarMovimientoAsignacion = async (changes: IChanges[]) => {
   for (const a of changes) {
     const asignacionOriginal = await Asignacion.findOne({
       where: { asignacionid: a.asignacionid },
-      relations: ["linea", "empleado", "cargo", "turno", "area"],
+      relations: ["linea", "empleado", "actividad", "turno", "area"],
     });
     if (!asignacionOriginal)
       return { status: 404, message: "No se encontró la asignación" };
@@ -170,25 +170,29 @@ const aplicarMovimientoAsignacion = async (changes: IChanges[]) => {
 };
 
 const restablecerMovimiento = async (restablecer: IRestablecerCambios[]) => {
+  console.log(restablecer);
+
   for (const r of restablecer) {
     const cambio = await Movimiento.findOne({
-      where: { movimientoid: r.idMovimiento },
+      where: { movimientoid: r.movimientoid },
     });
     if (!cambio) return { status: 404, message: "No se encontró el cambio" };
+
     const asignacionOriginal = await Asignacion.findOne({
-      where: { asignacionid: r.idOriginal },
-      relations: ["empleado", "cargo", "area"],
+      where: { asignacionid: r.id_original },
+      relations: ["empleado", "actividad", "area"],
     });
     if (!asignacionOriginal)
       return {
         status: 404,
         message: "No se encontró la asignación original del cambio",
       };
-    const [area, cargo] = await Promise.all([
-      findArea(r.areaOriginal),
-      findOrCreateActividadNew(r.actividadOriginal),
+
+    const [area, actividad] = await Promise.all([
+      findArea(r.area_original),
+      findOrCreateActividadNew(r.actividad_original),
     ]);
-    if (!area || !cargo)
+    if (!area || !actividad)
       return {
         status: 404,
         message: "No se encontró la asignación original del cambio",
@@ -196,109 +200,29 @@ const restablecerMovimiento = async (restablecer: IRestablecerCambios[]) => {
 
     asignacionOriginal.estado = true;
     asignacionOriginal.area = area;
-    asignacionOriginal.actividad = cargo;
+    asignacionOriginal.actividad = actividad;
     asignacionOriginal.update_at = new Date();
+
     await asignacionOriginal.save();
+
     const asignacionCambio = await Asignacion.findOne({
-      where: { asignacionid: r.idCambio },
+      where: { asignacionid: r.id_cambio },
     });
     if (asignacionCambio) {
       asignacionCambio.estado = false;
       await asignacionCambio.save();
     }
+
     await cambio.remove();
   }
-  return { status: 200, message: "Cambios rest establecidos correctamente" };
+
+  return { status: 200, message: "Cambios restablecidos correctamente" };
 };
 
-const listMovimientosFuncionBD = async (body: IBody) => {
-  let baseQuery = "SELECT * FROM get_movimientos(";
-  let fieldsQuery = "";
-  for (const field of body.fields || []) {
-    switch (field) {
-      case "movimiento":
-        fieldsQuery +=
-          "'movimientoid', m.movimientoid, 'fecha_movimiento', m.created_at, ";
-        break;
-      case "empleado":
-        fieldsQuery +=
-          "'nombre_empleado', empleado.nombre, 'cedula', empleado.ci, ";
-        break;
-      case "turno":
-        fieldsQuery += "'turno', turno.nombre_turno, ";
-        break;
-      case "linea":
-        fieldsQuery += "'linea', linea.nombrelinea, ";
-        break;
-      case "CC":
-        fieldsQuery +=
-          "'CC_original', area_original.centro_costo, 'CC_cambio', area_cambio.centro_costo, ";
-        break;
-      case "cargo":
-        fieldsQuery +=
-          "'cargo_original', c_original.cargoname, 'cargo_cambio', c_cambio.cargoname, ";
-        break;
-      case "area":
-        fieldsQuery +=
-          "'area_original', area_original.nombre_area, 'area_cambio', area_cambio.nombre_area, ";
-        break;
-      default:
-        break;
-    }
-  }
-
-  if (fieldsQuery.length > 0) {
-    fieldsQuery = fieldsQuery.slice(0, -2);
-  }
-
-  let orderQuery = "";
-  if (body.order) {
-    let orderField = "";
-    switch (body.order.field) {
-      case "movimiento":
-        orderField = "m.movimientoid";
-        break;
-      case "empleado":
-        orderField = "empleado.nombre";
-        break;
-      case "turno":
-        orderField = "turno.nombre_turno";
-        break;
-      case "linea":
-        orderField = "linea.nombrelinea";
-        break;
-      case "CC":
-        orderField = "area_original.centro_costo";
-        break;
-      case "cargo":
-        orderField = "c_original.cargoname";
-        break;
-      case "area":
-        orderField = "area_original.nombre_area";
-        break;
-      default:
-        break;
-    }
-    orderQuery = `, '${orderField} ${body.order.order}'`;
-  }
-  baseQuery += `'${fieldsQuery.replace(/'/g, "''")}'${orderQuery})`;
-  baseQuery += ";";
-
-  try {
-    const movimientos = await Movimiento.query(baseQuery);
-
-    return movimientos.length === 0
-      ? { status: 404, message: "No se encontraron cambios" }
-      : { status: 200, data: movimientos };
-  } catch (error) {
-    return { status: 500, message: "Error al ejecutar la consulta" };
-  }
-};
 export {
   listFilterAsignaciones,
   listMovimientosPersonal,
   listFilterUltimosMovimientos,
   aplicarMovimientoAsignacion,
-  restablecerMovimiento,
-  listMovimientosFuncionBD,
+  restablecerMovimiento
 };

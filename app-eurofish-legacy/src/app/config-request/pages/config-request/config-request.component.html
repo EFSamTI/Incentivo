@@ -1,6 +1,10 @@
-<div class="grid">
+<div class="grid" style="height: 80vh">
   <div class="col-12">
-    <div class="card">
+    <div class="card" style="min-height: 100%">
+      <p-messages
+        class="layout-message"
+        [value]="msgs"
+      ></p-messages>
       <ul class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
         <li>
           <a class="text-500 no-underline line-height-3 cursor-pointer" (click)="goHome()">
@@ -14,14 +18,7 @@
           <span class="text-900 line-height-3">Configuración de peticiones</span>
         </li>
       </ul>
-      <div class="mb-3 font-bold text-2xl">
-        <span class="text-900">Configuracion, </span>
-        <span class="text-blue-600">Parametros </span>
-      </div>
-      <div class="text-700 text-sm mb-3">
-        Cree, edite o elimine las configuraciones de las peticiones (solo una se
-        puede tener activa a la vez de cada tipo).
-      </div>
+      
       <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
 

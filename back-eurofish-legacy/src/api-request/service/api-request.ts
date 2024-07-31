@@ -6,24 +6,6 @@ import { ConfigRequest } from "../model/config-request";
 import { findOrCreateAmbiente } from "./ambiente";
 import { findOrCreateTipo } from "./tipo";
 
-const requestAriel = async () => {
-  const data  = await ConfigRequest.findOne({
-    where: { state: true, tipoRequest: { nombre_tipo: "Ariel" } } 
-    ,relations: ["tipoRequest"],
-  });
-  if (!data) return null;
-  return data;
-};
-
-const requestTali = async () => {
-  const data = await ConfigRequest.findOne({
-    where: { state: true, tipoRequest: { nombre_tipo: "Tali" } } 
-    ,relations: ["tipoRequest"],
-  });
-  if (!data) return null;
-  return data;
-}
-
 
 
 
@@ -131,4 +113,4 @@ const eliminarConfigRequests = async ( id: number[]) => {
   return { status: 200, message: "Configuraciones eliminadas con éxito" };
 }
 
-export { requestAriel, createConfigRequest, updateConfigRequest, desactivarConfigRequest, listConfigRequest, activarConfigRequest, eliminarConfigRequests, requestTali};
+export { createConfigRequest, updateConfigRequest, desactivarConfigRequest, listConfigRequest, activarConfigRequest, eliminarConfigRequests};

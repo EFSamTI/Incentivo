@@ -1,6 +1,11 @@
-<div class="grid">
+<div class="grid" style="height: 80vh">
   <div class="col-12">
-    <div class="card">
+    <div class="card" style="min-height: 100%">
+      <p-messages
+      class="layout-message"
+      [value]="msgs"
+
+    ></p-messages>
       <ul class="list-none p-0 m-0 flex align-items-center font-medium mb-3">
         <li>
           <a
@@ -19,13 +24,7 @@
           >
         </li>
       </ul>
-      <div class="mb-3 font-bold text-2xl">
-        <span class="text-900">Registro, </span>
-        <span class="text-blue-600">Paradas de colaboradores</span>
-    </div>
-    <div class="text-700 text-sm mb-3">
-      Registre y gestione las paradas de usuarios, incluyendo fecha, turno y área.
-    </div>
+
       <div class="p-fluid">
         <div class="field grid">
           <div class="col-10">

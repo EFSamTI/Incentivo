@@ -6,7 +6,7 @@ export class ConfigAmbiente extends BaseEntity {
   @PrimaryGeneratedColumn()
   ambienteid: number;
 
-  @Column( { nullable: true })
+  @Column( { nullable: false })
   nombre_ambiente: string;
 
 

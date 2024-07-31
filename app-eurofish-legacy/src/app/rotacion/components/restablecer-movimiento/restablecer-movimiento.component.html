@@ -3,92 +3,109 @@
     <div class="card">
       <div class="mb-3 font-bold text-2xl">
         <span class="text-900">Últimos Movimientos Realizados, </span>
-    </div>
-    <div class="text-700 text-sm mb-3">
-        Revise los últimos movimientos de personal y realice ajustes si es necesario.
-    </div>
+      </div>
+      <div class="text-700 text-sm mb-3">
+        Revise los últimos movimientos de personal y realice ajustes si es
+        necesario.
+      </div>
       <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
-          <div class="my-2">
-          <p-dropdown
-          [options]="lineas"
-          [(ngModel)]="selectLinea"
-          optionLabel="name"
-          [showClear]="true"
-          placeholder="Seleccione la linea"
-          class="mr-2"
-          [style]="{ width: '15rem' }"
-          [loading]="isLoading"
-        >
-          <ng-template pTemplate="selectedItem">
-            <div
-              class="country-item country-item-value"
-              *ngIf="selectLinea"
+          <p-inputGroup>
+            <p-inputGroupAddon>
+              <label for="date" class="text-900 font-medium text-xl"
+                >Filtrar</label
+              >
+            </p-inputGroupAddon>
+            <p-dropdown
+              [options]="lineas"
+              [(ngModel)]="selectLinea"
+              optionLabel="name"
+              [showClear]="true"
+              placeholder="Seleccione la linea"
+              [style]="{
+                width: '15rem',
+                height: '100%',
+                'border-radius': '0',
+                'align-items': 'center'
+              }"
+              [loading]="isLoading"
             >
-              <div>{{ selectLinea.nombrelinea }}</div>
-            </div>
-          </ng-template>
-          <ng-template let-liena pTemplate="item">
-            <div>
-              <div>{{ liena.nombrelinea }}</div>
-            </div>
-          </ng-template>
-        </p-dropdown>
-        <p-dropdown
-          [options]="turnos"
-          [(ngModel)]="selectTurno"
-          optionLabel="name"
-          [filter]="true"
-          filterBy="description"
-          [showClear]="true"
-          placeholder="Seleccione el turno"
-          [style]="{ width: '15rem' }"
-        >
-          <ng-template pTemplate="selectedItem">
-            <div
-              class="country-item country-item-value"
-              *ngIf="selectTurno"
+              <ng-template pTemplate="selectedItem">
+                <div
+                  class="country-item country-item-value"
+                  *ngIf="selectLinea"
+                >
+                  <div>{{ selectLinea.nombrelinea }}</div>
+                </div>
+              </ng-template>
+              <ng-template let-liena pTemplate="item">
+                <div>
+                  <div>{{ liena.nombrelinea }}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+            <p-dropdown
+              [options]="turnos"
+              [(ngModel)]="selectTurno"
+              optionLabel="name"
+              [filter]="true"
+              filterBy="description"
+              [showClear]="true"
+              placeholder="Seleccione el turno"
+              [style]="{
+                width: '15rem',
+                height: '100%',
+                'border-radius': '0',
+                'align-items': 'center'
+              }"
             >
-              <div>{{ selectTurno }}</div>
-            </div>
-          </ng-template>
-          <ng-template let-turno pTemplate="item">
-            <div>
-              <div>{{ turno }}</div>
-            </div>
-          </ng-template>
-        </p-dropdown>
-      </div>
+              <ng-template pTemplate="selectedItem">
+                <div
+                  class="country-item country-item-value"
+                  *ngIf="selectTurno"
+                >
+                  <div>{{ selectTurno }}</div>
+                </div>
+              </ng-template>
+              <ng-template let-turno pTemplate="item">
+                <div>
+                  <div>{{ turno }}</div>
+                </div>
+              </ng-template>
+            </p-dropdown>
+
+            <button
+              pButton
+              type="button"
+              icon="pi pi-search"
+              class="p-button-info mr-3"
+              (click)="loadMovimientos()"
+            ></button>
+          </p-inputGroup>
         </ng-template>
         <ng-template pTemplate="right">
-          <button
-          pButton
-          type="button"
-          label="Bucar"
-          icon="pi pi-search"
-          class="p-button-info mr-3"
-          (click)="loadMovimientos()"
-        ></button>
-          <button
-            pButton
-            type="button"
-            label="Grabar"
-            icon="pi pi-save"
-            class="p-button-success mr-3"
-            [disabled]="
-            !selectMovimientos.length || modifAsignaciones.length === 0
-          "
-          (click)="onDataChange()"
-          ></button>
-          <button
-            pButton
-            type="button"
-            label="Restaurar"
-            icon="pi pi-replay"
-            class="p-button-warning"
-            [disabled]="!selectMovimientos.length"
-            (click)="restablecerCambios()"
-          ></button>
+          <span class="p-buttonset">
+            <button
+              pButton
+              type="button"
+              label="Grabar"
+              icon="pi pi-save"
+              class="p-button-success"
+              [disabled]="
+                !selectMovimientos.length || modifAsignaciones.length === 0
+              "
+              (click)="onDataChange()"
+            ></button>
+            <button
+              pButton
+              type="button"
+              label="Restaurar"
+              icon="pi pi-replay"
+              class="p-button-warning"
+              [disabled]="!selectMovimientos.length"
+              (click)="restablecerCambios()"
+            ></button>
+          </span>
         </ng-template>
       </p-toolbar>
       <p-table
@@ -110,13 +127,13 @@
             <th></th>
             <th
               colspan="2"
-              style="text-align: center; background-color:  var(--yellow-400)"
+              style="text-align: center; background-color: var(--yellow-400)"
             >
               Estado Previo
             </th>
             <th
               colspan="2"
-              style="text-align: center; background-color:var(--teal-400)"
+              style="text-align: center; background-color: var(--teal-400)"
             >
               Estado Actualizado
             </th>
@@ -135,12 +152,20 @@
               Cedula
               <p-sortIcon field="ci"></p-sortIcon>
             </th>
-            <th style="min-width: 4rem; background-color: var(--yellow-400)">Área</th>
-            <th style="min-width: 4rem; background-color: var(--yellow-400)">Cargo</th>
-            
-            <th style="min-width: 4rem; background-color: var(--teal-400)">Área</th>
-            <th style="min-width: 4rem; background-color: var(--teal-400)">Cargo</th>
-            
+            <th style="min-width: 4rem; background-color: var(--yellow-400)">
+              Área
+            </th>
+            <th style="min-width: 4rem; background-color: var(--yellow-400)">
+              Actividad
+            </th>
+
+            <th style="min-width: 4rem; background-color: var(--teal-400)">
+              Área
+            </th>
+            <th style="min-width: 4rem; background-color: var(--teal-400)">
+              Actividad
+            </th>
+
             <th style="min-width: 4rem">Hora</th>
             <th></th>
           </tr>
@@ -153,9 +178,8 @@
             <td>{{ datum.empleado_nombre }}</td>
             <td>{{ datum.ci }}</td>
             <td>{{ datum.area_original }}</td>
-            
-            <td>{{ datum.cargo_original }}</td>
-           
+
+            <td>{{ datum.actividad_original }}</td>
 
             <td>
               <p-dropdown
@@ -178,8 +202,8 @@
             </td>
             <td>
               <p-dropdown
-                [options]="cargos"
-                [(ngModel)]="datum.cargo_cambio"
+                [options]="actividades"
+                [(ngModel)]="datum.actividad_cambio"
                 (onChange)="onCargoChange(datum)"
                 optionLabel="name"
                 [style]="{ width: '125px' }"
@@ -187,11 +211,11 @@
               >
                 <ng-template pTemplate="selectedItem">
                   <div class="country-item country-item-value">
-                    <div>{{ datum.cargo_cambio }}</div>
+                    <div>{{ datum.actividad_cambio }}</div>
                   </div>
                 </ng-template>
-                <ng-template pTemplate="item" let-cargo>
-                  <div>{{ cargo }}</div>
+                <ng-template pTemplate="item" let-actividad>
+                  <div>{{ actividad }}</div>
                 </ng-template>
               </p-dropdown>
             </td>

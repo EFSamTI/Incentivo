@@ -10,6 +10,7 @@ import { IHistoryMovimiento, IFilterCambios } from '../../interfaces/movimiento'
 import { MovimientoService } from '../../services/movimiento.service';
 import { NavController } from '@ionic/angular';
 import { tunos } from 'src/app/asignacion/interfaces/ariel';
+import { Message } from 'primeng/api';
 @Component({
   selector: 'app-historial-movimiento',
   templateUrl: './historial-movimiento.component.html',
@@ -38,6 +39,7 @@ export class HistorialMovimientoComponent implements OnInit {
 
   ngOnInit() {
     this.loadLineas();
+    this.showInfoViaMessages();
   }
 
   filter: IFilterCambios = {};
@@ -95,9 +97,9 @@ export class HistorialMovimientoComponent implements OnInit {
         return {
           Empleado: mov.empleado_nombre,
           CI: mov.ci,
-          'Cargo previo': mov.cargo_original,
+          'Actividad previo': mov.actividad_original,
           'Área previo': mov.area_original,
-          'Cargo actual': mov.cargo_cambio,
+          'Actividad actual': mov.actividad_cambio,
           'Área actual': mov.area_cambio,
           Hora: horaFormateada,
         };
@@ -188,9 +190,9 @@ export class HistorialMovimientoComponent implements OnInit {
       const data = this.listCambios.map((mov) => [
         mov.empleado_nombre,
         mov.ci,
-        mov.cargo_original,
+        mov.actividad_original,
         mov.area_original,
-        mov.cargo_cambio,
+        mov.actividad_cambio,
         mov.area_cambio,
         this.transformarHora(mov.created_at),
       ]);
@@ -235,5 +237,17 @@ export class HistorialMovimientoComponent implements OnInit {
 
   showPersonalRotation() {
     this.navCtrlr.navigateBack('/movimiento');
+  }
+
+  msgs: Message[] = [];
+  showInfoViaMessages() {
+    this.msgs = [];
+    this.msgs.push({
+      severity: 'info',
+      summary: 'Reporte de rotaciones realizadas',
+      detail:
+        'Descargue informes de rotación de personal en Excel o PDF. Filtre por persona, área o fecha.',
+      icon: 'pi pi-file', 
+    });
   }
 }

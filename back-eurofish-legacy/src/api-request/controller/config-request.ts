@@ -6,58 +6,9 @@ import {
   desactivarConfigRequest,
   eliminarConfigRequests,
   listConfigRequest,
-  requestAriel,
-  requestTali,
   updateConfigRequest,
 } from "../service/api-request";
-import { fetchArielMessage, fetchTaliMessage } from "../middleware/peticion";
 import { tokenInfo } from "../../user/utils/jwt.handle";
-import { get } from 'http';
-import { getAsistenciaWithMarcacion } from "../service/asignacion";
-
-const postAriel = async (req: Request, res: Response) => {
-  try {
-    const { body } = req.body;
-    const configAriel = await requestAriel();
-    if (!configAriel) return httpError(res, "No se encontraron los parametros");
-    const dataResponse = await fetchArielMessage(configAriel, body);
-    res.status(dataResponse.status).send(dataResponse.data || dataResponse.message);
-  } catch (error) {
-    if (error instanceof Error) {
-      httpError(res, error.message);
-    }
-  }
-};
-
-const getAsistenciaWithMarcacionCtrl = async (req: Request, res: Response) => {
-  try {
-    const { bodyMarcacion, itemAsistencia } = req.body;
-    const dataResponse = await getAsistenciaWithMarcacion(bodyMarcacion, itemAsistencia);
-    if (!dataResponse) return httpError(res, "No se encontraron los parametros");
-    res.status(dataResponse.status).send(dataResponse.data || dataResponse.message);
-  } catch (error) {
-    if (error instanceof Error) {
-      httpError(res, error.message);
-    }
-  }
-}
-
-
-
-const postTali= async (req: Request, res: Response) => {
-  try {
-    const { data } = req.body;
-    if (!data) return httpError(res, "Lista de fecha es requerida para la peticion");
-    const result = await requestTali();
-    if (!result) return httpError(res, "No se encontraron los parametros");
-    const dataResponse = await fetchTaliMessage(result, data);
-    res.status(200).send(dataResponse);
-  } catch (error) {
-    if (error instanceof Error) {
-      httpError(res, error.message);
-    }
-  }
-};
 
 
 
@@ -130,9 +81,6 @@ const eliminarConfigRequestCtrl = async (req: Request, res: Response) => {
   }
 }
 export {
-  postAriel,
-  postTali,
-  getAsistenciaWithMarcacionCtrl,
   createConfigRequestCtrl,
   updateConfigRequestCtrl,
   desactivarConfigRequestCtrl,
